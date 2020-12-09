@@ -1,78 +1,119 @@
 <!DOCTYPE html>
+
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=640">
+<head>
+  <title>Maciej Nasinski &hearts; Open Source</title>
+  <link rel="stylesheet" type="text/css" href="assets/reset.css">
+  <link rel="stylesheet" type="text/css" href="assets/grid.css">
+  <link rel="stylesheet" type="text/css" href="assets/style.css">
+  <script type="text/javascript" src="assets/jquery-1.7.1.min.js"></script>
+  <script type="text/javascript" src="assets/strftime.js"></script>
+  <script type="text/javascript">
+  (function ($, undefined) {
 
-    <link rel="stylesheet" href="stylesheets/core.css" media="screen">
-    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)">
-    <link rel="stylesheet" href="stylesheets/github-light.css">
+    // Put custom repo URL's in this object, keyed by repo name.
+    var repoUrls = {
+    };
+    // Put custom repo descriptions in this object, keyed by repo name.
+    var repoDescriptions = {
+    };
 
-    <script type="text/javascript" src="javascripts/modernizr.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
-    <script type="text/javascript">
-      $(document).ready(function () {
-        $('#main_content').headsmart()
-      })
-    </script>
-    <title>Polkas Data Science Stuff by Polkas</title>
-  </head>
+    function repoUrl(repo) {
+      return repoUrls[repo.name] || repo.html_url;
+    }
+    function repoDescription(repo) {
+      return repoDescriptions[repo.name] || repo.description;
+    }
 
-  <body>
-    <a id="forkme_banner" href="https://github.com/Polkas">View on GitHub</a>
-    <div class="shell">
+    function addRepo(repo) {
+      var $item = $("<li>").addClass("repo grid-1 " + (repo.language || '').toLowerCase());
+      var $link = $("<a>").attr("href", repoUrl(repo)).appendTo($item);
+      $link.append($("<h2>").text(repo.name));
+      $link.append($("<p>").text(repoDescription(repo)));
+      $link.append($("<p>").text("Updated " + strftime("%h %e, %Y", repo.pushed_at)));
+      $link.append($("<h3>").addClass("language").text(repo.language));
+      $item.appendTo("#repos");
+    }
 
-      <header>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <h1>Polkas Data Science Stuff</h1>
-            <h2></h2>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-      </header>
+    $.getJSON("https://api.github.com/users/polkas/repos?sort=updated&per_page=100&callback=?", function (result) {
+      var repos = result.data;
+      var tops = new Array("miceFast","cat2cat", "bitcoinchartsr");
+      var repos_top = $.map(repos, function(repo) {
+        if (tops.indexOf(repo.name) != -1) return repo;
+      });
+      $(function () {
+        $("#num-repos").text(repos.length);
+        $.each(repos_top, function (i, repo) {
+          repo.pushed_at = new Date(repo.pushed_at);
+          addRepo(repo);
+        });
+      });
+    });
+  })(jQuery);
+  </script>
+  <script type="text/javascript">
+  (function ($, undefined) {
 
-      <div id="no-downloads">
-        <span class="inner">
-        </span>
-      </div>
+    function addBlog(blog) {
+      var $item = $("<li>").addClass("repo grid-1 " + (repo.language || '').toLowerCase());
+      var $link = $("<a>").attr("href", repoUrl(repo)).appendTo($item);
+      $link.append($("<h2>").text(repo.name));
+      $link.append($("<p>").text(repoDescription(repo)));
+      $link.append($("<p>").text("Updated " + strftime("%h %e, %Y", repo.pushed_at)));
+      $link.append($("<h3>").addClass("language").text(repo.language));
 
+      $item.appendTo("#blogs");
+    }
 
-      <span class="banner-fix"></span>
-
-
-      <section id="main_content">
-        <h3>
-<a id="About Me" class="anchor" href="#about-me" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Bio.</h3>
-
-<p> Data Scientist, Econometrician and Statistician interested in improving inefficient processes and solving tough problems. Assertive team player who believed that education is a continuous and never-ending process. <a href="https://www.linkedin.com/in/maciej-nasinski/">Linkedin</a></p>
-
-<h3>
-  
-<a id="About Website" class="anchor" href="#about-website" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>About.</h3>
-
-<p> Here, you could find implementations of advanced statistics, econometrics and data science.</p>
-
-<p>Having trouble with Pages? Check out our <a href="https://help.github.com/pages">documentation</a> or <a href="https://github.com/contact">contact support</a> and we’ll help you sort it out.</p>
-      </section>
-
-      <footer>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <p>Projects by <a href="https://github.com/Polkas">Polkas</a> can be found on <a href="https://github.com/Polkas">GitHub</a></p>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-        <p>Generated with <a href="https://pages.github.com">GitHub Pages</a> using Merlot</p>
-        <span class="octocat"></span>
-      </footer>
-
+        if (tops.indexOf(repo.name) != -1) return repo;
+      });
+      $(function () {
+        $("#num-repos").text(repos.length);
+        $.each(repos_top, function (i, repo) {
+          repo.pushed_at = new Date(repo.pushed_at);
+          addRepo(repo);
+        });
+    });
+  })(jQuery);
+  </script>
+</head>
+<body>
+  <div id="wrapper" class="grid clearfix">
+    <div id="main" class="grid-1">
+      <div><h1>Maciej Nasinski</h1></div>
+      <p>Linkedin <a href="https://www.linkedin.com/in/maciej-nasinski/"> account </a></p>
+      <p>StackOverFlow <a href="https://stackoverflow.com/users/5442527/polkas"> account </a></p>
+      <p>Academic <a href="https://www.wne.uw.edu.pl/index.php/pl/profile/view/318/">account</a></p>
+      <p>Page based on <a href="http://twitter.github.com/">http://twitter.github.com/</a></p>
     </div>
 
-    
-  </body>
+    <div class="grid grid-3">
+      <div id="statistics" class="grid-1 alpha header">
+        <h1>Github Repos</h1>
+        <p>
+          <a href="https://github.com/polkas/repositories"><span id="num-repos">&nbsp;</span> public repos</a>
+          <br>
+        </p>
+        <p class="email"><a href="mailto:nasinski.maciej">nasinski.maciej@gmail.com</a></p>
+      </div>
+
+      <div class="grid-2 omega header">
+        <h1><a href="https://www.linkedin.com/in/maciej-nasinski/">Linkedin</a></h1>
+        <p>Data Scientist, Econometrician and Statistician interested in improving inefficient processes and solving tough problems.
+          Assertive team player who believed that education is a continuous and never-ending process.</p>
+      </div>
+    </div>
+
+    <div class="repositories">
+      <ol id="repos"></ol>
+    </div>
+        <div class="blog">
+        <p>External (Statistics): <a href="https://www.fharrell.com/post/pval-litany/"> Pval Litany </a> - Deep discussion about p-value limitations.</p>
+        </div>
+        <br>
+        <div class="blog">
+        <p>Internal (Programming): <a href="./blogs/git_intro.html"> Git Introduction </a> - Presentation about Git basis.</p>
+      </div>
+  </div>
+</body>
 </html>
