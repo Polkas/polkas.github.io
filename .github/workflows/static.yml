@@ -34,14 +34,6 @@ jobs:
         
       - name: Setup Pages
         uses: actions/configure-pages@v3
-        
-      - name: "Install R Packages: Cache packages"
-        uses: actions/cache@v1
-        with:
-          path: ${{ env.RENV_PATHS_ROOT }}
-          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-renv-
 
       - name: "Install R Packages: Restore packages"
         shell: Rscript {0}
