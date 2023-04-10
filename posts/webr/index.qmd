@@ -81,19 +81,6 @@ Thus two service worker scripts have to be hosted in the same origin as the page
     let rcode_str = "rownames(available.packages(repos = 'https://repo.r-wasm.org/'))\n";
     document.getElementById('out').append("> " + rcode_str);
     webRConsole.stdin(rcode_str);
-  })
-  .then(() => {
-    setTimeout(() => {
-      document.getElementById('out').append("> " + "# Installation with call like \n");
-      document.getElementById('out').append("> " + "# webr::install('ggplot2')\n");
-    }, 1000)
-  })
-  .then(() => {
-    setTimeout(() => {
-      let rcode_str = "hist(rnorm(10)) \n";
-      document.getElementById('out').append("> " + rcode_str);
-      webRConsole.stdin(rcode_str);
-    }, 1000)
   });
 
   let input = document.getElementById('input');
