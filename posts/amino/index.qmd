@@ -25,8 +25,6 @@ In conclusion, the Knapsack Algorithm is a powerful tool for solving optimizatio
 
 ## Analysis
 
-### Static Code
-
 ```{r}
 #| echo: TRUE
 coupons <- c(455L, 650L, 26L, 464L, 26L, 750L, 490L, 520L, 399L, 390L, 750L, 
