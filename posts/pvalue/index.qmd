@@ -1,7 +1,7 @@
 ---
 title: 'Moving Beyond P-Values in Scientific Research: Insights from the ASA Statement and Frank Harrell'
-author: "Polkas"
-date: "2023-04-09"
+author: "Maciej Nasinski"
+date: "2023-04-07"
 categories: [p-value, statistics]
 image: main.png
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Analyzing the Kasa Romana Lottery with Knapsack Algorithm"
 author: "Maciej Nasinski"
-date: "2023-04-09"
+date: "2023-04-08"
 categories: [knapsack, rprogramming]
 image: main.png
 ---

@@ -1,6 +1,6 @@
 ---
 title: 'webR - WebAssembly for R'
-author: "Polkas"
+author: "Maciej Nasinski"
 date: "2023-04-09"
 categories: [webr, rprogramming]
 image: ../../webR.png
@@ -20,6 +20,7 @@ I am thrilled to offer this powerful tool on my blog, and I hope you'll find it 
 
 Please be aware of major limitation which is the limited number of avaiable packages to be installed in the webR console.
 The available R packages can be get with the `rownames(available.packages(repos = "https://repo.r-wasm.org/"))` call.  
+The webR team will continuously add more packages, taking into account many factors.
 
 ## How it was done
 
@@ -73,13 +74,13 @@ Thus two service worker scripts have to be hosted in the same origin as the page
   
   webRConsole.run();
   
-  let start_R_code = "rownames(available.packages(repos = 'https://repo.r-wasm.org/'))\n";
   webRConsole.webR.init()
   .then(() => document.getElementById('loading').remove())
   .then(() => {
     document.getElementById('out').append("> " + "# Available to install R packages \n");
-    document.getElementById('out').append("> " + start_R_code);
-    webRConsole.stdin(start_R_code);
+    let rcode_str = "rownames(available.packages(repos = 'https://repo.r-wasm.org/'))\n";
+    document.getElementById('out').append("> " + rcode_str);
+    webRConsole.stdin(rcode_str);
   })
   .then(() => {
     setTimeout(() => {
@@ -89,11 +90,12 @@ Thus two service worker scripts have to be hosted in the same origin as the page
   })
   .then(() => {
     setTimeout(() => {
-      document.getElementById('out').append("> " + "hist(rnorm(10)) \n");
-      webRConsole.stdin("hist(rnorm(10)) \n");
+      let rcode_str = "hist(rnorm(10)) \n";
+      document.getElementById('out').append("> " + rcode_str);
+      webRConsole.stdin(rcode_str);
     }, 1000)
   });
-  
+
   let input = document.getElementById('input');
   globalThis.sendInput = () => {
     webRConsole.stdin(input.value);
@@ -106,6 +108,23 @@ Thus two service worker scripts have to be hosted in the same origin as the page
     "keydown",
     (evt) => {if(evt.keyCode === 13) globalThis.sendInput()}
   );
+</script>
+
+<script>
+  var coll = document.getElementsByClassName("collapsible-item");
+  var i;
+
+  for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+      this.classList.toggle("active-item");
+      var content = this.nextElementSibling;
+      if (content.style.display === "block") {
+        content.style.display = "none";
+      } else {
+        content.style.display = "block";
+      }
+    });
+  }
 </script>
 ```
 

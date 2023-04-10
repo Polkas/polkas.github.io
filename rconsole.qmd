@@ -50,13 +50,13 @@ The available R packages can be get with the `rownames(available.packages(repos 
   
   webRConsole.run();
   
-  let start_R_code = "rownames(available.packages(repos = 'https://repo.r-wasm.org/'))\n";
   webRConsole.webR.init()
   .then(() => document.getElementById('loading').remove())
   .then(() => {
     document.getElementById('out').append("> " + "# Available to install R packages \n");
-    document.getElementById('out').append("> " + start_R_code);
-    webRConsole.stdin(start_R_code);
+    let rcode_str = "rownames(available.packages(repos = 'https://repo.r-wasm.org/'))\n";
+    document.getElementById('out').append("> " + rcode_str);
+    webRConsole.stdin(rcode_str);
   })
   .then(() => {
     setTimeout(() => {
@@ -66,8 +66,9 @@ The available R packages can be get with the `rownames(available.packages(repos 
   })
   .then(() => {
     setTimeout(() => {
-      document.getElementById('out').append("> " + "hist(rnorm(10)) \n");
-      webRConsole.stdin("hist(rnorm(10)) \n");
+      let rcode_str = "hist(rnorm(10)) \n";
+      document.getElementById('out').append("> " + rcode_str);
+      webRConsole.stdin(rcode_str);
     }, 1000)
   });
 

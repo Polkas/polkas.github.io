@@ -1,7 +1,7 @@
 ---
 title: "Why Git is Here to Stay"
-author: "Tristan O'Malley"
-date: "2023-04-09"
+author: "Maciej Nasinski"
+date: "2023-04-06"
 categories: [git]
 image: main.png
 ---
