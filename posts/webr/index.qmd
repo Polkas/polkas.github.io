@@ -1,0 +1,116 @@
+---
+title: 'webR - WebAssembly for R'
+author: "Polkas"
+date: "2023-04-09"
+categories: [webr, rprogramming]
+image: ../../webR.png
+---
+
+TL;DR Play with R code in real-time without any setup or installation needed using webR (WebAssembly for R)
+
+## Intro
+
+I am excited to announce the latest addition to my blog - the webR Console! Now you can experiment with R code directly in your browser, without the need for any installation or server setup.
+
+The webR Console is powered by WebAssembly, a new technology that allows us to run high-performance applications in the web browsers. With the webR Console, you can write, test, and run R code right in your browser, with a user interface that's intuitive and easy to use.
+
+To get started with the webR Console, simply click on the ["webR Console"](https://polkas.github.io/rconsole.html) tab on the blog's navigation bar. You'll be taken to a new page with a clean, minimal interface that allows you to focus on your code.
+
+I am thrilled to offer this powerful tool on my blog, and I hope you'll find it as useful and fun as we do. Try it out today and let us know what you think!
+
+Please be aware of major limitation which is the limited number of avaiable packages to be installed in the webR console.
+The available R packages can be get with the `rownames(available.packages(repos = "https://repo.r-wasm.org/"))` call.  
+
+## How it was done
+
+The core of the html/js code needed to build webR Console in this static webpage is presented below; [open for whole code](https://github.com/Polkas/polkas.github.io/blob/master/rconsole.qmd).  
+I added the support for presenting any plot output; this part takes me some time as is not yet well documented.  
+To enable support for graphics, the `canvas` options have to be used.
+The GitHub pages have to be used with ServiceWorker, one of the two possible communication channels.  
+Thus two service worker scripts have to be hosted in the same origin as the page loading webR, `webr-serviceworker.js` and `webr-worker.js`. Please remember to add these two files to page resources, in my case in the `_quarto.yaml`.
+
+
+```html
+<div style="border: solid #333 1px; padding: 5px; width: 1008px;">
+  <pre id="loading"><code>Loading webR, please wait...</code></pre>
+  <pre id="container" style="max-height: 600px"><code id="out"></code></pre>
+  <div class="input-group mb-3">
+    <span class="input-group-text" id="prompt"></span>
+    <input spellcheck="false" autocomplete="off" id="input" type="text" style="width:500px;height:50px;">
+    <button type="button" class="btn btn-secondary" onclick="globalThis.sendInput()" id="run">Run</button>
+  </div>
+</div>
+<div id="container" style="border: solid #333 1px; padding: 5px; width: 1008px;">
+  <button type="button" class="collapsible-item">(Click) to Show Last Plot</button>
+  <div class="content-item">
+    <canvas id="myCanvas" width="1008px" height="1008px"></canvas>
+  </div>
+</div>
+
+<script type="module">
+  import { Console } from 'https://webr.r-wasm.org/v0.1.1/webr.mjs';
+  const webRConsole = new Console({
+    stdout: line => {
+      document.getElementById('out').append(line + '\n');
+    },
+    stderr: line => document.getElementById('out').append(line + '\n'),
+    prompt: p => {
+      const pre = document.getElementById('container');
+      pre.scrollTop = pre.scrollHeight; 
+      document.getElementById('prompt').innerText = p;
+    },
+    canvasExec: line => {
+    console.log(line);
+      var canvas = document.getElementById("myCanvas");
+      console.log(`canvas.getContext('2d').${line}`);
+      eval(`canvas.getContext('2d').${line}`);
+    }
+  }, {channelType: 0, REnv: {
+        R_HOME: '/usr/lib/R',
+        R_ENABLE_JIT: '0',
+        R_DEFAULT_DEVICE: 'canvas',
+      }});
+  
+  webRConsole.run();
+  
+  let start_R_code = "rownames(available.packages(repos = 'https://repo.r-wasm.org/'))\n";
+  webRConsole.webR.init()
+  .then(() => document.getElementById('loading').remove())
+  .then(() => {
+    document.getElementById('out').append("> " + "# Available to install R packages \n");
+    document.getElementById('out').append("> " + start_R_code);
+    webRConsole.stdin(start_R_code);
+  })
+  .then(() => {
+    setTimeout(() => {
+      document.getElementById('out').append("> " + "# Installation with call like \n");
+      document.getElementById('out').append("> " + "# webr::install('ggplot2')\n");
+    }, 1000)
+  })
+  .then(() => {
+    setTimeout(() => {
+      document.getElementById('out').append("> " + "hist(rnorm(10)) \n");
+      webRConsole.stdin("hist(rnorm(10)) \n");
+    }, 1000)
+  });
+  
+  let input = document.getElementById('input');
+  globalThis.sendInput = () => {
+    webRConsole.stdin(input.value);
+    document.getElementById('out').append(
+      document.getElementById('prompt').innerText + ' ' + input.value + '\n'
+    );
+    input.value = "";
+  }
+  input.addEventListener(
+    "keydown",
+    (evt) => {if(evt.keyCode === 13) globalThis.sendInput()}
+  );
+</script>
+```
+
+Reference:
+
+- [WebR github repository](https://github.com/r-wasm/webr)
+- [WebR webpage](https://docs.r-wasm.org/webr/latest/)
+- [WebR console on this blog](https://polkas.github.io/rconsole.html)
