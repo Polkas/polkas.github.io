@@ -6,7 +6,7 @@ categories: [webr, rprogramming]
 image: ../../webR.png
 ---
 
-TL;DR Play with R code in real-time without any setup or installation needed using webR (WebAssembly for R)
+TL;DR Play with R code in real-time in the web browser using webR (WebAssembly for R)
 
 ## Intro
 
