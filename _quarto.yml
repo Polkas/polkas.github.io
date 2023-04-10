@@ -1,0 +1,25 @@
+project:
+  type: website
+  resources:
+    - /posts/amino/webr-serviceworker.js
+    - /posts/amino/webr-worker.js
+    - /posts/amino/coupons.json
+    
+website:
+  title: "Agile Dev"
+  navbar:
+    right:
+      - author.qmd
+      - rconsole.qmd
+      - icon: linkedin
+        text: LinkedIn
+        href: https://www.linkedin.com/in/maciej-nasinski/
+      - icon: github
+        text: Github
+        href: https://github.com/polkas
+format:
+  html:
+    theme: flatly
+    css: styles.css
+
+

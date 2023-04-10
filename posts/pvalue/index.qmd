@@ -1,0 +1,24 @@
+---
+title: 'Moving Beyond P-Values in Scientific Research: Insights from the ASA Statement and Frank Harrell'
+author: "Polkas"
+date: "2023-04-09"
+categories: [p-value, statistics]
+image: main.png
+---
+
+TL;DR ASA suggests that researchers should report effect sizes, confidence intervals, and other measures of uncertainty alongside p-values.
+
+For decades, p-values have been the go-to statistical tool for determining statistical significance in scientific research. However, recent criticisms of p-values have led many researchers to question their usefulness and accuracy. In response to these criticisms, the American Statistical Association (ASA) released a statement on statistical significance and p-values, calling for rethinking their role in scientific research.
+
+The ASA statement highlights several limitations of p-values, including their susceptibility to misinterpretation, dependence on arbitrary thresholds, and inability to measure the strength of evidence. To supplement or replace p-values, the ASA suggests that researchers should report effect sizes, confidence intervals, and other measures of uncertainty alongside p-values.
+
+Frank Harrell's blog post, "The P-Value Litany," echoes the concerns raised by the ASA statement and calls for a move beyond p-values in scientific research. Harrell points out that p-values are affected by sample size and study design and do not provide information about effect size or the uncertainty of estimates. Instead, he suggests that researchers use confidence intervals and Bayesian statistics, which give a more complete picture of the data and are not subject to the same limitations as p-values.
+
+In addition to supplementing or replacing p-values, the ASA statement and Harrell emphasize the importance of considering the clinical or practical significance of findings rather than relying solely on statistical significance. This involves evaluating effect sizes' magnitude and relevance to real-world settings.
+
+In conclusion, the ASA statement and Harrell's blog post offer essential insights into the limitations of p-values and the need for a more nuanced approach to statistical significance in scientific research. By embracing more comprehensive statistical methods and focusing on the clinical relevance of findings, researchers can improve the accuracy and reliability of their research and ultimately contribute to the advancement of scientific knowledge.
+
+Reference:
+
+- [ASA p-value statement](https://www.amstat.org/asa/files/pdfs/p-valuestatement.pdf)
+- [Harrell's pval-litany](https://www.fharrell.com/post/pval-litany/)

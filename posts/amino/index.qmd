@@ -1,0 +1,188 @@
+---
+title: "Analyzing the Kasa Romana Lottery with Knapsack Algorithm"
+author: "Maciej Nasinski"
+date: "2023-04-09"
+categories: [knapsack, rprogramming]
+image: main.png
+---
+
+TL;DR Suppose you want to organize a perfect lottery where people genuinely believe in winning and have no chance of winning. In that case, you need to hire a good mathematician. However, the R programmer can easily expose the mechanism with proper data.
+
+## Post
+
+Kasa Romana is a popular lottery in Poland organized by the Amino food company. Established in the 90s, the lottery provides an opportunity to win real money by collecting a set of coupons that sum up to full hundreds up to 1000. In this blog post, we will analyze the data from the last Kasa Romana event held in 2016 using the Knapsack Algorithm in R.
+
+[BezKanalu](https://www.facebook.com/BezKanalu/), a popular YouTube channel in Poland that tests products during promotions, collected precisely 1002 coupons from the last event, providing a sufficient amount of data for analysis. The main objective is to find patterns in the data and determine if the collected coupons give any chance to win real money.
+
+To achieve the goal, I used the Knapsack Algorithm, a classic optimization problem that involves finding the optimal way to pack a set of items into a limited space while maximizing their total value. In this case, the "items" are the coupons, and the "limited space" is the need to have a set of coupons that sum up to full hundreds up to 1000.
+
+I implemented the Knapsack Algorithm in R programming environment to check if there are any combinations of coupons that enable the lottery participants to win any money. The algorithm works by iterating over all possible subsets of the coupons and selecting the one that satisfies the constraints and maximizes the total value.
+
+The analysis with 1000 coupons revealed that there are NO combinations of coupons that enable the participants to win real money in the Kasa Romana lottery.
+
+In conclusion, the Knapsack Algorithm is a powerful tool for solving optimization problems like the Kasa Romana lottery. By using R programming environment, I was able to analyze the data and provide valuable insights into the lottery's patterns and trends. 
+
+
+## Analysis
+
+### Static Code
+
+```{r}
+#| echo: TRUE
+coupons <- c(455L, 650L, 26L, 464L, 26L, 750L, 490L, 520L, 399L, 390L, 750L, 
+455L, 104L, 260L, 26L, 438L, 633L, 455L, 195L, 516L, 598L, 481L, 
+299L, 724L, 243L, 26L, 533L, 455L, 572L, 208L, 520L, 130L, 455L, 
+26L, 650L, 581L, 412L, 559L, 260L, 455L, 637L, 750L, 130L, 338L, 
+321L, 26L, 555L, 26L, 338L, 611L, 65L, 26L, 490L, 195L, 260L, 
+390L, 260L, 455L, 750L, 399L, 455L, 429L, 750L, 416L, 533L, 533L, 
+750L, 273L, 572L, 273L, 750L, 130L, 455L, 325L, 750L, 455L, 611L, 
+750L, 416L, 269L, 455L, 542L, 26L, 130L, 52L, 260L, 191L, 438L, 
+650L, 737L, 217L, 308L, 390L, 529L, 260L, 546L, 351L, 78L, 624L, 
+243L, 26L, 321L, 65L, 412L, 338L, 130L, 65L, 650L, 412L, 130L, 
+351L, 130L, 455L, 117L, 156L, 520L, 650L, 78L, 737L, 351L, 442L, 
+750L, 650L, 321L, 650L, 282L, 260L, 468L, 312L, 117L, 750L, 451L, 
+26L, 412L, 412L, 750L, 217L, 260L, 672L, 750L, 286L, 750L, 724L, 
+750L, 438L, 533L, 438L, 260L, 533L, 750L, 26L, 260L, 52L, 455L, 
+130L, 585L, 295L, 26L, 750L, 516L, 39L, 260L, 104L, 373L, 26L, 
+572L, 26L, 438L, 78L, 390L, 750L, 390L, 204L, 650L, 650L, 572L, 
+130L, 260L, 26L, 130L, 364L, 611L, 594L, 260L, 750L, 503L, 91L, 
+672L, 559L, 455L, 455L, 260L, 169L, 750L, 390L, 299L, 650L, 516L, 
+468L, 598L, 221L, 26L, 494L, 273L, 390L, 594L, 26L, 390L, 260L, 
+399L, 750L, 195L, 425L, 26L, 26L, 351L, 308L, 230L, 26L, 607L, 
+650L, 637L, 568L, 390L, 572L, 65L, 26L, 273L, 26L, 165L, 386L, 
+750L, 650L, 130L, 529L, 182L, 130L, 130L, 390L, 234L, 390L, 650L, 
+624L, 438L, 390L, 373L, 26L, 26L, 260L, 750L, 455L, 546L, 390L, 
+26L, 750L, 412L, 26L, 26L, 711L, 429L, 711L, 195L, 390L, 611L, 
+542L, 390L, 750L, 412L, 26L, 490L, 568L, 481L, 169L, 260L, 78L, 
+711L, 520L, 195L, 659L, 26L, 260L, 442L, 455L, 247L, 542L, 26L, 
+650L, 750L, 217L, 672L, 269L, 750L, 260L, 39L, 425L, 26L, 26L, 
+39L, 130L, 520L, 282L, 299L, 269L, 750L, 750L, 750L, 299L, 685L, 
+390L, 39L, 624L, 533L, 260L, 455L, 26L, 208L, 390L, 338L, 65L, 
+130L, 338L, 750L, 260L, 477L, 390L, 52L, 546L, 455L, 351L, 546L, 
+217L, 221L, 243L, 390L, 117L, 260L, 256L, 390L, 78L, 737L, 104L, 
+143L, 412L, 750L, 581L, 585L, 750L, 130L, 750L, 390L, 464L, 650L, 
+191L, 26L, 494L, 425L, 737L, 477L, 312L, 26L, 130L, 221L, 26L, 
+529L, 650L, 611L, 546L, 750L, 165L, 334L, 399L, 650L, 169L, 312L, 
+750L, 325L, 130L, 52L, 91L, 26L, 260L, 750L, 26L, 455L, 338L, 
+273L, 117L, 650L, 377L, 542L, 750L, 390L, 659L, 26L, 165L, 672L, 
+39L, 390L, 26L, 390L, 455L, 568L, 529L, 312L, 650L, 455L, 451L, 
+403L, 455L, 26L, 260L, 26L, 26L, 156L, 750L, 750L, 455L, 555L, 
+299L, 260L, 607L, 455L, 620L, 390L, 750L, 260L, 243L, 295L, 390L, 
+455L, 594L, 546L, 130L, 260L, 390L, 260L, 568L, 650L, 286L, 243L, 
+598L, 607L, 438L, 308L, 650L, 455L, 455L, 130L, 390L, 260L, 477L, 
+481L, 165L, 130L, 659L, 650L, 26L, 91L, 295L, 52L, 555L, 650L, 
+546L, 390L, 386L, 737L, 26L, 390L, 685L, 130L, 91L, 477L, 26L, 
+455L, 52L, 685L, 26L, 130L, 390L, 390L, 520L, 143L, 26L, 455L, 
+585L, 455L, 455L, 646L, 390L, 750L, 455L, 390L, 260L, 542L, 650L, 
+91L, 39L, 390L, 312L, 26L, 750L, 260L, 455L, 442L, 494L, 416L, 
+598L, 260L, 572L, 455L, 39L, 65L, 351L, 611L, 455L, 230L, 52L, 
+750L, 65L, 273L, 650L, 724L, 598L, 568L, 26L, 26L, 26L, 455L, 
+195L, 117L, 750L, 750L, 698L, 390L, 130L, 130L, 91L, 182L, 269L, 
+750L, 260L, 26L, 455L, 750L, 234L, 650L, 256L, 325L, 260L, 26L, 
+169L, 542L, 26L, 455L, 750L, 442L, 256L, 611L, 412L, 130L, 455L, 
+412L, 130L, 165L, 399L, 260L, 750L, 477L, 26L, 130L, 650L, 425L, 
+455L, 455L, 581L, 464L, 698L, 425L, 624L, 26L, 117L, 598L, 130L, 
+529L, 438L, 559L, 390L, 130L, 217L, 468L, 750L, 750L, 347L, 308L, 
+516L, 260L, 312L, 52L, 390L, 230L, 373L, 390L, 260L, 191L, 620L, 
+52L, 650L, 130L, 750L, 750L, 347L, 585L, 243L, 490L, 282L, 282L, 
+750L, 325L, 26L, 273L, 455L, 377L, 750L, 507L, 455L, 455L, 724L, 
+390L, 650L, 221L, 585L, 442L, 637L, 295L, 438L, 520L, 750L, 425L, 
+347L, 247L, 26L, 750L, 295L, 698L, 169L, 130L, 260L, 520L, 559L, 
+455L, 750L, 91L, 750L, 347L, 312L, 260L, 130L, 321L, 455L, 26L, 
+26L, 442L, 143L, 750L, 633L, 26L, 360L, 607L, 390L, 737L, 156L, 
+26L, 750L, 750L, 516L, 191L, 78L, 455L, 455L, 156L, 455L, 360L, 
+191L, 455L, 464L, 130L, 650L, 507L, 559L, 546L, 52L, 26L, 425L, 
+390L, 533L, 260L, 559L, 650L, 468L, 230L, 282L, 750L, 26L, 555L, 
+26L, 568L, 130L, 533L, 260L, 455L, 581L, 750L, 26L, 260L, 455L, 
+659L, 750L, 191L, 750L, 650L, 624L, 451L, 26L, 26L, 399L, 390L, 
+117L, 503L, 455L, 78L, 750L, 659L, 503L, 494L, 321L, 256L, 637L, 
+26L, 520L, 520L, 455L, 347L, 650L, 750L, 182L, 455L, 247L, 659L, 
+130L, 386L, 503L, 260L, 26L, 572L, 386L, 529L, 533L, 750L, 650L, 
+195L, 750L, 477L, 455L, 650L, 425L, 130L, 455L, 243L, 455L, 26L, 
+260L, 585L, 624L, 546L, 650L, 416L, 711L, 555L, 455L, 455L, 750L, 
+594L, 542L, 282L, 234L, 230L, 750L, 750L, 494L, 26L, 390L, 455L, 
+650L, 221L, 455L, 390L, 325L, 650L, 750L, 143L, 416L, 26L, 299L, 
+130L, 377L, 26L, 260L, 750L, 542L, 130L, 455L, 750L, 737L, 390L, 
+182L, 347L, 477L, 78L, 555L, 442L, 598L, 351L, 26L, 503L, 750L, 
+39L, 243L, 455L, 750L, 26L, 26L, 130L, 429L, 455L, 568L, 130L, 
+455L, 26L, 650L, 650L, 555L, 438L, 650L, 416L, 650L, 243L, 455L, 
+260L, 390L, 650L, 455L, 130L, 650L, 555L, 416L, 724L, 260L, 130L, 
+685L, 650L, 455L, 542L, 260L, 130L, 637L, 425L, 412L, 390L, 724L, 
+26L, 130L, 529L, 165L, 26L, 555L, 321L, 204L, 390L, 130L, 195L, 
+390L, 26L, 26L, 260L, 156L, 260L, 312L, 130L, 130L, 338L, 39L, 
+390L, 750L, 451L, 650L, 130L, 412L, 390L, 464L, 455L, 260L, 130L, 
+373L, 230L, 650L, 286L, 130L, 442L, 243L, 26L, 308L, 390L, 750L, 
+26L, 243L, 26L, 182L, 685L, 750L, 26L, 221L, 321L, 295L, 585L, 
+650L, 364L, 750L, 659L, 650L, 711L, 633L, 26L, 26L, 347L, 260L, 
+750L, 260L, 624L, 286L, 260L, 230L, 260L, 295L, 442L, 26L, 130L, 
+390L, 243L, 386L, 26L, 598L, 325L, 503L, 130L, 260L, 364L, 672L, 
+429L, 247L, 273L, 39L, 117L, 637L, 260L, 598L, 750L, 169L, 130L, 
+260L, 286L, 260L, 260L, 750L, 750L, 273L, 182L, 130L, 260L, 130L, 
+412L, 451L, 191L, 390L, 438L, 516L, 130L, 650L, 750L, 750L, 26L, 
+295L, 390L, 26L, 26L, 750L, 390L, 347L, 377L, 156L, 78L, 516L, 
+594L)
+```
+
+Sorted unique values:
+
+```{r}
+sort(unique(coupons))
+```
+
+Sorted table of frequencies:
+
+```{r}
+sort(table(coupons))
+```
+
+Histrogram might be helpful to find certain patterns:
+
+```{r}
+hist(coupons, breaks = 100)
+```
+
+**Numbers seems to be generated from 2 specific patterns:**
+
+- multiplication of 13 starting from 26
+- multiplication of 13 plus 165
+
+All of the coupons comes from this 2 sequences.
+
+```{r}
+rep13 <- 13 * 1:52
+
+rep2_13 <- 165 + (13 * 0:45)
+
+all(coupons %in% c(rep13, rep2_13))
+```
+
+*Single knapsack problem:*
+
+Knapsack is an optimization method, linear programming for integers.
+
+Each of 1000 coupons is replicated 100 times before the procedure. This replication step is not needed to get this certain results although it will be even more convincing. Remainder, I was looking for set of coupons which sum to full hundreds (100, 200, ...) up to 1000.
+
+```{r}
+# adagio can not be downloaded in the WebR R console
+library(adagio)
+
+cupon_we_have = rep(coupons, 100)
+
+amount_we_want = seq(100, 1000, 100)
+
+for(i in amount_we_want){
+
+solution <- try(
+  knapsack(
+    p = cupon_we_have[cupon_we_have<i], 
+    w = cupon_we_have[cupon_we_have<i], 
+    cap = i
+  )
+)
+
+print(sprintf("Best result for %s reward is %s", i, solution$profit))
+}
+```
+
+Taking into account only coupons provided there is NO chance to win anything.  
+This seems to no be surprising when we know from what sequences the coupons come from.  

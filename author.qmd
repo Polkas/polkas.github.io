@@ -1,0 +1,22 @@
+---
+title: "Author"
+image: profile.jpg
+about:
+  template: trestles
+  links:
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/maciej-nasinski/
+    - icon: github
+      text: Github
+      href: https://github.com/polkas
+
+---
+
+Hi there! My name is Maciej Nasinski and I'm a statistician and programmer who strongly believes in the power of open source and agile methodology. I love being part of a community-driven development process and I actively participate in various open source projects on GitHub. I also enjoy sharing my knowledge and expertise by contributing to the programming community on StackOverflow.
+
+As a data expert, I have extensive experience in statistical analysis and programming. I find it incredibly rewarding to analyze complex data sets and provide valuable insights that can help organizations make data-driven decisions. I'm passionate about using my skills to make a positive impact on the world.
+
+I strongly believe in the value of continuous learning and I'm always looking for ways to expand my knowledge and expertise. Whether it's through attending industry conferences, taking courses, or exploring new programming languages and tools, I'm committed to staying up-to-date on the latest trends and best practices.
+
+In my free time, I like to swim and explore my creative side through art. I find that pursuing creative hobbies helps me stay inspired and think outside the box in my professional work.
