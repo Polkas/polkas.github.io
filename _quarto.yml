@@ -1,8 +1,8 @@
 project:
   type: website
   resources:
-    - /webr-serviceworker.js
-    - /webr-worker.js
+    - /posts/webr/webr-serviceworker.js
+    - /posts/webr/webr-worker.js
     - /posts/amino/coupons.json
     
 website:
@@ -10,7 +10,6 @@ website:
   navbar:
     right:
       - author.qmd
-      - rconsole.qmd
       - icon: linkedin
         text: LinkedIn
         href: https://www.linkedin.com/in/maciej-nasinski/
