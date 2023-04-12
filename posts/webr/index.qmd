@@ -44,9 +44,7 @@ The available R packages can be get with the `rownames(available.packages(repos 
       document.getElementById('prompt').innerText = p;
     },
     canvasExec: line => {
-    console.log(line);
-      var canvas = document.getElementById("myCanvas");
-      console.log(`canvas.getContext('2d').${line}`);
+      let canvas = document.getElementById("myCanvas");
       eval(`canvas.getContext('2d').${line}`);
     }
   }, {channelType: 0, REnv: {
@@ -155,9 +153,7 @@ When using the GitHub pages with ServiceWorker, one of two possible communicatio
       document.getElementById('prompt').innerText = p;
     },
     canvasExec: line => {
-    console.log(line);
-      var canvas = document.getElementById("myCanvas");
-      console.log(`canvas.getContext('2d').${line}`);
+      let canvas = document.getElementById("myCanvas");
       eval(`canvas.getContext('2d').${line}`);
     }
   }, {channelType: 0, REnv: {
