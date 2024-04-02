@@ -32,7 +32,7 @@ From coding your first app to engaging in complex projects, the Student Pack is 
 
 #### Accessing the Pack
 
-Students over 13 enrolled in a degree or diploma course can apply for the Student Pack by providing academic proof, such as a school email address or student ID.
+Students over 13 enrolled in a degree or diploma course can apply for the Student Pack by providing academic proof, such as a school email address and student ID.
 
 #### Empowering Educators with the GitHub Teacher Pack
 
