@@ -25,53 +25,48 @@ The available R packages can be get with the `rownames(available.packages(repos 
 </div>
 <div id="container" style="border: solid #333 1px; padding: 5px; width: 100%;">
   <button type="button" class="collapsible-item">Click to Show/Hide the Last Plot</button>
-  <div class="content-item">
-    <canvas id="myCanvas" width="1008px" height="1008px"></canvas>
+  <div class="content-item" style="display:block;">
+    <canvas id="plot-canvas" width="500" height="500"></canvas>
   </div>
 </div>
 
 
 <script type="module">
-  import { Console } from 'https://webr.r-wasm.org/v0.1.1/webr.mjs';
+  import { Console } from 'https://webr.r-wasm.org/latest/webr.mjs';
+
+  var canvas = document.getElementById("plot-canvas")
+  var ctx = canvas.getContext('2d');
+
   const webRConsole = new Console({
-    stdout: line => {
-      document.getElementById('out').append(line + '\n');
-    },
+    stdout: line => document.getElementById('out').append(line + '\n'),
     stderr: line => document.getElementById('out').append(line + '\n'),
-    prompt: p => {
-      const pre = document.getElementById('container');
-      pre.scrollTop = pre.scrollHeight; 
-      document.getElementById('prompt').innerText = p;
-    },
-    canvasExec: line => {
-      let canvas = document.getElementById("myCanvas");
-      eval(`canvas.getContext('2d').${line}`);
-    }
-  }, {channelType: 0, REnv: {
-        R_HOME: '/usr/lib/R',
-        R_ENABLE_JIT: '0',
-        R_DEFAULT_DEVICE: 'canvas',
-      }});
-  
+    prompt: p => null,
+    canvasImage: ci => ctx.drawImage(ci, 0, 0),
+    canvasNewPage: () => ctx.reset(),
+  });
   webRConsole.run();
-  
+    
   webRConsole.webR.init()
   .then(() => document.getElementById('loading').remove())
   .then(() => {
-    document.getElementById('out').append("> " + "# Available to install R packages \n");
-    let rcode_str = "rownames(available.packages(repos = 'https://repo.r-wasm.org/'))\n";
-    document.getElementById('out').append("> " + rcode_str);
-    webRConsole.stdin(rcode_str);
+    let rcode_array = ["# Available to install R packages \n", "# rownames(available.packages(repos = 'https://repo.r-wasm.org/'))\n", "options(device=webr::canvas(250, 250))\n", "webr::install('ggplot2', quiet = TRUE)\n", "ggplot2::ggplot(mtcars, ggplot2::aes(mpg, wt)) + ggplot2::geom_point()\n"];
+
+    rcode_array.forEach(element => {
+     webRConsole.stdin(element);
+     document.getElementById('out').append("> " + element);
+    });
+
   });
 
+  /* Write to the webR console using the ``stdin()`` method */
   let input = document.getElementById('input');
   globalThis.sendInput = () => {
     webRConsole.stdin(input.value);
-    document.getElementById('out').append(
-      document.getElementById('prompt').innerText + ' ' + input.value + '\n'
-    );
+    document.getElementById('out').append("> " + input.value + '\n');
     input.value = "";
   }
+  
+  /* Send input on Enter key */
   input.addEventListener(
     "keydown",
     (evt) => {if(evt.keyCode === 13) globalThis.sendInput()}
@@ -80,20 +75,16 @@ The available R packages can be get with the `rownames(available.packages(repos 
 
 
 <script>
-  var coll = document.getElementsByClassName("collapsible-item");
-  var i;
-
-  for (i = 0; i < coll.length; i++) {
-    coll[i].addEventListener("click", function() {
-      this.classList.toggle("active-item");
-      var content = this.nextElementSibling;
-      if (content.style.display === "block") {
-        content.style.display = "none";
-      } else {
-        content.style.display = "block";
-      }
-    });
-  }
+  let coll = document.getElementsByClassName("collapsible-item");
+  coll[0].addEventListener("click", function() {
+    this.classList.toggle("active-item");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
 </script>
 ```
 
@@ -120,9 +111,7 @@ I spent some time adding support for presenting a plot output. This part was cha
 When using the GitHub pages with ServiceWorker, one of two possible communication channels must be utilized. This means that two service worker scripts, `webr-serviceworker.js` and `webr-worker.js`, must be hosted on the same origin as the page loading WebR. It's important to remember to add these two files to the page resources, which in my case, is done in the `_quarto.yaml`.
 
 ```html
-// html
-
-<div style="border: solid #333 1px; padding: 5px; width: 1100px;">
+<div style="border: solid #333 1px; padding: 5px; width: 100%;">
   <pre id="loading"><code>Loading webR, please wait...</code></pre>
   <pre id="container" style="max-height: 600px"><code id="out"></code></pre>
   <div class="input-group mb-3">
@@ -131,79 +120,68 @@ When using the GitHub pages with ServiceWorker, one of two possible communicatio
     <button type="button" class="btn btn-secondary" onclick="globalThis.sendInput()" id="run">Run</button>
   </div>
 </div>
-<div id="container" style="border: solid #333 1px; padding: 5px; width: 1100px;">
+<div id="container" style="border: solid #333 1px; padding: 5px; width: 100%;">
   <button type="button" class="collapsible-item">Click to Show/Hide the Last Plot</button>
-  <div class="content-item">
-    <canvas id="myCanvas" width="1008px" height="1008px"></canvas>
+  <div class="content-item" style="display:block;">
+    <canvas id="plot-canvas" width="500" height="500"></canvas>
   </div>
 </div>
 
-// webR js code
 
 <script type="module">
-  import { Console } from 'https://webr.r-wasm.org/v0.1.1/webr.mjs';
+  import { Console } from 'https://webr.r-wasm.org/latest/webr.mjs';
+
+  var canvas = document.getElementById("plot-canvas")
+  var ctx = canvas.getContext('2d');
+
   const webRConsole = new Console({
-    stdout: line => {
-      document.getElementById('out').append(line + '\n');
-    },
+    stdout: line => document.getElementById('out').append(line + '\n'),
     stderr: line => document.getElementById('out').append(line + '\n'),
-    prompt: p => {
-      const pre = document.getElementById('container');
-      pre.scrollTop = pre.scrollHeight; 
-      document.getElementById('prompt').innerText = p;
-    },
-    canvasExec: line => {
-      let canvas = document.getElementById("myCanvas");
-      eval(`canvas.getContext('2d').${line}`);
-    }
-  }, {channelType: 0, REnv: {
-        R_HOME: '/usr/lib/R',
-        R_ENABLE_JIT: '0',
-        R_DEFAULT_DEVICE: 'canvas',
-      }});
-  
+    prompt: p => document.getElementById('out').append(p),
+    canvasImage: ci => ctx.drawImage(ci, 0, 0),
+    canvasNewPage: () => ctx.reset(),
+  });
   webRConsole.run();
-  
+    
   webRConsole.webR.init()
   .then(() => document.getElementById('loading').remove())
   .then(() => {
-    document.getElementById('out').append("> " + "# Available to install R packages \n");
-    let rcode_str = "rownames(available.packages(repos = 'https://repo.r-wasm.org/'))\n";
-    document.getElementById('out').append("> " + rcode_str);
-    webRConsole.stdin(rcode_str);
+    let rcode_array = ["# Available to install R packages \n", "# rownames(available.packages(repos = 'https://repo.r-wasm.org/'))\n", "options(device=webr::canvas(250, 250))\n", "webr::install('ggplot2', quiet = TRUE)\n", "ggplot2::ggplot(mtcars, ggplot2::aes(mpg, wt)) + ggplot2::geom_point()\n"];
+
+    rcode_array.forEach(element => {
+     document.getElementById('out').append("> " + element);
+     webRConsole.stdin(element);
+    });
+
   });
 
+  /* Write to the webR console using the ``stdin()`` method */
   let input = document.getElementById('input');
   globalThis.sendInput = () => {
     webRConsole.stdin(input.value);
-    document.getElementById('out').append(
-      document.getElementById('prompt').innerText + ' ' + input.value + '\n'
-    );
+    document.getElementById('out').append(input.value + '\n');
     input.value = "";
   }
+  
+  /* Send input on Enter key */
   input.addEventListener(
     "keydown",
     (evt) => {if(evt.keyCode === 13) globalThis.sendInput()}
   );
 </script>
 
-// optional - collapsible js code
 
 <script>
   var coll = document.getElementsByClassName("collapsible-item");
-  var i;
-
-  for (i = 0; i < coll.length; i++) {
-    coll[i].addEventListener("click", function() {
-      this.classList.toggle("active-item");
-      var content = this.nextElementSibling;
-      if (content.style.display === "block") {
-        content.style.display = "none";
-      } else {
-        content.style.display = "block";
-      }
-    });
-  }
+  coll[0].addEventListener("click", function() {
+    this.classList.toggle("active-item");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
 </script>
 ```
 
