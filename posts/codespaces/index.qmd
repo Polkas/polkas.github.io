@@ -6,7 +6,8 @@ categories: [programming]
 image: main.png
 ---
 
-TL;DR GitHub Codespaces is a cloud-based development environment that simplifies and enhances the software development workflow. By providing fully-configured, accessible-anywhere development environments, it streamlines project setup, fosters collaboration, and ensures consistency across teams. Key features include the `.devcontainer` directory for environment configuration and the optional use of Dockerfiles for custom environment creation. Whether using existing Docker images or customizing environments with Dockerfiles, Codespaces supports developers with tools for efficiency, collaboration, and reproducibility. This post explores Codespaces' functionalities, including streamlined workflow, collaboration enhancement, and the `.devcontainer` directory's role, with examples for Python and R setups.
+TL;DR GitHub Codespaces is a cloud-based development environment that simplifies and enhances the software development workflow. 
+By providing fully-configured, accessible-anywhere development environments, it streamlines project setup, fosters collaboration, and ensures consistency across teams. 
 
 [![](main.png)](https://docs.github.com/en/codespaces/overview)
 
@@ -51,5 +52,5 @@ GitHub Codespaces is revolutionizing the way developers and teams work on softwa
 
 #### References
 
-- https://docs.github.com/en/codespaces/overview
-- https://github.com/features/codespaces
+- [codespaces overview](https://docs.github.com/en/codespaces/overview)
+- [codespaces features](https://github.com/features/codespaces)

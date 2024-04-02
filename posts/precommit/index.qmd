@@ -1,12 +1,13 @@
 ---
 title: 'Pre-commit: A framework for managing and maintaining multi-language pre-commit hooks'
 author: "Maciej Nasinski"
-date: "2024-04-03"
+date: "2024-04-01"
 categories: [programming]
 image: main.png
 ---
 
-TL;DR Pre-commit hooks are an essential tool for maintaining high code quality in software development, especially for R and Python projects. These hooks automatically run checks before each commit, ensuring code standards are met and common issues are caught early. This blog post explores the benefits of using pre-commit hooks, how to set them up for R and Python projects, and the difference they can make in streamlining development workflows and improving code quality.
+TL;DR Pre-commit hooks are an essential tool for maintaining high code quality in software development, especially for R and Python projects. 
+These hooks automatically run checks before each commit, ensuring code standards are met and common issues are caught early. 
 
 [![](main.png)](https://pre-commit.com/)
 
@@ -78,4 +79,4 @@ Pre-commit hooks are a crucial component of modern software development, offerin
 
 ### References 
 
-- https://pre-commit.com/
+- [pre-commit website](https://pre-commit.com/)

@@ -6,8 +6,7 @@ categories: [programming]
 image: main.png
 ---
 
-TL;DR The GitHub Student Pack offers students free access to a suite of powerful development tools, including Codespaces, GitHub Copilot, GitLens Pro, and GitKraken. 
-Designed to enhance learning and streamline project development, this pack is a game-changer for students seeking real-world coding experience. 
+TL;DR The GitHub Student Pack offers students free access to a suite of powerful development tools, including Codespaces, GitHub Copilot, GitLens Pro GitKraken and much more. 
 The GitHub Teacher Pack similarly empowers educators with resources to enrich IT education. 
 Both packs are accessible at no cost, providing invaluable resources that would normally cost you hundreds of dollars.
 
@@ -15,7 +14,8 @@ Both packs are accessible at no cost, providing invaluable resources that would 
 
 ### Unlock Your Potential with GitHub's Free Student and Teacher Packs
 
-In the rapidly evolving IT landscape, the GitHub Student and Teacher Packs stand out as essential resources for those looking to advance their knowledge and skills. These packs offer free access to an array of tools designed to facilitate learning, project development, and collaboration. Below, we focus on the GitHub Student Pack, highlighting its benefits and how it can significantly impact IT education.
+In the rapidly evolving IT landscape, the GitHub Student and Teacher Packs stand out as essential resources for those looking to advance their knowledge and skills.
+ These packs offer free access to an array of tools designed to facilitate learning, project development, and collaboration. 
 
 #### The GitHub Student Pack: Your Toolkit for Success
 
@@ -36,7 +36,7 @@ Students over 13 enrolled in a degree or diploma course can apply for the Studen
 
 #### Empowering Educators with the GitHub Teacher Pack
 
-Though our primary focus is the Student Pack, the GitHub Teacher Pack deserves mention for its role in enhancing IT education through similar tools and resources aimed at educators.
+The GitHub Teacher Pack deserves mention for its role in enhancing IT education through similar tools and resources aimed at educators.
 
 #### Why Every Student Needs the GitHub Student Pack
 
@@ -46,9 +46,10 @@ My personal experience with Codespaces, GitHub Copilot, GitLens Pro, and GitKrak
 
 #### Conclusion
 
-The GitHub Student and Teacher Packs are invaluable resources, fostering the next generation of technology professionals by providing free access to essential development tools. If you're in the IT field, leveraging these packs can greatly accelerate your learning and career progress.
+The GitHub Student and Teacher Packs are invaluable resources, fostering the next generation of technology professionals by providing free access to essential development tools. 
+If you're in the IT field, leveraging these packs can greatly accelerate your learning and career progress.
 
 #### References
 
-- https://education.github.com/pack
-- https://education.github.com/teachers
+- [GitHub Student Developer Pack](https://education.github.com/pack)
+- [GitHub Teacher Developer Pack](https://education.github.com/teachers)
