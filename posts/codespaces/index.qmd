@@ -12,7 +12,7 @@ The Free and Pro GitHub plans for personal accounts include free use of GitHub C
 You can run a codespace with the Code tab in your repository.
 Adding a `.devcontainer` directory with the `devcontainer.json` file allows you to customize the codespace environment and optionally add `Dockerfile` for an even more demanding setup.
 
-{{< video codespace.mp4 >}}
+![short codespaces example](codespace.mp4) 
 
 Examples:
 
