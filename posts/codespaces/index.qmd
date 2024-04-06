@@ -7,9 +7,17 @@ image: main.png
 ---
 
 TL;DR GitHub Codespaces is a cloud-based development environment that simplifies and enhances the software development workflow. 
-By providing fully-configured, accessible-anywhere development environments, it streamlines project setup, fosters collaboration, and ensures consistency across teams. 
+GitHub Codespaces provides fully configured, accessible-anywhere development environments, streamlining project setup, fostering collaboration, and ensuring consistency across teams.
+The Free and Pro GitHub plans for personal accounts include free use of GitHub Codespaces up to a fixed amount of usage every month.
+You can run a codespace with the Code tab in your repository.
+Adding a `.devcontainer` directory with the `devcontainer.json` file allows you to customize the codespace environment and optionally add `Dockerfile` for an even more demanding setup.
 
 [![](main.png)](https://docs.github.com/en/codespaces/overview)
+
+Examples:
+
+[Simple Codespace for R](https://github.com/polkas/r_codespace)
+[Simple Codespace for Python](https://github.com/Polkas/python_codespace)
 
 ### Unlocking Development Efficiency with GitHub Codespaces
 
@@ -27,24 +35,27 @@ Codespaces accelerates the development process from the get-go. Developers no lo
 
 One of the standout features of Codespaces is its ability to enhance collaboration. Since the environment is cloud-based and accessible from anywhere, team members can work together in real-time, regardless of their physical location. This accessibility is crucial for teams spread across different geographies, making it easier to collaborate, review code, and share knowledge seamlessly.
 
+### Run the codespace
+
+The Free and Pro GitHub plans for personal accounts include free use of GitHub Codespaces up to a fixed amount of usage every month.
+You can quickly run a new or already existing codespace with the Code tab in your repositiory.
+If you click the elipsis (...) you will find out more options.
+
+![codespace button](code_tab.png)
+
 #### `.devcontainer` Directory: A Pillar of Consistency
 
-At the heart of Codespaces' ability to provide consistent development environments is the `.devcontainer` directory. This directory contains a `devcontainer.json` file, which specifies the environment's configuration, and optionally, a Dockerfile for custom environment setups. Whether you're using an existing Docker image or creating a custom one, this setup ensures that every developer working on the project has an identical development environment, eliminating the "it works on my machine" syndrome.
-
-##### Using Existing Docker Images
-
-For projects with standard requirements, using an existing Docker image specified in the `devcontainer.json` file is often sufficient. This method is straightforward, requiring no additional configuration beyond what's specified in the JSON file.
-
-##### Customizing Environments with Dockerfiles
-
-For projects with specific or unique requirements, a Dockerfile can be included in the `.devcontainer` directory to create a custom Docker image. This approach offers precise control over the development environment, ensuring that every tool, library, and extension needed for the project is included.
+At the heart of Codespaces' ability to provide consistent development environments is the `.devcontainer` directory. This directory contains at least `devcontainer.json` file, which specifies the environment's configuration, and optionally, a Dockerfile for custom environment setups. Whether you're using an existing Docker image or creating a custom one, this setup ensures that every developer working on the project has an identical development environment, eliminating the "it works on my machine" syndrome.
 
 #### Real-world Examples: Python and R Setups
 
 To illustrate the versatility of Codespaces, let's look at examples of setting up environments for Python and R projects.
 
-- **Python Setup**: A `devcontainer.json` for a Python project might specify a Python Docker image, install necessary packages via a `requirements.txt` file, and include essential Python development extensions.
-- **R Setup**: Similarly, an R project could use a `devcontainer.json` to define an R base image, install required R packages, and set up an environment tailored for R development.
+- **Python Setup**: A `devcontainer.json` for a Python project might specify a Python Docker image, install necessary packages via a `requirements.txt` file, and include essential Python development extensions. 
+[Simple Codespace for Python](https://github.com/Polkas/python_codespace)
+- **R Setup**: Similarly, an R project could use a `devcontainer.json` to define an R base image, install required R packages, and set up an environment tailored for R development. 
+[Simple Codespace for R](https://github.com/polkas/r_codespace) and [More complex Codespace for R](https://github.com/jakubnowicki/r-codespaces/tree/main/.devcontainer)
+
 
 #### Conclusion
 
@@ -54,3 +65,5 @@ GitHub Codespaces is revolutionizing the way developers and teams work on softwa
 
 - [codespaces overview](https://docs.github.com/en/codespaces/overview)
 - [codespaces features](https://github.com/features/codespaces)
+- [simple Codespace for R](https://github.com/polkas/r_codespace)
+- [simple Codespace for Python](https://github.com/Polkas/python_codespace)
