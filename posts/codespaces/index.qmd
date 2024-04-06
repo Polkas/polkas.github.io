@@ -7,7 +7,7 @@ image: main.png
 ---
 
 TL;DR GitHub Codespaces is a cloud-based development environment that simplifies and enhances the software development workflow. 
-GitHub Codespaces provides fully configured, accessible-anywhere development environments, streamlining project setup, fostering collaboration, and ensuring consistency across teams.
+GitHub Codespaces provides fully configured, accessible-anywhere development environments, streamlining project setup, fostering collaboration, and ensuring consistency across teams. The default interface is built around VS Code.
 The Free and Pro GitHub plans for personal accounts include free use of GitHub Codespaces up to a fixed amount of usage every month.
 You can run a codespace with the Code tab in your repository.
 Adding a `.devcontainer` directory with the `devcontainer.json` file allows you to customize the codespace environment and optionally add `Dockerfile` for an even more demanding setup.
@@ -16,7 +16,7 @@ Adding a `.devcontainer` directory with the `devcontainer.json` file allows you 
 
 Examples:
 
-[Simple Codespace for R](https://github.com/polkas/r_codespace)
+[Simple Codespace for R](https://github.com/polkas/r_codespace)  
 [Simple Codespace for Python](https://github.com/Polkas/python_codespace)
 
 ### Unlocking Development Efficiency with GitHub Codespaces
