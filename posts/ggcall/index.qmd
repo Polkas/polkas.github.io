@@ -4,7 +4,7 @@ format: html
 engine: knitr
 ---
 
-TL;DR Two functions in ggplot2 are overwritten (ggplot and +) to achieve code transparency and reproducibility when ggplot2 is used inside a function. The main objective with `ggcall` is to market this innovative solution and propose its integration into the official ggplot2 package. It is believed that merging ggcall-like into ggplot2 can significantly enhance its functionality and accessibility, benefiting the entire R community. Powered by metaprogramming.
+TL;DR Two functions in ggplot2 are overwritten (ggplot and +) to achieve code transparency and reproducibility when ggplot2 is used inside a function. It is believed that merging ggcall-like into ggplot2 can significantly enhance its functionality and accessibility, benefiting the entire R community. Powered by metaprogramming.
 
 ### Overview of ggcall
 
