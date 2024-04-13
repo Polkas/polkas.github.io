@@ -1,0 +1,108 @@
+---
+title: "ggcall: Transparent R Packages with ggplot2"
+format: html
+engine: knitr
+---
+
+TL;DR Two functions in ggplot2 are overwritten (ggplot and +) to achieve code transparency and reproducibility when ggplot2 is used inside a function. The main objective with `ggcall` is to market this innovative solution and propose its integration into the official ggplot2 package. It is believed that merging ggcall-like into ggplot2 can significantly enhance its functionality and accessibility, benefiting the entire R community.
+
+### Overview of ggcall
+
+`ggcall` enhances `ggplot2` by allowing developers to retrieve the complete code used to generate a `ggplot` object. This is particularly invaluable when the original code is buried within other package internals or when dealing with multi-layered, complex plotting logic. The ability to access and understand the underlying `ggplot2` code not only aids in debugging and learning but also ensures that visualizations are transparent and reproducible across various use cases.
+
+[![](main.png)](https://github.com/Polkas/ggcall)
+
+### Practical Usage
+
+Here’s how simple it is to start with `ggcall`:
+
+```r
+library(ggcall)
+# Example usage within your R package
+gg_plot <- your_function_that_creates_ggplot()
+plot_code <- ggcall(gg_plot)
+plot_code
+```
+
+This functionality makes it a breeze for anyone developing or debugging complex visualizations within their packages.
+
+### Examples
+
+#### Example with a dummy function with ggplot2 code
+
+```r
+remotes::install_github("https://github.com/Polkas/ggcall")
+library(ggcall)
+
+# Example: Create a function which combines a few ggplot layers
+# Typically, it will be a function from your R package where you implemented ggcall
+func <- function(data, x, y, bool = TRUE) {
+  # layers have to be added with +
+  gg <- ggplot(data, aes(x=!!as.name(x), y=!!as.name(y))) +
+    geom_point(alpha = 0.4) +
+    facet_grid(~gear)
+    
+  if (bool) {
+    gg <- gg + theme(axis.title.x = element_blank())
+  }
+
+  func_internal <- function(gg) {
+    gg + labs(x = "custom xlab")
+  }
+
+  func_internal(gg)
+}
+
+# Retrieve the plot construction code
+gg_plot <- func(mtcars, "wt", "mpg")
+plot_call <- ggcall(gg_plot)
+plot_call
+# Optionally: Style the code with styler
+styler::style_text(backports:::deparse1(plot_call))
+
+# Optional
+# Access call environment and/or use it to evaluate the call
+plot_call_env <- ggcall_env(plot_call)
+as.list(plot_call_env)
+# Reproduce the plot by evaluating the code
+eval_ggcall(plot_call)
+# Optionally overwrite variables
+eval_ggcall(plot_call, mtcars = mtcars[1:10, ], x = "gear")
+```
+
+#### Example implementation in GGally package
+
+`ggcall` was successfully integrated in popular R packages like GGally. 
+
+These implementations demonstrate `ggcall`’s versatility and its capability to enhance the functionality of existing packages.
+
+check out the inst/ggally.R in [the ggcall repository](https://github.com/Polkas/ggcall) for more details
+
+```r
+remotes::install_github("https://github.com/Polkas/ggally")
+library(GGally)
+data(mtcars)
+gg <- ggcorr(mtcars, method = "everything", label = TRUE)
+gg_code <- ggcall(gg)
+styler::style_text(backports:::deparse1(gg_code))
+# Optional
+# Reproduce the plot by evaluating the code
+eval_ggcall(gg_code)
+```
+
+### Why ggcall matters
+
+For developers who build R packages that include functions generating `ggplot2` plots, maintaining clarity over how each plot is constructed can be challenging. `ggcall` addresses this by enabling:
+- **Code Tracking**: Extends the `+` operator and the `ggplot` function to maintain a history of plot construction.
+- **Accessible History**: Users can effortlessly access a sequence of `ggplot2` calls used to build plots, enhancing understanding and teaching opportunities.
+- **Reproducibility**: Facilitates the easy replication and modification of plots, which is essential for testing and extending visualizations.
+
+### Implementation Insights
+
+Please check out README file for more information.
+
+### Join the ggcall Community
+
+Visit the [GitHub repository](https://github.com/Polkas/ggcall) to download `ggcall`, view detailed documentation, and start making your ggplot2 visualizations more transparent and reproducible today!
+
+Your feedback and contributions are highly appreciated as they help to refine `ggcall` to better serve the R community.
