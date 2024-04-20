@@ -29,8 +29,8 @@ Alongside the pre-commit framework, there's a powerful CI system designed specif
 
 For R projects:  
 - **Install the precommit package from CRAN** using `install.packages("precommit")`. 
-- **Initiate precommit** in your project using `precommit::use_precommit()`.  
-- **Configure your hooks** in the `.pre-commit-config.yaml` file, including hooks like `lintr` or `styler`. The `precommit::use_precommit()` run creates a decent template of `.pre-commit-config.yaml` file.  
+- **Initiate precommit** in your project using `precommit::use_precommit()`. For example the run creates a decent template of `.pre-commit-config.yaml` file.  
+- **Configure your hooks** in the `.pre-commit-config.yaml` file, including hooks like `lintr` or `styler`.  
 - **Install the hooks** with `pre-commit install`.  
 - **Run hooks manually** (optional): While pre-commit hooks automatically run on each commit, you can manually trigger them using bash `pre-commit run --all-files` . This can be done anytime to ensure all files are checked, though it's usually not required since hooks will automatically activate with commits.  
 
