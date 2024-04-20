@@ -28,34 +28,19 @@ Alongside the pre-commit framework, there's a powerful CI system designed specif
 #### Setting Up Pre-commit Hooks for R
 
 For R projects:  
-- **Install the precommit package from CRAN**:
-   ```R
-   install.packages("precommit")
-   ```
-- **Initiate precommit** in your project using `precommit::use_precommit()`.
-- **Configure your hooks** in the `.pre-commit-config.yaml` file, including hooks like `lintr` or `styler`.
-- **Install the hooks** with `pre-commit install`.
-- **Run hooks manually** (optional): While pre-commit hooks automatically run on each commit, you can manually trigger them using:
-   ```bash
-   pre-commit run --all-files
-   ```
-   This can be done anytime to ensure all files are checked, though it's usually not required since hooks will automatically activate with commits.
+- **Install the precommit package from CRAN** using `install.packages("precommit")`. 
+- **Initiate precommit** in your project using `precommit::use_precommit()`.  
+- **Configure your hooks** in the `.pre-commit-config.yaml` file, including hooks like `lintr` or `styler`.  
+- **Install the hooks** with `pre-commit install`.  
+- **Run hooks manually** (optional): While pre-commit hooks automatically run on each commit, you can manually trigger them using bash `pre-commit run --all-files` . This can be done anytime to ensure all files are checked, though it's usually not required since hooks will automatically activate with commits.  
 
 #### Setting Up Pre-commit Hooks for Python
 
 To set up pre-commit hooks in a Python project, you'll need to:  
-- **Install Pre-commit** using pip:
-   ```bash
-   pip install pre-commit
-   ```
-- **Configure your hooks** in a `.pre-commit-config.yaml` file. Please check out [an example](https://github.com/franneck94/PythonProjectTemplate/blob/master/.pre-commit-config.yaml).
-- **Install the hooks** with `pre-commit install`.
-- **Run hooks manually** (optional): While pre-commit hooks automatically run on each commit, you can manually trigger them using:
-   ```bash
-   pre-commit run --all-files
-   ```
-   This command is useful for checking all files, especially before a major commit or merge, although it's typically not necessary as the hooks trigger automatically.
-
+- **Install Pre-commit** using bash `pip install pre-commit`. 
+- **Configure your hooks** in a `.pre-commit-config.yaml` file. Please check out [an example](https://github.com/franneck94/PythonProjectTemplate/blob/master/.pre-commit-config.yaml).  
+- **Install the hooks** with `pre-commit install`.  
+- **Run hooks manually** (optional): While pre-commit hooks automatically run on each commit, you can manually trigger them using bash `pre-commit run --all-files`. This command is useful for checking all files, especially before a major commit or merge, although it's typically not necessary as the hooks trigger automatically.  
 
 #### The Impact of Pre-commit Hooks
 
