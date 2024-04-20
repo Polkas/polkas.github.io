@@ -7,27 +7,48 @@ image: main.png
 ---
 
 TL;DR Pre-commit hooks are an essential tool for maintaining high code quality in software development, especially for R and Python projects. 
-These hooks automatically run checks before each commit, ensuring code standards are met and common issues are caught early. 
+These hooks automatically run checks before each git commit, ensuring code standards are met and common issues are caught early. 
 
 [![](main.png)](https://pre-commit.com/)
 
+[Visit Pre-commit.com](https://pre-commit.com/)
+
 ### Elevating Code Quality with Pre-commit Hooks in R and Python Projects
 
-In the realm of software development, maintaining code quality is paramount. Pre-commit hooks offer a powerful solution to this challenge, especially for dynamic languages like R and Python. These automated checks run tests and validations before each commit, ensuring that only high-quality code makes it into your project repositories. Let's delve into how pre-commit hooks can transform your R and Python projects, making your development process more efficient and your codebase more robust.
+In the realm of software development, maintaining code quality is paramount. Pre-commit hooks provide a robust solution for this, especially suited for dynamic languages like R and Python. These automated checks, which run tests and validations before each commit, ensure that only high-quality code is added to your project repositories. This blog delves into how pre-commit hooks can transform your development process, making it more efficient and your codebase sturdier.
 
 #### The Power of Pre-commit Hooks
 
-Pre-commit hooks are scripts that automatically run specific tasks (like code formatting, linting, and security checks) before a commit is finalized in version control systems like Git. By catching issues early in the development cycle, these hooks save time and effort that would otherwise be spent on manual reviews and corrections. They enforce a consistent code style, enhance security, and improve overall code quality.
+Pre-commit hooks are scripts that automatically run tasks such as code formatting, linting, and security checks before a commit is finalized in Git. By identifying issues early in the development cycle, these hooks save time that would otherwise be spent on manual reviews and corrections. They enforce consistent code style, enhance security, and elevate overall code quality.
+
+#### Introducing Pre-commit.ci - GitHub
+
+Alongside the pre-commit framework, there's a powerful CI system designed specifically for these hooks: **pre-commit.ci**. This tool automatically runs all your pre-commit hooks on every GitHub pull request, which not only speeds up your checks but also ensures that errors are caught promptly before merging. Importantly, pre-commit.ci is always free for open-source repositories, providing essential support to the open-source community.
+
+#### Setting Up Pre-commit Hooks for R
+
+For R projects:
+1. **Install the precommit package from CRAN**:
+   ```R
+   install.packages("precommit")
+   ```
+2. **Initiate precommit** in your project using `precommit::use_precommit()`.
+3. **Configure your hooks** in the `.pre-commit-config.yaml` file, including hooks like `lintr` or `styler`.
+4. **Install the hooks** with `pre-commit install`.
+5. **Run hooks manually** (optional): While pre-commit hooks automatically run on each commit, you can manually trigger them using:
+   ```bash
+   pre-commit run --all-files
+   ```
+   This can be done anytime to ensure all files are checked, though it's usually not required since hooks will automatically activate with commits.
 
 #### Setting Up Pre-commit Hooks for Python
 
-Python, with its wide range of applications from web development to data science, can greatly benefit from the discipline pre-commit hooks introduce. To set up pre-commit hooks for a Python project, follow these steps:
-
-1. **Install Pre-commit**: First, install the pre-commit package using pip:
-   ```
+To set up pre-commit hooks in a Python project, you'll need to:
+1. **Install Pre-commit** using pip:
+   ```bash
    pip install pre-commit
    ```
-2. **Configure Pre-commit Hooks**: Create a `.pre-commit-config.yaml` file in your project's root directory. Specify the hooks you want to include. For Python projects, you might include hooks for code formatting with Black, linting with flake8, and security checks with Bandit.
+2. **Configure your hooks** in a `.pre-commit-config.yaml` file. Here’s an example configuration:
    ```yaml
    repos:
    -   repo: https://github.com/pre-commit/pre-commit-hooks
@@ -45,38 +66,22 @@ Python, with its wide range of applications from web development to data science
        hooks:
        -   id: flake8
    ```
-3. **Install Hooks**: Run `pre-commit install` to set up the hooks in your project. This command installs the hook scripts in your `.git/` directory.
-
-#### Setting Up Pre-commit Hooks for R
-
-R projects, particularly those in data analysis and statistical computing, also stand to gain from the structure provided by pre-commit hooks. Here's how to set them up:
-
-1. **Install the precommit package**: Use the `install.packages` function or the `remotes` package to install `precommit`:
-   ```R
-   if (!requireNamespace("remotes", quietly = TRUE))
-       install.packages("remotes")
-   remotes::install_github("lorenzwalthert/precommit")
+3. **Install the hooks** with `pre-commit install`.
+4. **Run hooks manually** (optional): While pre-commit hooks automatically run on each commit, you can manually trigger them using:
+   ```bash
+   pre-commit run --all-files
    ```
-2. **Initiate precommit in your project**: Run `precommit::use_precommit()` to start using pre-commit in your R project. This step will create a `.pre-commit-config.yaml` file in your project.
-3. **Configure your hooks**: Edit the `.pre-commit-config.yaml` file to include R-specific hooks, such as `lintr` for linting or `styler` for code styling.
-   ```yaml
-   repos:
-   -   repo: https://github.com/lorenzwalthert/precommit
-       rev: v0.1.3
-       hooks:
-       -   id: lintr
-       -   id: styler
-   ```
-4. **Install the pre-commit hook**: Similar to Python, run `pre-commit install` in your project directory to install the R pre-commit hooks.
+   This command is useful for checking all files, especially before a major commit or merge, although it's typically not necessary as the hooks trigger automatically.
+
 
 #### The Impact of Pre-commit Hooks
 
-Implementing pre-commit hooks in R and Python projects streamlines the development workflow by automating code quality checks. This automation not only saves time but also significantly enhances the code's integrity, making it more readable, secure, and maintainable. With pre-commit hooks, teams can focus more on developing features rather than fixing preventable issues, ultimately leading to a more productive and efficient development process.
+Using pre-commit hooks in R and Python projects automates the code quality checks, significantly enhancing the code's integrity, readability, and maintainability. This lets teams focus more on feature development.
 
 ### Conclusion
 
-Pre-commit hooks are a crucial component of modern software development, offering a systematic approach to maintaining code quality. For R and Python projects, these hooks automate essential checks and balances, ensuring that every commit adheres to predefined quality standards. By integrating pre-commit hooks into your development workflow, you're not just improving your codebase—you're
+Pre-commit hooks are indispensable in modern software development. They provide a systematic way to maintain high standards of code quality for R and Python projects, backed by tools like pre-commit.ci that support a seamless, automated workflow.
 
-### References 
+### References
 
-- [pre-commit website](https://pre-commit.com/)
+- [Pre-commit Website](https://pre-commit.com/)

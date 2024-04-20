@@ -1,6 +1,7 @@
 ---
 title: "ggcall: Transparent R Packages with ggplot2"
 format: html
+date: "2024-04-13"
 engine: knitr
 ---
 
