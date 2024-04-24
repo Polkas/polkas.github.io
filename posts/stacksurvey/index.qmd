@@ -33,10 +33,10 @@ With these insights, you can focus on upskilling in the right areas, updating yo
 ### How to Access Stack Overflow Surveys
 
 To delve deeper into the data, access past surveys through the following links:  
-- [Survey 2023](https://survey.stackoverflow.co/2023/). 
-- [Survey 2022](https://survey.stackoverflow.co/2022/). 
-- [Survey 2021](https://survey.stackoverflow.co/2021/). 
-- [Survey 2020](https://survey.stackoverflow.co/2020/). 
+- [Survey 2023](https://survey.stackoverflow.co/2023/).  
+- [Survey 2022](https://survey.stackoverflow.co/2022/).  
+- [Survey 2021](https://survey.stackoverflow.co/2021/).  
+- [Survey 2020](https://survey.stackoverflow.co/2020/).  
 
 Each set of results provides a comprehensive view of the tech landscape for that year, offering a chronological insight into how technologies are evolving.
 
