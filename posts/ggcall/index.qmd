@@ -3,6 +3,7 @@ title: "ggcall: Transparent R Packages with ggplot2"
 format: html
 date: "2024-04-13"
 engine: knitr
+categories: [rprogramming]
 ---
 
 TL;DR Two functions in ggplot2 are overwritten (ggplot and +) to achieve code transparency and reproducibility when ggplot2 is used inside a function. It is believed that merging ggcall-like into ggplot2 can significantly enhance its functionality and accessibility, benefiting the entire R community. Powered by metaprogramming.

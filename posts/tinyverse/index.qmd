@@ -1,0 +1,68 @@
+---
+title: 'Exploring the Tinyverse: A New Standard in R Package Development'
+author: "Maciej Nasinski"
+date: "2024-05-19"
+categories: [rprogramming]
+image: main.png
+---
+
+TL;DR The "tinyverse" represents a modern approach in the R programming community, advocating for the creation of packages with minimal dependencies. 
+This movement addresses the complexity and potential issues introduced by numerous dependencies, promoting stability and ease of maintenance.
+[The famous Dirk Eddelbuettel is one of the advocates of the "tinyverse" movement](https://www.tinyverse.org/).
+
+### What is the Tinyverse?
+
+The tinyverse is not a collection of specific R packages but a standard aimed at reducing dependency-related complications. 
+Packages that adhere to this standard are categorized based on the number of dependencies:
+
+- **Bright Green Badge**: 0 dependencies.
+- **Green Badge**: Fewer than 5 dependencies.
+- **Orange Badge**: Between 5 and 9 dependencies.
+- **Red Badge**: 10 or more dependencies.
+
+### The Importance of Minimal Dependencies
+
+Dependencies in R can introduce several issues:
+
+1. **Compatibility**: Updates in one package can break functionality in others.
+2. **Complexity**: Managing many dependencies can complicate the development and maintenance process.
+3. **Performance**: Excessive dependencies can affect the performance and size of the package.
+
+By minimizing dependencies, developers can ensure their packages are more robust, easier to maintain, and less likely to encounter compatibility issues.
+
+### Tinyverse vs. Tidyverse
+
+While the tidyverse, a collection of packages designed for data science, emphasizes a cohesive and integrated approach, the tinyverse focuses on reducing dependencies. The tinyverse encourages creating packages that are lightweight and have fewer external dependencies, making them easier to maintain and less prone to breaking due to changes in other packages.
+
+### How to Reduce Dependencies
+
+1. **Modularization**: Splitting a large package into smaller, more specialized packages.
+2. **Delayed Loading**: Only loading certain packages when necessary using `requireNamespace`.
+3. **YAGNI Principle**: Avoiding unnecessary features and dependencies.
+
+### Tinyverse in Practice
+
+Packages like `tinytest` are designed to offer functionality similar to more dependency-heavy alternatives like `testthat` but with zero dependencies. This aligns with the tinyverse philosophy by reducing the burden on developers and end-users.
+
+### Linking Tinyverse with Python
+
+The Python ecosystem also benefits from minimal dependencies, as exemplified by the extensive Python Standard Library. 
+Developers are encouraged to utilize the standard library when writing projects or packages to minimize external dependencies. 
+A notable example is the `bottle` package, which has no dependencies other than the [Python Standard Library](https://docs.python.org/3/library/). 
+This approach parallels the tinyverse philosophy by promoting simplicity, stability, and ease of maintenance.
+
+### Conclusion
+
+The tinyverse movement offers a compelling paradigm for R developers, encouraging the creation of efficient, lightweight, and stable packages. By adopting these principles, developers can contribute to a more reliable and maintainable R ecosystem.
+
+### References
+
+More detailed tinyverse articles
+
+- https://polkas.github.io/pacs/articles/tinyverse.html
+
+Please read in the order all of the 3 sources to become a R packages developer guru :=)
+
+- https://r-pkgs.org/
+- https://blog.thatbuthow.com/how-r-searches-and-finds-stuff/
+- https://cran.r-project.org/doc/manuals/r-release/R-exts.html
