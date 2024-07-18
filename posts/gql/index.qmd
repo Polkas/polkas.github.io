@@ -9,7 +9,7 @@ categories: [programming]
 
 TL;DR Graph databases have reached a significant milestone with the publication of the Graph Query Language (GQL) as an ISO standard. 
 This development marks a new era in the standardization and usability of graph databases, providing a unified query language that enhances the way we interact with graph data.
-First database query language to be certified since SQL in 1987, signifying the maturity and omnipresence of graph technology.
+First database query language to be certified since SQL in 1987.
 
 ## The Journey to GQL
 
