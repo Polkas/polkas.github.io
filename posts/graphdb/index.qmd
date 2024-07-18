@@ -17,7 +17,8 @@ This structure comprises three main components:
 - Nodes: These represent entities such as people, places, or objects. Each node can contain properties (key-value pairs) that store information about the entity.
 - Edges: These represent the relationships between nodes. Each edge can also have properties that provide information about the relationship.
 - Properties: These are additional pieces of information associated with nodes and edges, similar to columns in a relational database table.
-- This graph-based structure allows for intuitive and efficient querying of complex relationships, making graph databases ideal for scenarios where data is interconnected.
+
+This graph-based structure allows for intuitive and efficient querying of complex relationships, making graph databases ideal for scenarios where data is interconnected.
 
 ## Types of Graph Databases
 
@@ -60,3 +61,8 @@ Graph databases are used in a variety of applications, including:
 Graph databases are revolutionizing the way we handle interconnected data, providing powerful tools for various industries and applications. 
 By leveraging the strengths of graph structures, they offer efficient and flexible solutions for managing complex relationships. 
 As technology continues to evolve, graph databases are set to play an increasingly important role in data management and analysis.
+
+## References
+
+- https://neo4j.com/developer/graph-database/
+- https://aws.amazon.com/what-is/graph-database/
