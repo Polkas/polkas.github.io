@@ -1,0 +1,50 @@
+---
+title: "Scrum: Just a Framework, Agile: A General Philosophy"
+format: html
+date: "2024-07-18"
+engine: knitr
+categories: [programming]
+---
+
+TL;DR In the world of project management, Agile has become a guiding light for many organizations. Often, there's a misconception that Agile is synonymous with Scrum. However, Scrum is merely one of many frameworks under the vast umbrella of Agile. To truly harness the power of Agile, it's essential to understand its broader philosophy, which is founded on four main principles and further elaborated through twelve guiding principles.
+
+## The Four Main Principles of Agile
+
+[The Agile Manifesto](https://agilemanifesto.org), created in 2001 by seventeen software developers, distilled the essence of Agile into four core values:
+
+1. **Individuals and Interactions Over Processes and Tools:**
+   - The emphasis is on people and their interactions because successful projects rely heavily on effective communication and collaboration.
+
+2. **Working Software Over Comprehensive Documentation:**
+   - While documentation is important, the primary measure of progress is delivering functional software. This principle encourages teams to prioritize tangible outcomes over extensive paperwork.
+
+3. **Customer Collaboration Over Contract Negotiation:**
+   - Agile focuses on building a cooperative relationship with the customer. Continuous collaboration ensures that the final product aligns with customer needs and expectations.
+
+4. **Responding to Change Over Following a Plan:**
+   - Agile embraces change, recognizing that adaptability is crucial in today’s dynamic environment. Rigid adherence to a plan can stifle innovation and responsiveness.
+
+## The Twelve Principles of Agile
+
+Expanding on these core values, the Agile Manifesto also outlines twelve principles that provide more detailed guidance:
+
+[The Twelve Principles](https://agilemanifesto.org/principles.html)
+
+## Why Scrum is Just a Framework
+
+Scrum, one of the most popular Agile frameworks, provides a structured methodology to apply Agile principles. It consists of roles (such as Product Owner, Scrum Master, and Development Team), events (like Sprints, Sprint Reviews, and Retrospectives), and artifacts (such as Product Backlog and Sprint Backlog).
+
+While Scrum offers a practical approach to implementing Agile, it's crucial to remember that it's only one way to apply the Agile philosophy. Other frameworks like Kanban, Lean, and XP (Extreme Programming) also provide valuable methods and tools.
+
+## Embracing Agile Beyond Frameworks
+
+To truly succeed with Agile, organizations and teams must embrace the underlying principles and values rather than rigidly adhering to a specific framework. This involves fostering a culture of collaboration, continuous improvement, and adaptability.
+
+By understanding and internalizing the four main principles and twelve guiding principles of Agile, teams can better navigate the complexities of modern project management and deliver exceptional value to their customers.
+
+In conclusion, while Scrum provides a structured approach to Agile, it's essential to recognize that Agile itself is a broader philosophy that can be implemented in various ways. Embrace the principles of Agile, and let them guide you in selecting and adapting the framework that best fits your team's unique needs and challenges.
+
+## References
+
+- https://agilemanifesto.org
+- https://agilemanifesto.org/principles.html
