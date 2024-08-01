@@ -1,5 +1,5 @@
 ---
-title: "Celebrating a Classic: "How R Searches and Finds Stuff" by Suraj Gupta"
+title: "Celebrating a Classic: \"How R Searches and Finds Stuff\" by Suraj Gupta"
 format: html
 date: "2024-08-01"
 engine: knitr
