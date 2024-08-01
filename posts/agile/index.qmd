@@ -3,7 +3,7 @@ title: "Scrum: Just a Framework, Agile: A General Philosophy"
 format: html
 date: "2024-07-18"
 engine: knitr
-image: IMG_7864.jpeg
+image: main.jpeg
 categories: [programming]
 ---
 

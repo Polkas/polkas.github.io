@@ -3,7 +3,7 @@ title: "Introduction to Graph Databases"
 format: html
 date: "2024-07-18"
 engine: knitr
-image: IMG_7867.png
+image: main.png
 categories: [programming]
 ---
 
