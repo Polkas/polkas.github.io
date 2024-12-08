@@ -1,0 +1,181 @@
+---
+title: 'Conjugate Priors: Harnessing Closed-Form Solutions in Bayesian Inference'  
+author: "Maciej Nasinski"  
+date: "2024-12-08"  
+categories: [statistics]  
+image: main.jpg
+filters:
+  - webr
+---
+
+**TL;DR**: Conjugate priors are special prior distributions in Bayesian inference that, when combined with a given likelihood, yield a posterior in the same family as the prior. This leads to **closed-form solutions** for posterior calculations, making Bayesian updating straightforward and computationally simple. Classic examples include Beta–Binomial, Gamma–Poisson, and Normal–Normal pairs. These closed-form updates offer both computational efficiency and clear mathematical intuition, and remain valuable even in the age of advanced computational tools.
+
+## What Is a Conjugate Prior?
+
+In Bayesian inference, the choice of prior distribution affects how we update our beliefs once data arrive. While today’s methods—like MCMC or variational inference—can handle almost any prior, **conjugate priors** remain special. Conjugate priors lead to posterior distributions of the same parametric form as the prior, resulting in closed-form solutions that are both elegant and easy to compute.
+
+A **conjugate prior** for a given likelihood is a prior distribution that, after observing data, produces a posterior distribution in the same distributional family as the prior. If your model is from an exponential family, conjugate priors often exist that simplify Bayesian updating to mere formula substitutions. For more details, see the [Wikipedia entry on Conjugate Priors](https://en.wikipedia.org/wiki/Conjugate_prior).
+
+## Why Are Conjugates Great?
+
+1. **Closed-Form Posterior:**  
+   With conjugate priors, no numerical approximations are needed to find the posterior. You get direct formulas for the updated parameters.
+
+2. **Computational Efficiency:**  
+   Conjugates were invaluable before powerful computers and remain useful today, especially when you need quick analyses or have limited computational resources.
+
+3. **Analytical Insights:**  
+   Conjugates show exactly how the prior parameters and observed data combine. They give transparent, interpretable formulas for how each new data point shifts the posterior.
+
+4. **Educational Value:**  
+   Conjugate models are perfect for learning Bayesian inference. They let students see Bayesian updating without the distraction of complex computation.
+
+## Example 1: Beta–Binomial Conjugacy
+
+**Scenario:** You observe $X$ successes out of $n$ Bernoulli trials with unknown success probability $p$.
+
+- **Prior:** $p \sim \text{Beta}(\alpha, \beta)$
+- **Likelihood:** $X \mid p \sim \text{Binomial}(n, p)$
+
+**Posterior:**
+$$
+p \mid X \sim \text{Beta}(\alpha + X, \beta + n - X).
+$$
+
+**Numeric Example:**
+
+- Suppose you start with a prior $p \sim \text{Beta}(\alpha=2, \beta=2)$, which is somewhat informative but still flexible.
+- You run $n=10$ trials and observe $X=7$ successes.
+
+Your posterior is:
+$$
+p \mid X=7 \sim \text{Beta}(2+7, 2+(10-7)) = \text{Beta}(9, 5).
+$$
+
+This gives you a posterior that incorporates your initial beliefs and the observed data seamlessly.
+
+**R Code (with webr):**
+
+```{webr-r}
+#| echo: true
+#| eval: true
+#| message: false
+#| warning: false
+#| browser: true
+
+alpha <- 2
+beta <- 2
+n <- 10
+X <- 7
+
+# Posterior parameters
+alpha_post <- alpha + X
+beta_post <- beta + n - X
+
+# Let's plot the posterior
+curve(dbeta(x, alpha_post, beta_post), from=0, to=1,
+      main = "Posterior Beta(9,5) distribution",
+      xlab = "p", ylab = "Density")
+abline(v=X/n, col="red", lwd=2) # Mark the sample proportion 0.7
+```
+
+## Example 2: Gamma–Poisson Conjugacy
+
+**Scenario:** You count events from a Poisson process with unknown rate $\lambda$.
+
+- **Prior:** $\lambda \sim \text{Gamma}(\alpha, \beta)$
+- **Likelihood:** $X_i \sim \text{Poisson}(\lambda)$
+
+After observing counts $x_1, \ldots, x_n$:
+$$
+\lambda \mid x_1,\ldots,x_n \sim \text{Gamma}\left(\alpha + \sum_{i=1}^n x_i, \beta + n\right).
+$$
+
+**Numeric Example:**
+
+- Suppose $\lambda$ has a prior $\text{Gamma}(\alpha=1, \beta=1)$, a fairly uninformative choice.
+- You observe $n=5$ counts: $x = (2,3,4,1,5)$.
+
+Total counts: $\sum x_i = 2+3+4+1+5 = 15$.
+
+Posterior:
+$$
+\lambda \mid data \sim \text{Gamma}(1+15, 1+5) = \text{Gamma}(16,6).
+$$
+
+This new gamma distribution reflects both your prior (which allowed for a wide range of $\lambda$) and the observed data (averaging 3 events per observation, pushing the rate estimate up).
+
+## Example 3: Normal–Normal Conjugacy
+
+**Scenario:** You have normal data with known variance $\sigma^2$ but unknown mean $\mu$.
+
+- **Prior:** $\mu \sim N(m_0, s_0^2)$
+- **Likelihood:** $X_i \sim N(\mu, \sigma^2)$
+
+After observing $x_1,\ldots,x_n$:
+$$
+\mu \mid x_1,\ldots,x_n \sim N(m_n, s_n^2),
+$$
+where:
+$$
+\frac{1}{s_n^2} = \frac{1}{s_0^2} + \frac{n}{\sigma^2}, \quad
+m_n = \frac{\frac{m_0}{s_0^2} + \frac{n\overline{x}}{\sigma^2}}{\frac{1}{s_0^2} + \frac{n}{\sigma^2}}.
+$$
+
+**Numeric Example:**
+
+- Prior: $\mu \sim N(m_0=0, s_0^2=1)$
+- Observed data: $x = (1.2, 0.8, 1.0, 1.5)$, so $n=4$ and $\overline{x}=1.125$.
+- Known variance: $\sigma^2 = 0.5^2 = 0.25$.
+
+Compute posterior parameters:
+$$
+\frac{1}{s_n^2} = \frac{1}{1} + \frac{4}{0.25} = 1 + 16 = 17.
+$$
+Thus, $s_n^2 = 1/17 \approx 0.0588.$
+
+Posterior mean:
+$$
+m_n = \frac{\frac{0}{1} + \frac{4 \cdot 1.125}{0.25}}{1 + \frac{4}{0.25}} = \frac{0 + \frac{4 \cdot 1.125}{0.25}}{17} = \frac{18}{17} \approx 1.0588.
+$$
+
+Your posterior for $\mu$ is approximately $N(1.0588, 0.0588)$, reflecting that the data (with mean around 1.125) pulled your initially neutral prior (mean 0) toward the sample mean, reducing uncertainty.
+
+**R Code (with webr):**
+
+```{webr-r}
+#| echo: true
+#| eval: true
+#| message: false
+#| warning: false
+#| browser: true
+
+m0 <- 0
+s0_sq <- 1
+sigma_sq <- 0.25
+x <- c(1.2, 0.8, 1.0, 1.5)
+n <- length(x)
+xbar <- mean(x)
+
+inv_s_n_sq <- 1/s0_sq + n/sigma_sq
+s_n_sq <- 1/inv_s_n_sq
+m_n <- (m0/s0_sq + n*xbar/sigma_sq)/inv_s_n_sq
+
+cat("Posterior Mean:", m_n, "\nPosterior Variance:", s_n_sq, "\n")
+
+# Density plot of posterior
+curve(dnorm(x, mean = m_n, sd = sqrt(s_n_sq)), 
+      from=m_n-3*sqrt(s_n_sq), to=m_n+3*sqrt(s_n_sq),
+      main="Posterior for mu (Normal-Normal)",
+      xlab="mu", ylab="Density")
+abline(v=xbar, col="red", lwd=2) # observed sample mean
+abline(v=m0, col="blue", lwd=2, lty=2) # prior mean
+```
+
+## Beyond the Classics
+
+The above three examples Beta–Binomial, Gamma–Poisson, and Normal–Normal are the canonical illustrations of conjugate priors. Many other conjugate relationships exist, especially within the exponential family of distributions. Though not all models admit conjugates, they’re invaluable whenever they apply.
+
+## Conclusion
+
+Conjugate priors offer a clean, closed-form pathway to Bayesian updating. They blend prior and data into a neat posterior distribution without needing numerical methods. For classic scenarios, this results in quick, exact inference and deep insights into how parameters shift after seeing new data. Even as Bayesian analysis grows more complex, these conjugate pairs remain foundational examples of Bayesian elegance and efficiency.

@@ -1,0 +1,161 @@
+---
+title: 'Bernstein–von Mises: Bridging Bayesian and Frequentist Worlds'
+author: "Maciej Nasinski"
+date: "2024-12-08"
+categories: [statistics]
+image: main.jpeg
+---
+
+TL;DR  
+**[Bernstein–von Mises Theorem](https://en.wikipedia.org/wiki/Bernstein%E2%80%93von_Mises_theorem):** Under certain regularity conditions and large sample sizes, the Bayesian posterior for a parameter converges to a normal distribution centered at the Maximum Likelihood Estimator (MLE) with variance given by the inverse Fisher information.  
+**Bayesian ≈ Frequentist As $n \to \infty$:** As the sample size grows, Bayesian credible sets behave like frequentist confidence intervals, and posterior means (or modes) line up with the MLE.  
+**Same Likelihood, Different Perspectives:** Although Bayesian and frequentist methods start from different philosophies, if they assume the same model (thus the same likelihood), their large-sample results converge to the same distributional conclusions.  
+**Conditions on the Prior:** The theorem requires a prior that is positive and continuous at the true parameter. It doesn’t need to be "uninformative,” just non-degenerate around the truth.
+
+## Bernstein–von Mises: Bridging Bayesian and Frequentist Worlds
+
+The **Bernstein–von Mises theorem** is a foundational result in asymptotic statistics, showing a remarkable convergence between Bayesian posterior distributions and frequentist sampling distributions in large samples. It states that if the model is well-specified and certain regularity conditions hold, the Bayesian posterior distribution for a parameter $\theta$ becomes asymptotically normal, centered at the MLE $\widehat{\theta}_n$ with covariance given by the inverse Fisher information.
+
+**Intuition:**  
+- Frequentists use the MLE and its asymptotic distribution to make interval estimates.  
+- Bayesians start with a prior and update with the likelihood to form a posterior.  
+- As sample size $n \to \infty$, the prior’s influence fades and the posterior concentrates around the true parameter, looking indistinguishable from the normal distribution that frequentists derive.
+
+**What Does This Mean Practically?**  
+In large samples, Bayesian credible intervals at a credibility level $\alpha$ closely approximate frequentist confidence intervals at level $\alpha.$ The posterior mean or mode is essentially the MLE, and the posterior spread matches the frequentist asymptotic variance.
+
+
+## Conditions on the Prior
+
+The theorem does not demand a "flat” or "uninformative” prior. Instead, it requires that the prior assigns positive probability in a neighborhood of the true parameter and is continuous there. Essentially, the prior cannot exclude the truth or be degenerate at a single point. Under such conditions, the data dominate the inference as $n$ grows.
+
+
+## Using the Same Likelihood
+
+To compare Bayesian and frequentist methods, it’s crucial that both are analyzing the same probability model for the data. That means they rely on **the same likelihood function**. If the Bayesian model and the frequentist model have the same parametric form (e.g., normal, Poisson), the Bernstein–von Mises theorem ensures they produce similar asymptotic results.
+
+If the Bayesian and frequentist analysts assume different models or likelihoods, the comparison no longer holds. The theorem’s elegance lies in showing that, given the same underlying statistical model, Bayesian and frequentist conclusions converge as data become available in large quantities.
+
+## What if the Prior is Uninformative?
+
+While the theorem doesn’t require an uninformative (or "flat”) prior, consider what happens when you choose one. An uninformative prior spreads mass broadly over the parameter space, exerting minimal influence on the posterior.
+
+### Even for Smaller Samples
+
+If the prior places effectively negligible weight in any particular direction, the likelihood instantly takes center stage. Without strong prior pull, the posterior distribution immediately begins to resemble what a frequentist would derive from the likelihood alone.
+
+### Rapid Alignment with the MLE
+
+Because the posterior is then mostly shaped by the observed data, the posterior mean or mode quickly aligns with the MLE. The variance of the posterior also matches the inverse Fisher information approximation sooner, not requiring as large a sample size to achieve near-equivalence.
+
+### Practical Implication
+
+While the Bernstein–von Mises theorem is an asymptotic result (officially "kicks in” at large n), a truly uninformative prior can make Bayesian and frequentist results nearly indistinguishable even at moderate sample sizes. In other words, when you start from a very weak prior, the Bayesian updates mimic frequentist inference closely from the start, making the large-sample approximation effectively valid earlier.
+
+Below is a self-contained section that you can integrate into your blog post:
+
+Below is a more accessible version of the example section, preserving the equations but using simpler explanations that a non-technical reader might find more intuitive.
+
+
+## Example: Normal Data with a Normal Prior
+
+Imagine you have a set of measurements $X_1, \ldots, X_n$ that you believe are generated from a normal (bell-shaped) distribution with a known variance $\sigma^2$. Your goal is to estimate the true average value $\mu$.
+
+### Frequentist Approach: Using the MLE
+
+**What is the likelihood?**  
+The likelihood tells you how plausible the observed data are for a given guess of $\mu$. For normal data:
+
+$$
+L(\mu; x_1,\ldots,x_n) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi}\,\sigma}\exp\left(-\frac{(x_i - \mu)^2}{2\sigma^2}\right).
+$$
+
+This formula might look complicated, but it basically measures how well your guess of $\mu$ explains the data $(x_1,\ldots,x_n)$.
+
+**Finding the MLE:**
+
+- If you do a bit of math you find that the choice of $\mu$ that makes the likelihood largest is simply the average of your observations:
+$$
+\widehat{\mu}_n = \overline{x} = \frac{\sum_{i=1}^n x_i}{n}.
+$$
+
+In other words, the best guess (MLE) of the true mean is just the sample mean.
+
+**As the sample size grows:**
+
+- With more data, the MLE $\widehat{\mu}_n$ not only stays as the sample average, but we also know from standard statistical results that $\widehat{\mu}_n$ becomes more precise. In fact, as $n$ gets large, the distribution of $\widehat{\mu}_n$ around the true mean $\mu_0$ looks more and more like a normal distribution with a very small variance $\sigma^2/n$.
+
+This means:  
+- More data = more certainty.  
+- Eventually, the frequentist confidence intervals around $\widehat{\mu}_n$ become very tight.  
+
+### Bayesian Approach: Using a Normal Prior
+
+**What’s a prior?**  
+In Bayesian statistics, you start with a prior belief about $\mu$. A normal prior:
+$$
+\mu \sim N(m_0, s_0^2)
+$$
+means you initially think $\mu$ is around some value $m_0$, but you’re not sure how close it must be. The number $s_0^2$ is how uncertain you are before seeing data. A very large $s_0^2$ means you have almost no initial idea where $\mu$ might lie a very "uninformative” prior.
+
+**Combining Prior and Data: The Posterior**
+
+When you see data $x_1,\ldots,x_n$, you update your belief:
+$$
+\mu \mid x_1,\ldots,x_n \sim N(m_n, s_n^2),
+$$
+where:
+$$
+\frac{1}{s_n^2} = \frac{1}{s_0^2} + \frac{n}{\sigma^2}, \quad\text{and}\quad
+m_n = \frac{\frac{m_0}{s_0^2} + \frac{n\overline{x}}{\sigma^2}}{\frac{1}{s_0^2} + \frac{n}{\sigma^2}}.
+$$
+
+You don’t need to memorize these formulas. Just know that:
+
+- The posterior mean $m_n$ is a compromise between your initial guess $m_0$ and the sample mean $\overline{x}$.
+- The posterior variance $s_n^2$ shows how uncertain you are after seeing the data.
+
+### What Happens with an Uninformative Prior?
+
+If $s_0^2$ (your initial uncertainty) is very large, you’re basically saying "$\mu$ could be anywhere":
+
+- The data dominate your posterior.  
+- The posterior mean $m_n$ ends up being almost exactly the sample mean $\overline{x}$.  
+- The posterior variance $s_n^2$ becomes about $\sigma^2/n$, just like the frequentist result for the MLE.  
+
+This means that if your prior is uninformative, the Bayesian solution and the frequentist solution look nearly identical, even if you don’t have a huge amount of data.
+
+### Connection to Bernstein–von Mises
+
+The Bernstein–von Mises theorem says that as you get more and more data, any reasonable Bayesian method will give results that look like the frequentist MLE solution. But if your prior is already uninformative, you start seeing this similarity right away.
+
+- **Few data but uninformative prior?** Already looks frequentist.  
+- **Lots of data?** Definitely looks frequentist.
+
+In other words, the uninformative prior makes the Bayesian answer line up with the MLE much sooner, often after just a moderate number of observations.
+
+### Bottom Line
+
+This example shows:
+
+- The MLE estimate of $\mu$ is the sample average.   
+- With an uninformative prior, the Bayesian posterior mean and intervals match the frequentist MLE and its confidence intervals, even at smaller sample sizes.  
+- As the sample size grows large, the Bernstein–von Mises theorem guarantees these approaches converge anyway, but the uninformative prior gets you there faster.  
+
+## Relevance and References
+
+This result is not just an academic curiosity. It underpins why, in practice, many Bayesian and frequentist results are similar when the sample size is large. It’s often cited to reassure users that Bayesian inference, with a sufficiently benign prior, yields inference that is "frequentist-valid” in big-data limits.
+
+**Key References:**  
+- Van der Vaart, A. W. (1998). *Asymptotic Statistics.* Cambridge University Press.  
+- Lehmann, E. L. & Casella, G. (1998). *Theory of Point Estimation* (2nd ed.). Springer.  
+- Ghosh, J. K., Delampady, M., & Samanta, T. (2006). *An Introduction to Bayesian Analysis: Theory and Methods.* Springer.  
+- Edwards, A.W.F. (1992). Likelihood. Baltimore: Johns Hopkins University Press.
+- [Wikipedia Bernstein von Mises theorem](https://en.wikipedia.org/wiki/Bernstein%E2%80%93von_Mises_theorem)
+
+These texts detail the conditions, proofs, and implications of the Bernstein–von Mises theorem and provide grounding for understanding the asymptotic equivalence of Bayesian and frequentist inference.
+
+
+## Conclusion
+
+The Bernstein–von Mises theorem shows that, as sample size grows large, Bayesian posterior distributions with mild prior conditions approximate the same normal distributions used in frequentist asymptotic theory. The match occurs only if Bayesian and frequentist approaches share the same likelihood model. This theoretical bridge provides a comforting reassurance: in large samples, "Bayesian credible sets” effectively become "frequentist confidence sets,” harmonizing the two seemingly different statistical philosophies.
