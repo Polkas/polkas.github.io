@@ -3,7 +3,7 @@ title: 'Bernstein–von Mises: Bridging Bayesian and Frequentist Worlds'
 author: "Maciej Nasinski"
 date: "2024-12-08"
 categories: [statistics]
-image: main.jpeg
+image: main.jpg
 ---
 
 TL;DR  

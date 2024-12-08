@@ -1,9 +1,9 @@
 ---
 title: 'Conjugate Priors: Harnessing Closed-Form Solutions in Bayesian Inference'  
 author: "Maciej Nasinski"  
-date: "2024-12-08"  
+date: "2024-12-09"  
 categories: [statistics]  
-image: main.jpg
+image: main.jpeg
 filters:
   - webr
 ---
