@@ -53,8 +53,8 @@ jobs:
           if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
           renv::restore()
           
-      - name: "Install Quarto and render"
-        uses: pommevilla/quarto-render@main
+      - name: Render Quarto Project
+        uses: quarto-dev/quarto-actions/render@v2
         
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
