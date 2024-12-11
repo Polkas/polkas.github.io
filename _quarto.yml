@@ -7,6 +7,7 @@ project:
     
 website:
   title: "Agile Dev"
+  google-analytics: "G-M97VH8JRQ0"
   navbar:
     right:
       - author.qmd
