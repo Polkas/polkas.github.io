@@ -15,6 +15,15 @@ TL;DR: Containers provide reproducible, secure, and portable environments for da
 <a href="#experimenting-in-github-codespaces">
 Access a playground for playing with containers using GitHub codespaces.
 </a>
+<br>
+<br>
+```
+
+
+```{=html}
+<a href="#deploying-rdevdash-app-to-digital-ocean">
+Deploying r shiny rdevdash app to Digital Ocean
+</a>
 ```
 
 ### Motivation
@@ -1565,7 +1574,39 @@ Deploying containers is a multifaceted process that transforms development artif
 
 ### Deploying rdevdash app to Digital Ocean
 
-[My R shiny app deployed with containers in less than 10 minutes](https://rdevdash-app-oygos.ondigitalocean.app/).
+[`rdevdash` shiny app was deployed with containers to Digital Ocean in less than 10 minutes](https://rdevdash-app-oygos.ondigitalocean.app/).  
+[`rdevdash`](https://github.com/Polkas/rdevdash) is R Package Developer Dashboard, a comprehensive tool designed to streamline the process of tracking and managing CRAN packages.
+
+The image for the rdevdash app is available on the docker hub `polas/rdevdash-app`. It is based on such Dockerfile:
+
+```Dockerfile
+FROM rocker/shiny:latest
+
+RUN apt-get update && apt-get install -y \
+    libcurl4-gnutls-dev \
+    libxml2-dev \
+    libssl-dev \
+    libtiff5-dev \
+    libharfbuzz-dev \
+    libfribidi-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN R -e "install.packages('renv')"
+
+WORKDIR DIR
+
+RUN chown -R shiny:shiny DIR
+
+COPY renv.lock DIR
+
+RUN R -e "renv::restore(confirm = FALSE)"
+
+COPY app.R DIR
+
+EXPOSE 3838
+
+CMD R -e "shiny::runApp('.', host = '0.0.0.0', port = 3838)"
+```
 
 Deploying the `rdevdash` app to DigitalOcean was a straightforward and efficient process. By leveraging Docker and DigitalOcean's App Platform, I was able to package and deploy the app with minimal effort. For those looking for a detailed guide on hosting Shiny apps on DigitalOcean, I highly recommend the blog [How to Host Shiny Apps on the DigitalOcean App Platform](https://hosting.analythium.io/how-to-host-shiny-apps-on-the-digitalocean-app-platform/). It provides step-by-step instructions and valuable insights for deploying Shiny apps effectively.
 
