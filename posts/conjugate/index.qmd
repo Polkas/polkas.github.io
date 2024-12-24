@@ -8,7 +8,7 @@ filters:
   - webr
 ---
 
-**TL;DR**: Conjugate priors are special prior distributions in Bayesian inference that, when combined with a given likelihood, yield a posterior in the same family as the prior. This leads to **closed-form solutions** for posterior calculations, making Bayesian updating straightforward and computationally simple. Classic examples include Beta–Binomial, Gamma–Poisson, and Normal–Normal pairs. These closed-form updates offer both computational efficiency and clear mathematical intuition, and remain valuable even in the age of advanced computational tools.
+TL;DR: Conjugate priors are special prior distributions in Bayesian inference that, when combined with a given likelihood, yield a posterior in the same family as the prior. This leads to **closed-form solutions** for posterior calculations, making Bayesian updating straightforward and computationally simple. Classic examples include Beta–Binomial, Gamma–Poisson, and Normal–Normal pairs. These closed-form updates offer both computational efficiency and clear mathematical intuition, and remain valuable even in the age of advanced computational tools.
 
 ## What Is a Conjugate Prior?
 

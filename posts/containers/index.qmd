@@ -1,0 +1,1634 @@
+---
+title: "Containers for Data Scientists"
+author: "Maciej Nasinski"
+date: "2024-12-23"
+categories: [programming]
+image: main.png
+format:
+  html:
+    toc: true
+---
+
+TL;DR: Containers provide reproducible, secure, and portable environments for data scientists and statistical programmers. While tools like renv for R and requirements.txt for Python lock dependencies at the package level, containers go beyond this by bundling programming languages, system libraries, and operating system dependencies into a single, isolated runtime. Tools like Docker and Podman streamline setup, ensuring consistent environments across local machines, cloud servers, and CI/CD pipelines. Features like container layering and caching make builds efficient, while orchestration platforms like Kubernetes scale these environments for production. Containers eliminate the "works on my machine" problem, empowering you to produce reliable, credible, and easily shared data science workflows.
+
+```{=html}
+<a href="#experimenting-in-github-codespaces">
+Access a playground for playing with containers using GitHub codespaces.
+</a>
+```
+
+### Motivation
+
+Containers have become an essential tool for modern development and data science workflows, addressing many common frustrations associated with dependency conflicts, environment setup, and reproducibility. If you've ever struggled with inconsistencies between development and production environments or had to debug a project that mysteriously broke after a package update, containers offer a practical solution. They encapsulate your code, dependencies, and configurations into a portable and consistent runtime environment, ensuring your work runs the same way everywhere. Whether you're a developer deploying applications, a data scientist ensuring reproducibility, or a team onboarding new members, containers simplify and streamline the process.
+
+As data scientists and statistical programmers, we rely on reproducible and transparent workflows. 
+We have all encountered familiar pain points: a project that works perfectly on your machine but fails on a colleague's system or the struggle to maintain multiple versions of R, Python, or system libraries for different projects. These challenges do not just affect convenience; they directly impact the credibility and reliability of our analyses. Containers address these issues by providing isolated, portable, and secure environments that capture every dependency needed to run your project successfully.
+
+#### Key Advantages of Containers
+
+
+```{=html}
+<div class="accordion" id="accordionAdvantages">
+  <!-- Accordion Item 1 -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingOne">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        Reproducibility
+      </button>
+    </div>
+    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionAdvantages">
+      <div class="accordion-body">
+        By bundling all dependencies and settings, containers ensure that results can be consistently replicated across systems.
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 2 -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingTwo">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+        Portability
+      </button>
+    </div>
+    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionAdvantages">
+      <div class="accordion-body">
+        Move your analysis seamlessly between local development, cloud servers, or your organization's infrastructure without compatibility issues.
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 3 -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingThree">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+        Security
+      </button>
+    </div>
+    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionAdvantages">
+      <div class="accordion-body">
+        Containers isolate your software from the host system, providing controlled environments that reduce security risks.
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 4 -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingFour">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+        Efficiency
+      </button>
+    </div>
+    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionAdvantages">
+      <div class="accordion-body">
+        Containers are more resource-efficient than traditional virtual machines. They start quickly and consume fewer resources.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+```
+
+#### Example Use Cases
+
+
+```{=html}
+<div class="accordion" id="accordionUseCases">
+
+  <!-- Accordion Item 1 -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="useCaseOne">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUseCaseOne" aria-expanded="true" aria-controls="collapseUseCaseOne">
+        Speeding Up Onboarding
+      </button>
+    </div>
+    <div id="collapseUseCaseOne" class="accordion-collapse collapse show" aria-labelledby="useCaseOne" data-bs-parent="#accordionUseCases">
+      <div class="accordion-body">
+        Instead of hours spent installing dependencies, new team members can start coding within minutes by using your pre-built container image or Codespace.
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 2 -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="useCaseTwo">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUseCaseTwo" aria-expanded="false" aria-controls="collapseUseCaseTwo">
+        Consistency in CI/CD
+      </button>
+    </div>
+    <div id="collapseUseCaseTwo" class="accordion-collapse collapse" aria-labelledby="useCaseTwo" data-bs-parent="#accordionUseCases">
+      <div class="accordion-body">
+        Integrate containers into continuous integration pipelines so code is tested in the same environment every time, preventing the "works on my machine" problem.
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 3 -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="useCaseThree">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUseCaseThree" aria-expanded="false" aria-controls="collapseUseCaseThree">
+        Migrating a Legacy R Project
+      </button>
+    </div>
+    <div id="collapseUseCaseThree" class="accordion-collapse collapse" aria-labelledby="useCaseThree" data-bs-parent="#accordionUseCases">
+      <div class="accordion-body">
+        Use a Dockerfile and <code>renv.lock</code> to reproduce an old environment, ensuring your previously working code runs seamlessly on modern systems.
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 4 (New) -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="useCaseFour">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUseCaseFour" aria-expanded="false" aria-controls="collapseUseCaseFour">
+        Scalability with Container Orchestrators
+      </button>
+    </div>
+    <div id="collapseUseCaseFour" class="accordion-collapse collapse" aria-labelledby="useCaseFour" data-bs-parent="#accordionUseCases">
+      <div class="accordion-body">
+        Leverage platforms like Kubernetes or Docker Swarm to automatically scale containerized data science apps based on real-time demand or resource usage.
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 5 (New) -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="useCaseFive">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUseCaseFive" aria-expanded="false" aria-controls="collapseUseCaseFive">
+        Portability across Environments
+      </button>
+    </div>
+    <div id="collapseUseCaseFive" class="accordion-collapse collapse" aria-labelledby="useCaseFive" data-bs-parent="#accordionUseCases">
+      <div class="accordion-body">
+        Containers package code and dependencies so you can seamlessly move projects between local machines, on-prem servers, or public cloud providers without reinstallation headaches.
+      </div>
+    </div>
+  </div>
+
+</div>
+```
+
+### What Are Dockerfile, Image and Container
+
+![](./docker.png)
+
+A container is a lightweight, portable runtime environment that encapsulates code, runtimes, tools, libraries, and configurations to ensure that your application or analysis behaves consistently, regardless of where it is deployed. Containers rely on an underlying image, a read-only, immutable template that defines the container's environment, including the operating system, system libraries, dependencies, and application code. To create an image, a developer writes a Dockerfile (or Containerfile), a text file containing step-by-step instructions to build the environment. The Dockerfile specifies the base image, dependencies to install, environment variables, and commands to run when the container starts. Once the Dockerfile is processed, the image is a blueprint for creating **ONE or MANY containers**.
+
+
+```{=html}
+<div class="accordion" id="accordion3elements">
+  <!-- Dockerfile Section -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingDockerfile">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDockerfile" aria-expanded="true" aria-controls="collapseDockerfile">
+        Dockerfile
+      </button>
+    </div>
+    <div id="collapseDockerfile" class="accordion-collapse collapse show" aria-labelledby="headingDockerfile" data-bs-parent="#accordion3elements">
+      <div class="accordion-body">
+        <p>A Dockerfile (or Containerfile) is a text file that contains step-by-step instructions for building a container image. It specifies the base image, dependencies, environment configurations, and commands to set up the container. Think of the Dockerfile as the recipe for creating an image.</p>
+        <p>For example, a Dockerfile for a Python application might look like this:</p>
+        <pre><code>
+FROM python:3.10-slim
+RUN pip install pandas numpy matplotlib
+COPY . /app
+CMD ["python", "/app/main.py"]
+        </code></pre>
+        <p>This file ensures that any container built from this Dockerfile will have Python 3.10, the required libraries, and the application ready to execute.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image Section -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingImage">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseImage" aria-expanded="false" aria-controls="collapseImage">
+        Image
+      </button>
+    </div>
+    <div id="collapseImage" class="accordion-collapse collapse" aria-labelledby="headingImage" data-bs-parent="#accordion3elements">
+      <div class="accordion-body">
+        <p>An image is a read-only, immutable template created by executing the instructions in a Dockerfile. It includes the base operating system, application code, system libraries, and any tools or configurations needed. An image acts as the blueprint for containers, allowing you to create consistent environments.</p>
+        <p>For example, an image built from the above Dockerfile will contain:</p>
+        <ul>
+          <li>The Python 3.10 runtime</li>
+          <li>Pre-installed Python libraries like pandas, numpy, and matplotlib</li>
+          <li>Your application files copied into the image</li>
+        </ul>
+        <p>Images are portable and can be shared via container registries like Docker Hub, Quay, or private registries. Once built, an image ensures that any container created from it will have the same environment, eliminating inconsistencies across machines.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Container Section -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingContainer">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseContainer" aria-expanded="false" aria-controls="collapseContainer">
+        Container
+      </button>
+    </div>
+    <div id="collapseContainer" class="accordion-collapse collapse" aria-labelledby="headingContainer" data-bs-parent="#accordion3elements">
+      <div class="accordion-body">
+        <p>A container is a running instance of an image. When you start a container, the runtime creates an isolated environment based on the image. This environment is consistent across different machines, ensuring reproducibility.</p>
+        <p>Containers are lightweight and efficient because they share the host operating system's kernel rather than emulating an entire OS. While multiple containers can be launched from the same image, they operate independently and maintain their temporary state, such as logs or intermediate outputs.</p>
+        <p>For example:</p>
+        <ul>
+          <li>Launching a container: <code>docker run -it my_image</code></li>
+          <li>Inspecting a running container: <code>docker exec -it <container_id> bash</code></li>
+        </ul>
+        <p>Containers are ideal for running applications in isolated, consistent environments. When stopped, a container can be restarted or removed without affecting the underlying image, ensuring repeatability and flexibility.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+<br>
+```
+
+
+### Roles in the Container Ecosystem
+
+Roles can be broadly categorized in the container ecosystem based on how individuals or teams interact with containerized applications and images. These roles help clarify the distinct ways containers are used, extended, and built, aligning with different levels of expertise and objectives. The primary roles are **consumer**, **developer-consumer**, and **developer**.
+
+```{=html}
+<div class="accordion" id="accordionUsers">
+
+  <!-- Accordion Item 1: Consumer -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingConsumer">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseConsumer" aria-expanded="true" aria-controls="collapseConsumer">
+        Consumer
+      </button>
+    </div>
+    <div id="collapseConsumer" class="accordion-collapse collapse show" aria-labelledby="headingConsumer" data-bs-parent="#accordionUsers">
+      <div class="accordion-body">
+        A <strong>consumer</strong> is an end user who interacts with a deployed containerized application but does not delve into its inner workings. For example, a data scientist launching a pre-configured JupyterLab container or a web developer accessing a containerized app focuses on:
+        <ul>
+          <li>Running or using the application’s features</li>
+          <li>Providing feedback or reporting issues to the team that created the container</li>
+        </ul>
+        Consumers typically rely on others—like developer-consumers or developers—to build, configure, and maintain the container environment for them.
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 2: Developer-Consumer -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingDeveloperConsumer">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDeveloperConsumer" aria-expanded="false" aria-controls="collapseDeveloperConsumer">
+        Developer-Consumer
+      </button>
+    </div>
+    <div id="collapseDeveloperConsumer" class="accordion-collapse collapse" aria-labelledby="headingDeveloperConsumer" data-bs-parent="#accordionUsers">
+      <div class="accordion-body">
+        A <strong>developer-consumer</strong> bridges the gap between simply using container images and building them from scratch. They:
+        <ul>
+          <li>Start with a base image (e.g., <code>python:3.10</code>, <code>rocker/tidyverse</code>)</li>
+          <li>Add new layers: installing libraries, scripts, or configurations to customize the environment</li>
+          <li>Write or modify Dockerfiles for tailored use cases</li>
+          <li>Often handle minor updates or bug fixes while relying on a solid base created by a full-fledged developer</li>
+        </ul>
+        In practice, many data scientists and software engineers function as developer-consumers when they adapt existing container images for specific applications.
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 3: Developer -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingDeveloper">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDeveloper" aria-expanded="false" aria-controls="collapseDeveloper">
+        Developer
+      </button>
+    </div>
+    <div id="collapseDeveloper" class="accordion-collapse collapse" aria-labelledby="headingDeveloper" data-bs-parent="#accordionUsers">
+      <div class="accordion-body">
+        A <strong>developer</strong> works at the foundational level, building and managing container images and their deployment processes. They:
+        <ul>
+          <li>Create base images and configure operating systems, dependencies, and tools from scratch</li>
+          <li>Optimize containers for performance, security, and minimal resource usage</li>
+          <li>Set up CI/CD pipelines and handle deployments to production environments (e.g., Kubernetes, AWS ECS)</li>
+          <li>Ensure compliance with organization-wide standards and best practices</li>
+        </ul>
+        Developers frequently collaborate with DevOps teams to manage orchestration, scaling, and updates. Their efforts provide the reliable, reusable images that developer-consumers extend and that consumers ultimately rely on.
+      </div>
+    </div>
+  </div>
+
+</div>
+<br>
+```
+
+These roles represent a spectrum of container interaction, from straightforward application use to advanced image creation and deployment. Understanding these distinctions helps clarify responsibilities in collaborative projects, ensuring the right person handles tasks like deploying containerized apps to production or maintaining base images. Each role plays a critical part in the ecosystem, whether simply running containers, building on existing images, or creating and deploying them from the ground up.
+
+
+### Beyond Docker: Tools Like Podman and Apptainer
+
+When people think of containers, Docker is often the first tool that comes to mind. However, it is important to recognize that containers are not tied to any single vendor. While Docker popularized containerization, you can now choose from several alternatives:
+
+```{=html}
+<div class="accordion" id="accordionTools">
+
+  <!-- Accordion Item 1: Docker -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingDocker">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDocker" aria-expanded="true" aria-controls="collapseDocker">
+        Docker
+      </button>
+    </div>
+    <div id="collapseDocker" class="accordion-collapse collapse show" aria-labelledby="headingDocker" data-bs-parent="#accordionTools">
+      <div class="accordion-body">
+        Docker is the most widely used container platform, known for its ease of use, robust tooling, and widespread ecosystem support. It provides comprehensive container creation, management, networking, and orchestration features, making it ideal for application development, deployment, and scaling in production environments. Docker's integration with Docker Hub and CI/CD pipelines has made it a standard choice for many developers and organizations. <br><br>
+        <strong>Common Use Cases:</strong>
+        <ul>
+          <li>Developing and testing microservices-based applications.</li>
+          <li>Building CI/CD pipelines with tools like Jenkins or GitHub Actions.</li>
+          <li>Running pre-built containers from Docker Hub for quick prototyping.</li>
+        </ul>
+        <strong>Features:</strong>
+        <ul>
+          <li>Daemon-based architecture for container management.</li>
+          <li>Integration with Docker Compose for multi-container orchestration.</li>
+          <li>Native support for Windows, macOS, and Linux.</li>
+        </ul>
+        <a href="https://docs.docker.com" target="_blank">Docker Documentation</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 2: Podman -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingPodman">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePodman" aria-expanded="false" aria-controls="collapsePodman">
+        Podman
+      </button>
+    </div>
+    <div id="collapsePodman" class="accordion-collapse collapse" aria-labelledby="headingPodman" data-bs-parent="#accordionTools">
+      <div class="accordion-body">
+        Podman is often chosen by enterprises and organizations where Docker's licensing or daemonized model may not be preferred. It uses a daemonless architecture and integrates well with open container standards, offering a secure and rootless experience. Podman is highly compatible with Docker CLI commands, making it an easy transition for Docker users. <br><br>
+        <strong>Common Use Cases:</strong>
+        <ul>
+          <li>Rootless container deployments for enhanced security.</li>
+          <li>Environments where daemonless container management is required.</li>
+          <li>Integrating with Kubernetes as a container runtime.</li>
+        </ul>
+        <strong>Features:</strong>
+        <ul>
+          <li>Daemonless architecture for secure container operations.</li>
+          <li>Full compatibility with Open Container Initiative (OCI) standards.</li>
+          <li>Supports building, running, and managing containers without elevated privileges.</li>
+        </ul>
+        <a href="https://docs.podman.io/" target="_blank">Podman Documentation</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 3: Singularity/Apptainer -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingApptainer">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseApptainer" aria-expanded="false" aria-controls="collapseApptainer">
+        Singularity/Apptainer
+      </button>
+    </div>
+    <div id="collapseApptainer" class="accordion-collapse collapse" aria-labelledby="headingApptainer" data-bs-parent="#accordionTools">
+      <div class="accordion-body">
+        Favoured in scientific and high-performance computing (HPC) environments, Singularity (now Apptainer) is tailored for reproducibility, portability, and integration with existing systems. Unlike Docker or Podman, it does not require a background daemon. It runs containers directly within the user's environment, inheriting filesystem access and user permissions. Its single-file image format (`.sif`) ensures consistency across systems, making it ideal for batch jobs, simulations, and data analysis workflows. <br><br>
+        <strong>Common Use Cases:</strong>
+        <ul>
+          <li>Running scientific simulations or data analysis pipelines.</li>
+          <li>Deploying containers on HPC systems with schedulers like SLURM.</li>
+          <li>Ensuring reproducibility in research workflows.</li>
+        </ul>
+        <strong>Features:</strong>
+        <ul>
+          <li>Daemonless container management with direct execution.</li>
+          <li>Single-file image format (`.sif`) for portability and consistency.</li>
+          <li>Seamless integration with HPC schedulers and environments.</li>
+        </ul>
+        <a href="https://apptainer.org/" target="_blank">Singularity/Apptainer Documentation</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+<br>
+
+```
+
+  
+This diversity means you can pick the container technology that best fits your requirements. Docker remains a strong choice for general-purpose containerization and production-grade deployments. Podman excels in secure, rootless setups, and Apptainer is perfect for scientific workflows and HPC environments. Regardless of the tool, the core benefits of containerization—reproducibility, portability, and efficiency—remain the same.
+
+
+### CLI vs. Desktop 
+
+Managing containers can be done through terminal-based (CLI) or desktop (GUI) applications, each catering to different user needs and scenarios. CLI tools like Docker and Podman offer powerful, scriptable solutions that are ideal for advanced users and automation, while GUI-based tools like Docker Desktop and Podman Desktop simplify operations for beginners or those who prefer visual interfaces. For enterprises, licensing considerations, particularly with Docker Desktop, make alternatives like Podman an attractive option. Here's a comparison to help you choose the right approach:
+
+
+| **Feature**                 | **Terminal (CLI)**                            | **Desktop Applications (GUI)**                 |
+|-----------------------------|-----------------------------------------------|-----------------------------------------------|
+| **Ease of Use**             | Requires familiarity with commands and syntax; steeper learning curve. | Beginner-friendly with intuitive interfaces. |
+| **Automation**              | Ideal for scripting and integrating into CI/CD pipelines. | Limited automation; manual interactions needed. |
+| **Resource Usage**          | Lightweight; no additional system overhead.  | Resource-intensive; requires GUI processing.  |
+| **Monitoring and Logs**     | Requires command-line tools or external monitoring solutions. | Provides visual dashboards and insights.      |
+| **Cost for Enterprises**    | Free (open source or included with tools).   | Docker Desktop has licensing fees for larger organizations. |
+| **Security**                | Flexible configurations; supports rootless setups (e.g., Podman). | Typically less control over granular security settings. |
+| **Best Use Case**           | Advanced users, remote servers, and automation. | Local development, beginners, and visual monitoring. |
+
+
+Choose terminal-based tools if you prioritize automation, flexibility, and lightweight operations. Opt for desktop applications if ease of use and visual insights are your focus.
+
+### CLI Commands: Managing Containers
+
+Once you have set up a containerization tool like Docker, Podman, or Apptainer on your machine, becoming familiar with the core commands is essential. While Docker is the most widely recognized tool, **Docker and Podman share identical commands**, making it easy to switch between them. Apptainer, on the other hand, uses a slightly different command set due to its focus on scientific workloads and lightweight execution. Below is a generalized list of commands, primarily applicable to Docker and Podman but conceptually relevant for Apptainer.
+
+| **Command**           | **Description**                                                                                      | **Generalized Example**                     |
+|------------------------|------------------------------------------------------------------------------------------------------|---------------------------------------------|
+| `run`                 | Runs a container from an image. Use `-p` to map host ports to container ports (Docker/Podman).       | `run -p 80:80 nginx`                        |
+| `ps`                  | Lists all currently running containers.                                                             | `ps`                                        |
+| `stop`                | Stops a running container.                                                                          | `stop <container_id>`                       |
+| `rm`                  | Removes a stopped container.                                                                        | `rm <container_id>`                         |
+| `images`              | Lists all images available on the host machine.                                                     | `images`                                    |
+| `rmi`                 | Removes an image by its ID.                                                                         | `rmi <image_id>`                            |
+| `build`               | Builds an image from a `Containerfile` or `Dockerfile`. Use `-t` to name the image.                  | `build -t my_image .`                       |
+| `exec`                | Runs a command inside a running container. Use `-it` for interactive mode.                          | `exec -it <container_id> /bin/bash`         |
+| `pull`                | Downloads an image from a container registry (e.g., Docker Hub, Quay, or Apptainer's sources).      | `pull nginx`                                |
+| `push`                | Uploads an image to a container registry.                                                           | `push <image_name>`                         |
+
+
+Docker and Podman share nearly identical commands, making it easy to switch between the two tools. For instance, `docker run` works the same as `podman run`, and both are well-suited for managing containerized applications and services. These tools support features like advanced networking, port mapping, and lifecycle management, allowing users to handle complex workflows effectively. This consistency in command structure makes Podman a natural alternative for users already familiar with Docker.
+
+Apptainer, on the other hand, is designed with a focus on executing single tasks or applications, rather than managing long-running services. Its command set includes options like `exec` for running commands or applications inside containers, but it lacks Docker and Podman's built-in support for port mapping or advanced networking features. Additionally, Apptainer uses a different approach to building images; instead of the `build` command for creating layered images, Apptainer converts existing container formats (e.g., Docker images) into its `.sif` format for portability and reproducibility. Despite these differences, mastering the core commands across these tools equips users to manage containers effectively in various environments.
+
+### Ports
+
+For containers, ports connect containerized applications to the outside world. Containers are isolated environments with their own networking stack, and any service running inside a container listens on specific ports within that isolated space. To make these services accessible to the host machine or external clients, Docker allows port mapping.
+
+When you run a container, you can **map a port on the host machine to a port inside the container**. For instance, if a web server inside a container listens on port `80`, you can map it to port `8080` on the host machine. This is achieved using the `-p` option with the `docker run` command:
+
+```bash
+#-p [HOST_PORT]:[CONTAINER_PORT]
+docker run -p 8080:80 nginx
+```
+
+In this example, requests sent to `http://localhost:8080` on the host will be forwarded to the container's port `80`, where the Nginx server is running. Port mappings provide flexibility by allowing containers to use the same internal ports while avoiding conflicts with the host.
+
+0.0.0.0 is a special IP address that instructs a service to listen on all available network interfaces of the host machine, allowing it to accept connections from any source. Binding a service to 0.0.0.0 makes it accessible from any network the host is connected to, including external networks, which can increase both flexibility and potential security risks. 
+
+Popular services and their default ports:
+
+```{=html}
+    <div class="accordion" id="servicePortsAccordion">
+      
+      <!-- Jupyter Notebook -->
+      <div class="accordion-item">
+        <div class="accordion-header" id="headingJupyter">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseJupyter" aria-expanded="true" aria-controls="collapseJupyter">
+            Jupyter Notebook
+          </button>
+        </div>
+        <div id="collapseJupyter" class="accordion-collapse collapse show" aria-labelledby="headingJupyter" data-bs-parent="#servicePortsAccordion">
+          <div class="accordion-body">
+            <p><strong>Default Port:</strong> 8888</p>
+            <p>Jupyter Notebook is a web-based interactive computing platform that allows you to create and share documents containing live code, equations, visualizations, and narrative text.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RStudio Server -->
+      <div class="accordion-item">
+        <div class="accordion-header" id="headingRStudio">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRStudio" aria-expanded="false" aria-controls="collapseRStudio">
+            RStudio Server
+          </button>
+        </div>
+        <div id="collapseRStudio" class="accordion-collapse collapse" aria-labelledby="headingRStudio" data-bs-parent="#servicePortsAccordion">
+          <div class="accordion-body">
+            <p><strong>Default Port:</strong> 8787</p>
+            <p>RStudio Server provides a browser-based interface to R, enabling you to run R scripts, manage projects, and visualize data without installing R locally.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Databases -->
+      <div class="accordion-item">
+        <div class="accordion-header" id="headingDatabases">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDatabases" aria-expanded="false" aria-controls="collapseDatabases">
+            Databases
+          </button>
+        </div>
+        <div id="collapseDatabases" class="accordion-collapse collapse" aria-labelledby="headingDatabases" data-bs-parent="#servicePortsAccordion">
+          <div class="accordion-body">
+            <ul>
+              <li><strong>MySQL:</strong> 3306</li>
+              <li><strong>PostgreSQL:</strong> 5432</li>
+              <li><strong>MongoDB:</strong> 27017</li>
+              <!-- Add more databases as needed -->
+            </ul>
+            <p>Various database systems use specific ports to handle client connections and data transactions.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- APIs -->
+      <div class="accordion-item">
+        <div class="accordion-header" id="headingAPIs">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAPIs" aria-expanded="false" aria-controls="collapseAPIs">
+            APIs
+          </button>
+        </div>
+        <div id="collapseAPIs" class="accordion-collapse collapse" aria-labelledby="headingAPIs" data-bs-parent="#servicePortsAccordion">
+          <div class="accordion-body">
+            <p><strong>Common Port:</strong> 5000 (for Flask apps)</p>
+            <p>APIs developed using frameworks like Flask typically listen on specific ports to handle HTTP requests and serve data to clients.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+<br>
+```
+
+For projects with multiple containers, tools like Docker Compose simplify port management. In a `docker-compose.yml` file, you can define port mappings under the `ports` key:
+
+```yaml
+services:
+  web:
+    image: nginx
+    ports:
+      - "8080:80"
+```
+
+Additionally, the `EXPOSE` directive in a Dockerfile documents the ports that the container listens on, though it does not publish or map these ports by itself. For dynamic scenarios, the `-P` flag can map all exposed ports in a container to random high-numbered ports on the host.
+
+By leveraging port mapping, Docker ensures isolated containers can interact with external systems seamlessly while maintaining flexibility and avoiding port conflicts.
+
+Publishing container ports is insecure by default. Meaning, when you publish a container's ports it becomes available not only to the Docker host, but to the outside world as well.
+If you want to make a container accessible to other containers, it isn't necessary to publish the container's ports. You can enable inter-container communication by connecting the containers to the same network, usually a bridge network.
+
+### Running on Different Machines
+
+Containers like Docker, Podman, and Apptainer rely heavily on Linux kernel features, directly influencing how they operate on different machine types. 
+All three tools are natively compatible on Linux machines, as the Linux kernel provides essential containerization features like namespaces and groups. 
+Docker uses a centralized daemon (dockerd) to manage containers, offering robust networking and lifecycle management but requiring elevated privileges unless running in rootless mode. Podman, designed to be daemonless, manages containers as user processes while maintaining strong isolation and offering a secure, rootless experience. Apptainer, in contrast, runs containers as lightweight processes directly within the user's namespace, prioritizing ease of integration with the host environment over isolation. This approach makes Apptainer particularly well-suited for HPC and scientific computing environments where reproducibility and host integration are critical.
+
+```{=html}
+<div class="accordion" id="accordionContainerTools">
+
+  <!-- Accordion Item 1: Linux -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingLinux">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLinux" aria-expanded="true" aria-controls="collapseLinux">
+        Linux
+      </button>
+    </div>
+    <div id="collapseLinux" class="accordion-collapse collapse show" aria-labelledby="headingLinux" data-bs-parent="#accordionContainerTools">
+      <div class="accordion-body">
+        On Linux machines, container tools like Docker, Podman, and Apptainer operate natively because the Linux kernel provides the essential features needed for containerization, such as namespaces and cgroups. <br><br>
+        <strong>Docker:</strong>
+        <ul>
+          <li>Uses a centralized daemon (<code>dockerd</code>) to manage containers.</li>
+          <li>Offers robust networking, volume management, and container lifecycle features.</li>
+          <li>Requires elevated privileges unless running in rootless mode.</li>
+        </ul>
+        <strong>Podman:</strong>
+        <ul>
+          <li>Daemonless architecture that manages containers as user processes.</li>
+          <li>Provides strong isolation and supports secure, rootless container operations.</li>
+        </ul>
+        <strong>Apptainer:</strong>
+        <ul>
+          <li>Runs containers as lightweight processes within the user's namespace.</li>
+          <li>Prioritizes integration with the host environment over isolation.</li>
+          <li>Ideal for HPC and scientific computing where reproducibility and host integration are critical.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 2: macOS -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingMac">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMac" aria-expanded="false" aria-controls="collapseMac">
+        macOS
+      </button>
+    </div>
+    <div id="collapseMac" class="accordion-collapse collapse" aria-labelledby="headingMac" data-bs-parent="#accordionContainerTools">
+      <div class="accordion-body">
+        On macOS, container tools rely on a Linux virtual machine (VM) to provide the kernel features they depend on, as macOS's XNU kernel does not natively support containerization. <br><br>
+        <strong>Docker Desktop:</strong>
+        <ul>
+          <li>Includes a lightweight Linux VM to support container features.</li>
+          <li>Seamlessly integrates with macOS, providing a user-friendly experience.</li>
+        </ul>
+        <strong>Podman Desktop:</strong>
+        <ul>
+          <li>Bundles a Linux VM to enable container operations.</li>
+          <li>Maintains the same daemonless and rootless architecture as on Linux.</li>
+        </ul>
+        <strong>Apptainer:</strong>
+        <ul>
+          <li>Does not include a built-in VM, requiring users to set up their own Linux environment.</li>
+          <li>Less convenient compared to Docker and Podman but feasible for advanced users.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 3: Windows -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingWindows">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWindows" aria-expanded="false" aria-controls="collapseWindows">
+        Windows
+      </button>
+    </div>
+    <div id="collapseWindows" class="accordion-collapse collapse" aria-labelledby="headingWindows" data-bs-parent="#accordionContainerTools">
+      <div class="accordion-body">
+        On Windows, container tools rely on a Linux virtual machine (VM) because the Windows NT kernel does not natively support Linux-based containerization features. <br><br>
+        <strong>Docker Desktop:</strong>
+        <ul>
+          <li>Includes a lightweight Linux VM to enable container functionality.</li>
+          <li>Provides seamless integration with Windows environments.</li>
+        </ul>
+        <strong>Podman Desktop:</strong>
+        <ul>
+          <li>Uses a Linux VM to support container operations while maintaining daemonless architecture.</li>
+          <li>Offers rootless container management on Windows through the VM.</li>
+        </ul>
+        <strong>Apptainer:</strong>
+        <ul>
+          <li>Requires a manually configured Linux environment, as it lacks a built-in VM.</li>
+          <li>Less convenient on Windows but viable for specific reproducibility-focused workflows.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+```
+
+### Lockfiles and Dependency Managers
+
+Pinning versions in lock files is essential for reproducibility during image BUILDS, as Python/R libraries frequently update. 
+Pinning is less common for apt since system libraries are more stable, but explicit version pinning or snapshot repositories should be used to ensure consistent results during image REBUILDS over time. 
+Please remember that once an image is built, it will always result in the same container runtime environment. 
+We want to use lock files to stabilize the image BUILDS.
+
+Lockfiles capture the exact versions of packages required for your project. 
+This ensures that every build of your environment—whether on your local machine, a container, or a cloud server—produces identical results.
+
+```{=html}
+<div class="accordion" id="accordionDependencyFiles">
+
+  <!-- Accordion Item 1: requirements.txt -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingRequirements">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRequirements" aria-expanded="true" aria-controls="collapseRequirements">
+        requirements.txt (Python)
+      </button>
+    </div>
+    <div id="collapseRequirements" class="accordion-collapse collapse show" aria-labelledby="headingRequirements" data-bs-parent="#accordionDependencyFiles">
+      <div class="accordion-body">
+        In Python projects, the <code>requirements.txt</code> file lists all the libraries your code depends on, along with their specific versions. You can recreate an identical environment (packages versions) by running <code>pip install -r requirements.txt</code> during the build process.  
+        <br><br>
+        <strong>Example:</strong>
+        <pre><code>
+        numpy==1.21.2
+        pandas==1.3.3
+        requests==2.26.0
+        </code></pre>
+        <strong>Use Cases:</strong>
+        <ul>
+          <li>Recreating the same development environment for teams.</li>
+          <li>Deploying consistent environments in containers or servers.</li>
+          <li>Quick setup for local development.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 2: pyproject.toml -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingPyproject">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePyproject" aria-expanded="false" aria-controls="collapsePyproject">
+        pyproject.toml (Python)
+      </button>
+    </div>
+    <div id="collapsePyproject" class="accordion-collapse collapse" aria-labelledby="headingPyproject" data-bs-parent="#accordionDependencyFiles">
+      <div class="accordion-body">
+        The <code>pyproject.toml</code> file is a modern configuration format for Python projects and is supported by tools like Poetry, Hatch, and native setuptools. It serves as a single, standardized way to define dependencies, build backends, and project metadata.  
+        <br><br>
+        When combined with a dependency resolver, the <code>pyproject.toml</code> file generates a lockfile (e.g., <code>poetry.lock</code>, <code>hatch.lock</code>) to freeze exact dependency versions.  
+        <br><br>
+        <strong>Features:</strong>
+        <ul>
+          <li>Standardized project metadata and dependency definitions.</li>
+          <li>Lockfiles for exact version pinning.</li>
+          <li>Advanced dependency management, including conflict resolution and virtual environments.</li>
+        </ul>
+        <strong>Example:</strong>
+        <pre><code>
+        [tool.poetry]
+        name = "my_project"
+        version = "0.1.0"
+        description = "A sample Python project"
+        
+        [tool.poetry.dependencies]
+        python = "^3.10"
+        numpy = "^1.21.2"
+        pandas = "^1.3.3"
+        </code></pre>
+        <strong>Tools:</strong>
+        <ul>
+          <li><a href="https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html" target="_blank">pypa setuptools</a></li>
+          <li><a href="https://python-poetry.org/" target="_blank">Poetry</a> - Dependency management and packaging.</li>
+          <li><a href="https://hatch.pypa.io/" target="_blank">Hatch</a> - Build system with virtual environment support.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 3: renv.lock -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingRenv">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRenv" aria-expanded="false" aria-controls="collapseRenv">
+        renv.lock (R)
+      </button>
+    </div>
+    <div id="collapseRenv" class="accordion-collapse collapse" aria-labelledby="headingRenv" data-bs-parent="#accordionDependencyFiles">
+      <div class="accordion-body">
+        For R projects, the <code>renv.lock</code> file records the exact package versions and sources used in your environment. By running <code>renv::restore()</code>, you can recreate an identical R package environment.  
+        <br><br>
+        This is particularly useful for:
+        <ul>
+          <li>Collaborative work across multiple systems.</li>
+          <li>Ensuring long-term reproducibility of R projects.</li>
+          <li>Archiving project environments for scientific research.</li>
+        </ul>
+        <strong>Features:</strong>
+        <ul>
+          <li>Freezes exact package versions and sources.</li>
+          <li>Ensures consistency across different systems.</li>
+          <li>Seamlessly integrates into containerized workflows.</li>
+        </ul>
+        <strong>Example:</strong>
+        <pre><code>
+        {
+          "R": {
+            "Version": "4.1.0"
+          },
+          "Packages": {
+            "dplyr": {
+              "Version": "1.0.7",
+              "Source": "CRAN"
+            },
+            "ggplot2": {
+              "Version": "3.3.5",
+              "Source": "CRAN"
+            }
+          }
+        }
+        </code></pre>
+        <strong>Tool:</strong>
+        <ul>
+          <li><a href="https://rstudio.github.io/renv/" target="_blank">renv Documentation</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+<br>
+
+```
+
+### Defining Your Environment with a Dockerfile
+
+A Dockerfileis a simple text file that specifies how to build a container image step by step. 
+Each instruction in the Dockerfile adds a new **layer** to the container image, enabling modularity, caching, and efficient builds. Understanding how these layers work is key to optimizing your containerized environment.
+
+Containerfile is a vendor-neutral alternative to Dockerfile, aligning with Open Container Initiative (OCI) standards to avoid tool-specific terminology. Docker and Podman default to looking for a Dockerfile during the build process. Still, they also allow you to specify Containerfile explicitly using the -f flag. Apptainer, on the other hand, does not directly use Containerfile to build images.  
+**Dockerfile remains the more common name, and you need to specify Containerfile explicitly during the build process for Docker and Podman.**
+
+Each instruction in the Dockerfile creates a new layer. For instance, Installing system dependencies creates one layer, Copying project files creates another, and Running a custom script adds yet another.
+When you build the image, the container engine (e.g., Docker or Podman) checks if a cached version of each layer already exists. If a layer hasn't changed, it reuses the cached version instead of rebuilding it, speeding up the process.
+Layers depend on those beneath them. If an earlier layer changes (e.g., a different base image is used or system libraries are updated), all subsequent layers are invalidated and rebuilt.
+
+Key Instructions in a Dockerfile:
+
+```{=html}
+<div class="accordion" id="accordionDockerfile">
+
+  <!-- Accordion Item 1: FROM -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingFrom">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFrom" aria-expanded="true" aria-controls="collapseFrom">
+        FROM
+      </button>
+    </div>
+    <div id="collapseFrom" class="accordion-collapse collapse show" aria-labelledby="headingFrom" data-bs-parent="#accordionDockerfile">
+      <div class="accordion-body">
+        Specifies the base image to use. This could be a minimal system image (like <code>ubuntu</code>) or a language-specific image (like <code>rocker/r-ver</code> for R or <code>python:3.10</code> for Python).  
+        <br><br>
+        <strong>Example:</strong>
+        <pre><code>FROM rocker/r-ver:4.1.0</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 2: WORKDIR -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingWorkdir">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWorkdir" aria-expanded="false" aria-controls="collapseWorkdir">
+        WORKDIR
+      </button>
+    </div>
+    <div id="collapseWorkdir" class="accordion-collapse collapse" aria-labelledby="headingWorkdir" data-bs-parent="#accordionDockerfile">
+      <div class="accordion-body">
+        Sets the working directory inside the container. All subsequent instructions will run relative to this directory.  
+        <br><br>
+        <strong>Example:</strong>
+        <pre><code>WORKDIR /home/rstudio</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 3: COPY -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingCopy">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCopy" aria-expanded="false" aria-controls="collapseCopy">
+        COPY
+      </button>
+    </div>
+    <div id="collapseCopy" class="accordion-collapse collapse" aria-labelledby="headingCopy" data-bs-parent="#accordionDockerfile">
+      <div class="accordion-body">
+        Copies of files and directories from your host system are copied into the container. For example, you might copy your scripts, data, or dependency lockfiles.  
+        <br><br>
+        <strong>Example:</strong>
+        <pre><code>COPY . /home/rstudio</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 4: RUN -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingRun">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRun" aria-expanded="false" aria-controls="collapseRun">
+        RUN
+      </button>
+    </div>
+    <div id="collapseRun" class="accordion-collapse collapse" aria-labelledby="headingRun" data-bs-parent="#accordionDockerfile">
+      <div class="accordion-body">
+        Executes commands during the build process, such as installing dependencies or configuring the environment. Each <code>RUN</code> instruction adds a new layer to the image.  
+        <br><br>
+        <strong>Example:</strong>
+        <pre><code>RUN apt-get update && apt-get install -y \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    libxml2-dev \
+    && rm -rf /var/lib/apt/lists/*</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 5: CMD -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingCmd">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCmd" aria-expanded="false" aria-controls="collapseCmd">
+        CMD
+      </button>
+    </div>
+    <div id="collapseCmd" class="accordion-collapse collapse" aria-labelledby="headingCmd" data-bs-parent="#accordionDockerfile">
+      <div class="accordion-body">
+        Specifies the default command to execute when the container starts. For example, starting an interactive R session or running a Python script.  
+        <br><br>
+        <strong>Example:</strong>
+        <pre><code>CMD ["R"]</code></pre>
+      </div>
+    </div>
+  </div>
+
+</div>
+<br>
+```
+
+By reusing cached layers, builds are **significantly faster** when only parts of the Dockerfile have changed.
+Cached layers **reduce the computational cost of builds**, which is particularly important for iterative development and CI/CD pipelines.
+Iterative changes, such as modifying code files, only invalidate the affected layers, leaving earlier steps untouched.
+
+List of ways to optimize the image:
+
+```{=html}
+<div class="accordion" id="accordionDockerBestPractices">
+
+  <!-- Accordion Item 1: Install System Dependencies Early -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingSystemDependencies">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSystemDependencies" aria-expanded="true" aria-controls="collapseSystemDependencies">
+        Install System Dependencies Early
+      </button>
+    </div>
+    <div id="collapseSystemDependencies" class="accordion-collapse collapse show" aria-labelledby="headingSystemDependencies" data-bs-parent="#accordionDockerBestPractices">
+      <div class="accordion-body">
+        Commands that are less likely to change (e.g., installing system libraries) should appear at the top of the Dockerfile to maximize cache reuse.  
+        <br><br>
+        <strong>Example:</strong>
+        <pre><code>
+RUN apt-get update && apt-get install -y \
+   libcurl4-openssl-dev \
+   libssl-dev
+        </code></pre>
+        Placing these commands early ensures they are cached, speeding up subsequent builds unless the base image changes.
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 2: Add Application Code Last -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingApplicationCode">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseApplicationCode" aria-expanded="false" aria-controls="collapseApplicationCode">
+        Add Application Code Last
+      </button>
+    </div>
+    <div id="collapseApplicationCode" class="accordion-collapse collapse" aria-labelledby="headingApplicationCode" data-bs-parent="#accordionDockerBestPractices">
+      <div class="accordion-body">
+        Since code changes frequently, place commands like <code>COPY</code> or <code>ADD</code> toward the end of the Dockerfile to avoid invalidating earlier layers unnecessarily.  
+        <br><br>
+        <strong>Example:</strong>
+        <pre><code>
+COPY . /app
+        </code></pre>
+        This practice ensures that layers with infrequent changes, like system dependencies, remain cached, improving build efficiency.
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 3: Reduce the Number of Layers -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingReduceLayers">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReduceLayers" aria-expanded="false" aria-controls="collapseReduceLayers">
+        Reduce the Number of Layers
+      </button>
+    </div>
+    <div id="collapseReduceLayers" class="accordion-collapse collapse" aria-labelledby="headingReduceLayers" data-bs-parent="#accordionDockerBestPractices">
+      <div class="accordion-body">
+        Combining related commands into a single <code>RUN</code> instruction minimizes the number of layers, which helps reduce the overall image size.  
+        <br><br>
+        <strong>Example:</strong>
+        <pre><code>
+RUN apt-get update && apt-get install -y libcurl4-openssl-dev && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+        </code></pre>
+        <strong>Advantages:</strong>
+        <ul>
+          <li>Faster image builds and transfers.</li>
+          <li>Fewer layers mean fewer downloads and reduced overhead when pulling the image.</li>
+        </ul>
+        However, splitting layers may still be beneficial for frequently changing commands or easier debugging.
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 4: Use .dockerignore -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingDockerignore">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDockerignore" aria-expanded="false" aria-controls="collapseDockerignore">
+        Use .dockerignore
+      </button>
+    </div>
+    <div id="collapseDockerignore" class="accordion-collapse collapse" aria-labelledby="headingDockerignore" data-bs-parent="#accordionDockerBestPractices">
+      <div class="accordion-body">
+        Prevent temporary or unnecessary files from being copied into the image to keep it clean and efficient.  
+        <br><br>
+        <strong>Example <code>.dockerignore</code>:</strong>
+        <pre><code>
+.git
+__pycache__
+*.log
+        </code></pre>
+        <strong>Benefits:</strong>
+        <ul>
+          <li>Reduces image size by excluding unnecessary files.</li>
+          <li>Improves build speed and keeps the container environment clean.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 5: When to Split Layers -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingSplitLayers">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSplitLayers" aria-expanded="false" aria-controls="collapseSplitLayers">
+        When to Split Layers
+      </button>
+    </div>
+    <div id="collapseSplitLayers" class="accordion-collapse collapse" aria-labelledby="headingSplitLayers" data-bs-parent="#accordionDockerBestPractices">
+      <div class="accordion-body">
+        While reducing layers is generally beneficial, there are cases where splitting layers can be advantageous:  
+        <br><br>
+        <strong>When to Split Layers:</strong>
+        <ul>
+          <li>If a command (e.g., copying code) changes frequently, separating it into its own layer ensures earlier layers remain cached.</li>
+          <li>Splitting layers can make it easier to debug issues during the build process.</li>
+        </ul>
+        Use a balanced approach based on the frequency of changes and the need for debugging.
+      </div>
+    </div>
+  </div>
+
+</div>
+<br>
+```
+
+Here's how layering and caching work in a Python environment:
+
+```Dockerfile
+FROM python:3.10-slim
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y libssl-dev libcurl4-openssl-dev
+
+# Install Python dependencies
+COPY requirements.txt /app/requirements.txt
+RUN pip install -r /app/requirements.txt
+
+# Copy application code
+COPY . /app
+WORKDIR /app
+
+CMD ["python", "app.py"]
+```
+
+For the first build, all layers are created starting from the base image (`python:3.10-slim`) and ending with the `CMD` instruction.
+For Subsequent Builds, If `requirements.txt` changes, only the `RUN pip install` layer and those above it are rebuilt.  
+If the code changes, only the `COPY . /app` and `WORKDIR` layers are rebuilt, leaving earlier layers untouched.
+
+
+Building and Running Containers with Docker:
+
+```bash
+docker build -t my-data-science-env .
+
+docker run -it --rm my-data-science-env
+```
+
+Commands like `apt-get update` can invalidate caching if combined with dynamic inputs. 
+Use careful ordering to minimize rebuilds.
+
+If you need to force a rebuild, use `--no-cache`:
+
+```bash
+docker build --no-cache -t my-data-science-env .
+```
+
+Cached layers can consume significant disk space over time. Clean up with:
+   
+```bash
+docker system prune
+```
+
+By strategically combining layers, caching, and best practices, you can create efficient, maintainable, reproducible Dockerfiles tailored to data science workflows.
+
+### When Start From Scratch
+
+When creating containerized environments for your data science projects, you have two main approaches: starting from scratch with a pure base image or reusing existing images. Each method has advantages, depending on your project's needs, complexity, and constraints. Below, we compare these two approaches and outline when to use each.
+
+Reusing community-validated data-science images allows you to leverage pre-configured environments that include essential tools, reducing setup time and complexity. Popular images often come with pre-installed languages, frameworks, and libraries, so you don't have to install them yourself. Well-maintained images are thoroughly tested and updated by trusted sources, reducing the risk of misconfiguration or missing dependencies. Standardized images simplify team workflows since everyone starts from the same base environment.  
+Reusing community-validated images saves you from dealing with system-level configurations, letting you focus on your application and analysis.
+
+
+| Feature                          | Reusing Existing Images                 | Starting from Scratch                    |
+|-----------------------------------|------------------------------------------|------------------------------------------|
+| **Setup Time**                   | Fast – pre-configured environments       | Slow – must configure everything manually |
+| **Customization**                | Limited – depends on base image contents | Full – control over every layer          |
+| **Use Case**                     | Standard workflows, rapid development    | Highly specific requirements or unique environments |
+| **Image Size**                   | Larger – includes pre-installed tools    | Smaller – includes only what is needed   |
+| **Reproducibility**              | High – based on validated images         | Very High – fully controlled versions    |
+| **Flexibility**                  | Moderate – constrained by base image     | High – entirely customizable             |
+| **Best For**                     | Quick setups, common workflows           | Unique workflows, strict requirements    |
+
+
+Examples for higher level images:
+
+
+| Image                                   | Language/Tool | Description                                                 | Notes/Source                                                                 |
+|-----------------------------------------|---------------|-------------------------------------------------------------|------------------------------------------------------------------------------|
+| `rocker/r-ver:<version>`                | R             | Stable R environment with a specified R version             | [Rocker Project](https://hub.docker.com/u/rocker)                            |
+| `rocker/tidyverse:<version>`            | R             | Includes R and the tidyverse for data manipulation and visualization | [Rocker Project](https://hub.docker.com/u/rocker)                            |
+| `rocker/shiny:<version>`                | R             | R with Shiny Server pre-installed for hosting web apps      | [Rocker Project](https://hub.docker.com/u/rocker)                            |
+| `python:<version>`                      | Python        | Official Python image at a specific version                 | [Docker Hub Official Python](https://hub.docker.com/_/python)                |
+| `python:<version>-slim`                 | Python        | Lightweight Python image with fewer dependencies            | [Docker Hub Official Python](https://hub.docker.com/_/python)                |
+| `continuumio/miniconda3`                | Python        | Includes Miniconda for easy package and environment management | [ContinuumIO on Docker Hub](https://hub.docker.com/r/continuumio/miniconda3) |
+| `jupyter/scipy-notebook`                | Python        | Pre-configured Jupyter Notebook environment with data science libraries | [Jupyter Docker Stacks](https://hub.docker.com/u/jupyter)                    |
+
+Examples of base images:
+
+| Image              | Description                                             | Use Case                                                   |
+|--------------------|---------------------------------------------------------|------------------------------------------------------------|
+| `ubuntu:22.04`     | Full-featured, stable, and well-documented distribution | Ideal for most use cases, balancing simplicity and stability |
+| `debian:bullseye`  | Lightweight and highly stable distribution              | Long-term reproducibility and stable builds                |
+| `alpine:3.18`      | Minimalist image with tiny footprint                    | Performance-sensitive projects or extremely lightweight builds |
+
+### Common Pitfalls
+
+```{=html}
+<div class="accordion" id="accordionPitfalls">
+
+  <!-- Pitfall 1: Overly Large Image Sizes -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingSize">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSize" aria-expanded="true" aria-controls="collapseSize">
+        Overly Large Image Sizes
+      </button>
+    </div>
+    <div id="collapseSize" class="accordion-collapse collapse show" aria-labelledby="headingSize" data-bs-parent="#accordionPitfalls">
+      <div class="accordion-body">
+        <p>
+          <strong>Why It Happens:</strong> Installing many unnecessary packages or using a full-featured base image can quickly inflate image size. Repeated <code>RUN</code> steps also lead to extra layers.
+        </p>
+        <p>
+          <strong>How to Avoid:</strong>
+          <ul>
+            <li>Choose lightweight base images (e.g., <code>python:3.10-slim</code>, <code>alpine</code>) whenever possible.</li>
+            <li>Use multi-stage builds to keep final images minimal.</li>
+            <li>Combine related commands into fewer <code>RUN</code> instructions to reduce layers.</li>
+            <li>Clean up temporary files and apt caches within the same <code>RUN</code> step.</li>
+          </ul>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pitfall 2: Cache Invalidation -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingCache">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCache" aria-expanded="false" aria-controls="collapseCache">
+        Cache Invalidation
+      </button>
+    </div>
+    <div id="collapseCache" class="accordion-collapse collapse" aria-labelledby="headingCache" data-bs-parent="#accordionPitfalls">
+      <div class="accordion-body">
+        <p>
+          <strong>Why It Happens:</strong> Changing one early layer (like the base image or system-level <code>RUN</code> instructions) triggers a rebuild of all subsequent layers.
+        </p>
+        <p>
+          <strong>How to Avoid:</strong>
+          <ul>
+            <li>Place frequently changing <code>COPY</code> or <code>RUN</code> commands at the bottom of the Dockerfile so earlier layers remain cached.</li>
+            <li>Separate OS-level updates from application-level changes to maximize cache reuse.</li>
+            <li>Keep an eye on dynamic commands (e.g., <code>apt-get update</code>) which invalidate caching if they rely on external content.</li>
+          </ul>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pitfall 3: Permission Errors and Running as Root -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingPermissions">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePermissions" aria-expanded="false" aria-controls="collapsePermissions">
+        Permission Errors & Running as Root
+      </button>
+    </div>
+    <div id="collapsePermissions" class="accordion-collapse collapse" aria-labelledby="headingPermissions" data-bs-parent="#accordionPitfalls">
+      <div class="accordion-body">
+        <p>
+          <strong>Why It Happens:</strong> By default, many images run as root, which can create security risks and file-access issues if the container user doesn’t match the host environment.
+        </p>
+        <p>
+          <strong>How to Avoid:</strong>
+          <ul>
+            <li>Add a non-root user in your Dockerfile (e.g., <code>RUN useradd -m appuser && USER appuser</code>).</li>
+            <li>Set correct ownership and permissions for copied files (<code>chown</code>, <code>chmod</code> as needed).</li>
+            <li>Test containers locally to ensure you can read/write files under the intended user.</li>
+          </ul>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pitfall 4: Over-Exposing Ports -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingPorts">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePorts" aria-expanded="false" aria-controls="collapsePorts">
+        Over-Exposing Ports
+      </button>
+    </div>
+    <div id="collapsePorts" class="accordion-collapse collapse" aria-labelledby="headingPorts" data-bs-parent="#accordionPitfalls">
+      <div class="accordion-body">
+        <p>
+          <strong>Why It Happens:</strong> Publishing container ports without proper network segmentation can accidentally make services public, creating security vulnerabilities.
+        </p>
+        <p>
+          <strong>How to Avoid:</strong>
+          <ul>
+            <li>Only map the ports you truly need (e.g., using <code>-p 8080:80</code> instead of <code>-P</code>).</li>
+            <li>Utilize Docker networks to isolate internal microservices.</li>
+            <li>Protect sensitive services (databases, admin dashboards) behind firewalls or internal networks.</li>
+          </ul>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pitfall 5: Data Persistence and Volumes -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingVolumes">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseVolumes" aria-expanded="false" aria-controls="collapseVolumes">
+        Data Persistence & Volumes
+      </button>
+    </div>
+    <div id="collapseVolumes" class="accordion-collapse collapse" aria-labelledby="headingVolumes" data-bs-parent="#accordionPitfalls">
+      <div class="accordion-body">
+        <p>
+          <strong>Why It Happens:</strong> Data stored in a container’s writable layer is ephemeral. Once the container is removed, the data is lost unless volumes or bind mounts are used.
+        </p>
+        <p>
+          <strong>How to Avoid:</strong>
+          <ul>
+            <li>Use Docker volumes or bind mounts for persistent data (e.g., databases, logs, user uploads).</li>
+            <li>Clearly document volume usage in <code>docker-compose.yml</code> or your Dockerfile.</li>
+            <li>Employ backups or snapshots of volumes for critical data.</li>
+          </ul>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pitfall 6: Inefficient Multistage Builds -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingMultistage">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMultistage" aria-expanded="false" aria-controls="collapseMultistage">
+        Inefficient Multistage Builds
+      </button>
+    </div>
+    <div id="collapseMultistage" class="accordion-collapse collapse" aria-labelledby="headingMultistage" data-bs-parent="#accordionPitfalls">
+      <div class="accordion-body">
+        <p>
+          <strong>Why It Happens:</strong> Failing to properly utilize multistage builds means you may carry over build dependencies or dev tools into your final production image, making it larger and less secure.
+        </p>
+        <p>
+          <strong>How to Avoid:</strong>
+          <ul>
+            <li>Create a separate <strong>build</strong> stage for compiling or installing large dependencies, then copy only the final artifacts into a minimal runtime image.</li>
+            <li>Ensure the final stage does not retain build-specific tools or credentials.</li>
+            <li>Keep each stage well-commented so developers know what’s included or excluded.</li>
+          </ul>
+        </p>
+      </div>
+    </div>
+  </div>
+
+</div>
+```
+
+### **Experimenting in GitHub Codespaces**
+
+GitHub Codespaces offers a cloud-based development environment that seamlessly integrates with containers, enabling developers to work in a fully configured environment without setting up local tools. By leveraging the `.devcontainer` directory, which contains a `devcontainer.json` configuration file and an optional Dockerfile, you can define and spin up a standardized, containerized workspace directly in your browser. This approach ensures consistency, portability, and ease of collaboration, especially when working on projects that require complex dependencies or containerized workflows.
+
+[I created a ready playground to play with containers using GitHub codespaces.](https://github.com/Polkas/docker_in_docker).  
+To get started, fork the repository and start the GitHub Codespace.  
+You can run examples or experiment with `docker` directly.  
+
+[![](codespaces.png)](https://github.com/Polkas/docker_in_docker)
+
+[My blog post about codespaces](https://polkas.github.io/posts/codespaces/)
+
+This repository features a ready-to-use playground that explores **Docker-in-Docker (DinD)** capabilities within GitHub Codespaces.
+The `devcontainer.json` file uses the Docker-in-Docker feature to simplify the setup process. When you start the Codespace, a base container is built specifically for the environment, equipped with Docker and additional tools. Within this environment, you can create, manage, and run individual containers for various examples in the repository. This nested containerization approach is ideal for learning and experimenting with Docker, Docker Compose, and containerized application development.
+The playground includes four examples: Python Shiny apps, R Shiny apps, Jupyter Notebook, and RStudio. You can also play directly with Docker.
+
+### Handling Security Issues in Containers
+
+Security is a critical concern in any environment, and containers are no exception. Although containers isolate applications from the host system, you still need to manage security diligently:
+
+```{=html}
+<div class="accordion" id="accordionContainerSecurity">
+
+  <!-- Accordion Item 1: Use Trusted Base Images -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingTrustedImages">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTrustedImages" aria-expanded="true" aria-controls="collapseTrustedImages">
+        Use Trusted Base Images
+      </button>
+    </div>
+    <div id="collapseTrustedImages" class="accordion-collapse collapse show" aria-labelledby="headingTrustedImages" data-bs-parent="#accordionContainerSecurity">
+      <div class="accordion-body">
+        Start with official, well-maintained base images. These images are frequently updated to address known vulnerabilities.  
+        <br><br>
+        <strong>Examples:</strong>
+        <ul>
+          <li>Use images like <code>python:3.10-slim</code> or <code>rocker/r-ver:4.1.0</code> from Docker Hub.</li>
+          <li>Avoid unverified or unofficial images unless necessary.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 2: Keep Dependencies Up-to-Date -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingDependencies">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDependencies" aria-expanded="false" aria-controls="collapseDependencies">
+        Keep Dependencies Up-to-Date
+      </button>
+    </div>
+    <div id="collapseDependencies" class="accordion-collapse collapse" aria-labelledby="headingDependencies" data-bs-parent="#accordionContainerSecurity">
+      <div class="accordion-body">
+        Regularly rebuild your images and update system packages, Python libraries, and R packages. Use tools like renovate or dependabot to automate dependency updates.  
+        <br><br>
+        <strong>Recommended Practices:</strong>
+        <ul>
+          <li>Run <code>apt-get update</code> and <code>apt-get upgrade</code> during the build process.</li>
+          <li>Regularly update <code>requirements.txt</code> or <code>renv.lock</code> files.</li>
+          <li>Automate dependency checks with tools like <a href="https://github.com/renovatebot/renovate" target="_blank">Renovate</a> or <a href="https://github.com/dependabot" target="_blank">Dependabot</a>.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 3: Scan for Vulnerabilities -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingScanVulnerabilities">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseScanVulnerabilities" aria-expanded="false" aria-controls="collapseScanVulnerabilities">
+        Scan for Vulnerabilities
+      </button>
+    </div>
+    <div id="collapseScanVulnerabilities" class="accordion-collapse collapse" aria-labelledby="headingScanVulnerabilities" data-bs-parent="#accordionContainerSecurity">
+      <div class="accordion-body">
+        Use container scanning tools to check for known security issues in your images. Integrate these scans into your CI/CD pipeline to catch problems early.  
+        <br><br>
+        <strong>Popular Tools:</strong>
+        <ul>
+          <li><a href="https://aquasecurity.github.io/trivy/" target="_blank">Trivy</a> - Simple and fast vulnerability scanner.</li>
+          <li><a href="https://quay.github.io/clair/" target="_blank">Clair</a> - Static analysis of vulnerabilities in app containers.</li>
+          <li><a href="https://anchore.com/" target="_blank">Anchore</a> - Comprehensive container security scanning.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 4: Implement the Principle of Least Privilege -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingLeastPrivilege">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLeastPrivilege" aria-expanded="false" aria-controls="collapseLeastPrivilege">
+        Implement the Principle of Least Privilege
+      </button>
+    </div>
+    <div id="collapseLeastPrivilege" class="accordion-collapse collapse" aria-labelledby="headingLeastPrivilege" data-bs-parent="#accordionContainerSecurity">
+      <div class="accordion-body">
+        Run processes inside the container as non-root users whenever possible. Limit the container's file system permissions and avoid unnecessary services.  
+        <br><br>
+        <strong>Best Practices:</strong>
+        <ul>
+          <li>Use the <code>USER</code> directive in your Dockerfile to switch to a non-root user.</li>
+          <li>Limit writable directories to only those necessary for the application.</li>
+          <li>Avoid installing extra services or packages in the container.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 5: Network Security and Isolation -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingNetworkSecurity">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNetworkSecurity" aria-expanded="false" aria-controls="collapseNetworkSecurity">
+        Network Security and Isolation
+      </button>
+    </div>
+    <div id="collapseNetworkSecurity" class="accordion-collapse collapse" aria-labelledby="headingNetworkSecurity" data-bs-parent="#accordionContainerSecurity">
+      <div class="accordion-body">
+        Leverage container orchestration platforms or Docker network configurations to isolate containers and minimize exposure. Only open necessary ports and secure any communication channels.  
+        <br><br>
+        <strong>Tips:</strong>
+        <ul>
+          <li>Use Docker networks to isolate container communication.</li>
+          <li>Expose only required ports using the <code>EXPOSE</code> directive in Dockerfiles.</li>
+          <li>Encrypt sensitive traffic with TLS certificates.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 6: Monitor and Log Activity -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingMonitorLogs">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMonitorLogs" aria-expanded="false" aria-controls="collapseMonitorLogs">
+        Monitor and Log Activity
+      </button>
+    </div>
+    <div id="collapseMonitorLogs" class="accordion-collapse collapse" aria-labelledby="headingMonitorLogs" data-bs-parent="#accordionContainerSecurity">
+      <div class="accordion-body">
+        Maintain logs and monitor container behaviour for suspicious activity. Use tools like Falco to detect abnormal container runtimes or unauthorized file accesses.  
+        <br><br>
+        <strong>Recommended Tools:</strong>
+        <ul>
+          <li><a href="https://falco.org/" target="_blank">Falco</a> - Runtime security monitoring for containers.</li>
+          <li>Set up centralized logging with tools like ELK (Elasticsearch, Logstash, Kibana) or Fluentd.</li>
+          <li>Monitor container metrics with Prometheus and Grafana.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+<br>
+
+```
+
+By proactively managing security, you ensure that containers not only provide reproducibility and portability but also maintain a safe and compliant environment for your data science workloads. 
+
+### Image Deployment
+
+In the containerization ecosystem, the deployment of container images is a foundational step that ensures applications are **portable**, **consistent**, and **easily distributable** across various environments. Container images encapsulate all the necessary components—such as application code, runtime, libraries, and configurations—into a single, immutable package. This encapsulation guarantees that an application behaves identically regardless of where it is deployed, eliminating the notorious "it works on my machine" problem that often plagues traditional software deployments.
+
+To effectively manage and distribute these container images, organizations rely on **container registries** or **container hubs**. These registries serve as centralized repositories where container images are stored, versioned, and shared among development teams and deployment environments. Prominent examples include **Docker Hub**, **Amazon Elastic Container Registry (ECR)**, **Google Container Registry (GCR)**, and **Azure Container Registry (ACR)**. By pushing container images to these registries, developers can ensure that their applications are accessible and deployable from any location, whether it's on-premises servers, cloud platforms, or edge devices. Cloud providers like AWS, Google Cloud, and Azure offer their own managed container registries, integrating seamlessly with their respective cloud services and providing robust scalability, high availability, and enhanced security features.
+
+The process typically involves building a container image locally using a Dockerfile, which outlines the steps to assemble the image, and then pushing this image to a chosen registry. For instance, after building an image with the tag `my-app:latest`, a developer can push it to Docker Hub using the command:
+
+```bash
+docker push myusername/my-app:latest
+```
+
+Once the image resides in a registry, it becomes readily available for deployment across different environments. This seamless distribution is particularly advantageous in **Continuous Integration and Continuous Deployment (CI/CD)** pipelines, where automated workflows pull the latest images from registries to deploy updates swiftly and reliably. Additionally, container registries often provide features like access control, vulnerability scanning, and automated image building, enhancing both the security and efficiency of the deployment process.
+
+Furthermore, leveraging **private registries** ensures that proprietary or sensitive applications remain secure and are only accessible to authorized personnel. This is crucial for organizations that handle confidential data or operate in regulated industries, where controlling access to application images is paramount.
+
+### Container Deployment
+
+Deploying containers transcends the act of merely running them on individual hosts; it involves orchestrating and managing multiple containers to ensure that applications are **scalable**, **resilient**, and **efficiently utilize resources**. Container deployment encompasses the processes and tools that automate the deployment, scaling, and management of containerized applications across diverse environments, from local development machines to expansive cloud infrastructures.
+
+At the core of container deployment lies **container orchestration platforms** such as **Kubernetes**, **Docker Swarm**, and **Apache Mesos**. Among these, Kubernetes has emerged as the industry standard due to its robust feature set and extensive ecosystem support. Kubernetes abstracts the underlying infrastructure, allowing developers to define desired states for their applications, such as the number of running instances, resource allocations, and networking configurations. The orchestration platform then continuously monitors the actual state of the application, automatically adjusting resources and redeploying containers as needed to maintain the desired state.
+
+Cloud service providers like **Amazon Web Services (AWS)**, **Google Cloud Platform (GCP)**, and **Microsoft Azure** offer managed Kubernetes services—**Amazon EKS**, **Google Kubernetes Engine (GKE)**, and **Azure Kubernetes Service (AKS)** respectively. These managed services alleviate the operational burden of maintaining Kubernetes clusters by handling tasks such as cluster provisioning, upgrades, scaling, and monitoring. This integration allows organizations to leverage Kubernetes' powerful orchestration capabilities without the overhead of managing the underlying infrastructure, enabling rapid and reliable deployment of applications at scale.
+
+In addition to orchestration, container deployment strategies encompass **microservices architecture**, where applications are decomposed into smaller, independently deployable services. This modular approach enhances scalability and maintainability, as each microservice can be updated, scaled, or debugged without affecting the entire application. Orchestration platforms facilitate this by managing inter-service communication, load balancing, and service discovery, ensuring that microservices interact seamlessly within a distributed system.
+
+Furthermore, **serverless container platforms** like **AWS Fargate** and **Google Cloud Run** offer an even higher level of abstraction by eliminating the need to manage servers or clusters. These platforms allow developers to deploy containers directly, automatically handling resource allocation, scaling, and infrastructure management based on the application's demand. This model not only simplifies the deployment process but also optimizes cost by ensuring that resources are utilized efficiently, charging only for the compute time consumed by the containers.
+
+**Security** is a paramount consideration in container deployment. Orchestration platforms provide mechanisms for securing containerized applications, such as network policies to control traffic flow, role-based access controls (RBAC) to manage permissions, and integration with identity and access management (IAM) systems. Additionally, employing best practices like scanning container images for vulnerabilities, using least privilege principles, and encrypting data in transit and at rest further fortifies container deployments against potential threats.
+
+**Monitoring and observability** are also critical components of effective container deployment. Tools like **Prometheus**, **Grafana**, and the **ELK Stack (Elasticsearch, Logstash, Kibana)** integrate with orchestration platforms to provide real-time insights into application performance, resource utilization, and system health. These monitoring solutions enable proactive detection of issues, performance tuning, and informed decision-making to maintain optimal application performance.
+
+```{=html}
+<div class="accordion" id="accordionContainerDeployment">
+
+  <!-- Accordion Item 1: Orchestration Platforms -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingOrchestrationPlatforms">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOrchestrationPlatforms" aria-expanded="true" aria-controls="collapseOrchestrationPlatforms">
+        Orchestration Platforms
+      </button>
+    </div>
+    <div id="collapseOrchestrationPlatforms" class="accordion-collapse collapse show" aria-labelledby="headingOrchestrationPlatforms" data-bs-parent="#accordionContainerDeployment">
+      <div class="accordion-body">
+        <strong>Orchestration platforms</strong> are essential for managing the lifecycle of containers in production environments. They automate tasks such as deployment, scaling, and networking, ensuring that applications run smoothly and efficiently.
+
+        <ul>
+          <li><strong>Kubernetes:</strong> An open-source platform designed to automate deploying, scaling, and operating application containers. It provides advanced features like self-healing, automated rollouts and rollbacks, service discovery, and load balancing.</li>
+          <li><strong>Docker Swarm:</strong> Docker’s native clustering and orchestration tool that turns a pool of Docker hosts into a single, virtual Docker host. It is known for its simplicity and seamless integration with Docker tools.</li>
+          <li><strong>Apache Mesos:</strong> A distributed systems kernel that abstracts CPU, memory, storage, and other compute resources, enabling fault-tolerant and elastic distributed systems to be easily built and run effectively.</li>
+          <li><strong>OpenShift:</strong> An enterprise-grade Kubernetes platform by Red Hat that adds developer and operational tools on top of Kubernetes, enhancing security and simplifying deployment workflows.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 2: Cloud Deployment Services -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingCloudServices">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCloudServices" aria-expanded="false" aria-controls="collapseCloudServices">
+        Cloud Deployment Services
+      </button>
+    </div>
+    <div id="collapseCloudServices" class="accordion-collapse collapse" aria-labelledby="headingCloudServices" data-bs-parent="#accordionContainerDeployment">
+      <div class="accordion-body">
+        <strong>Cloud deployment services</strong> provide managed environments for deploying and scaling containerized applications without the need to manage underlying infrastructure.
+
+        <ul>
+          <li><strong>Amazon Elastic Kubernetes Service (EKS):</strong> A managed Kubernetes service that makes it easy to run Kubernetes on AWS without needing to install and operate your own Kubernetes control plane or nodes.</li>
+          <li><strong>Google Kubernetes Engine (GKE):</strong> A managed, production-ready environment for deploying containerized applications, offering advanced features like auto-scaling, auto-upgrades, and integrated monitoring.</li>
+          <li><strong>Azure Kubernetes Service (AKS):</strong> A managed Kubernetes service by Microsoft that simplifies Kubernetes deployment and operations, providing built-in CI/CD, monitoring, and security features.</li>
+          <li><strong>AWS Fargate:</strong> A serverless compute engine for containers that works with both Amazon ECS and EKS, allowing you to run containers without managing servers or clusters.</li>
+          <li><strong>Google Cloud Run:</strong> A fully managed compute platform that automatically scales your stateless containers. Cloud Run abstracts away all infrastructure management, letting you focus on writing code.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 3: Monitoring and Observability Tools -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingMonitoring">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMonitoring" aria-expanded="false" aria-controls="collapseMonitoring">
+        Monitoring and Observability Tools
+      </button>
+    </div>
+    <div id="collapseMonitoring" class="accordion-collapse collapse" aria-labelledby="headingMonitoring" data-bs-parent="#accordionContainerDeployment">
+      <div class="accordion-body">
+        <strong>Monitoring and observability</strong> are critical for maintaining the health and performance of containerized applications. These tools provide real-time insights, enabling proactive issue detection and performance optimization.
+
+        <ul>
+          <li><strong>Prometheus:</strong> An open-source systems monitoring and alerting toolkit designed for reliability and scalability. It excels in collecting and storing metrics as time series data.</li>
+          <li><strong>Grafana:</strong> A powerful visualization and analytics platform that integrates with Prometheus and other data sources to create dynamic dashboards for monitoring application performance.</li>
+          <li><strong>ELK Stack (Elasticsearch, Logstash, Kibana):</strong> A collection of tools for searching, analyzing, and visualizing log data in real-time, facilitating comprehensive observability.</li>
+          <li><strong>Datadog:</strong> A cloud-based monitoring and analytics platform that provides end-to-end visibility into applications, infrastructure, and logs.</li>
+          <li><strong>Sysdig:</strong> Offers deep visibility into containerized environments, combining monitoring, security, and troubleshooting into a single platform.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Item 4: Security and Compliance Tools -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingSecurityTools">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSecurityTools" aria-expanded="false" aria-controls="collapseSecurityTools">
+        Security and Compliance Tools
+      </button>
+    </div>
+    <div id="collapseSecurityTools" class="accordion-collapse collapse" aria-labelledby="headingSecurityTools" data-bs-parent="#accordionContainerDeployment">
+      <div class="accordion-body">
+        <strong>Security and compliance</strong> are paramount in container deployment, ensuring that applications are protected against vulnerabilities and adhere to industry regulations.
+
+        <ul>
+          <li><strong>Trivy:</strong> A simple and comprehensive vulnerability scanner for containers and other artifacts, enabling developers to identify and remediate security issues early in the development cycle.</li>
+          <li><strong>Clair:</strong> An open-source project for the static analysis of vulnerabilities in application containers, integrating with container registries to provide continuous scanning.</li>
+          <li><strong>Falco:</strong> A behavioral activity monitoring tool designed to detect anomalous activity in containers, enhancing runtime security.</li>
+          <li><strong>Open Policy Agent (OPA):</strong> A policy engine that allows you to enforce policies across your stack, ensuring compliance and governance in container deployments.</li>
+          <li><strong>Snyk:</strong> Provides vulnerability scanning and remediation for container images, integrating seamlessly with CI/CD pipelines to maintain secure deployments.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+<br>
+```
+
+Deploying containers is a multifaceted process that transforms development artifacts into live, scalable, and secure applications. By leveraging **container registries** for image management, utilizing **orchestration platforms** like Kubernetes, and deploying to robust **cloud platforms** such as AWS, Google Cloud, and Azure, organizations can ensure that their containerized applications perform optimally across diverse environments. Integrating deployment into **CI/CD pipelines** and adhering to **best practices** further enhances the efficiency, security, and reliability of application delivery.
+
+### Deploying rdevdash app to Digital Ocean
+
+[My R shiny app deployed with containers in less than 10 minutes](https://rdevdash-app-oygos.ondigitalocean.app/).
+
+Deploying the `rdevdash` app to DigitalOcean was a straightforward and efficient process. By leveraging Docker and DigitalOcean's App Platform, I was able to package and deploy the app with minimal effort. For those looking for a detailed guide on hosting Shiny apps on DigitalOcean, I highly recommend the blog [How to Host Shiny Apps on the DigitalOcean App Platform](https://hosting.analythium.io/how-to-host-shiny-apps-on-the-digitalocean-app-platform/). It provides step-by-step instructions and valuable insights for deploying Shiny apps effectively.
+
+In my deployment, I used a prebuilt Docker image hosted on Docker Hub: `polkas/rdevdash-app:latest`. This image contained the fully prepared `rdevdash` app, making the process even faster and more reliable. To begin, I logged into my DigitalOcean account and navigated to the App Platform section. There, I created a new app and selected "Deploy from Container Registry." I linked my Docker Hub account and specified the image `polkas/rdevdash-app:latest` as the source.
+
+Next, I configured the app by selecting a deployment region close to my target audience for optimal performance and ensured that port 3838 (the default port for Shiny apps) was exposed. With these configurations in place, I initiated the deployment. DigitalOcean's platform pulled the Docker image, set up the app, and launched it seamlessly. The entire process, from start to finish, took less than ten minutes. After deployment, I accessed my app through the provided URL and confirmed that everything, including static assets like CSS and icons, was functioning as expected.
+
+Using DigitalOcean's App Platform for deploying the `rdevdash` app offered several advantages. The platform simplifies containerized deployments, eliminating the need to manage underlying infrastructure. It also provides scalability to handle increased traffic and is cost-effective for personal projects, startups, and enterprise-level applications alike. Overall, DigitalOcean proved to be a reliable and efficient solution for hosting my Shiny app, and I would highly recommend it to anyone looking for a quick and hassle-free deployment experience. For those new to hosting Shiny apps, the aforementioned blog is an excellent resource to get started.
+
+### Conclusion
+
+Containers offer a powerful way to ensure reproducibility, portability, security, and consistency in data science and statistical programming. By leveraging containerization, locking down dependencies with requirements.txt or renv.lock, and taking advantage of layering and caching, you can ensure that your analyses, models, and applications run the same way everywhere and every time.
+
+Whether using Docker or Podman for smaller setups or scaling to Kubernetes in production, containers integrate seamlessly with modern CI/CD pipelines and cloud-based development environments. You can maintain a safe and compliant containerized environment with proper security practices, such as choosing trusted images, scanning for vulnerabilities, enforcing least privilege, and monitoring activity.
+
+Adopting containers removes the "works on my machine" problem, streamlines collaboration, and empowers you to produce reliable, credible, and easily shared data science work well into the future.
+
+### References
+
+**R-Specific Container Resources:**
+
+- Rocker Project Docker Hub: [https://hub.docker.com/u/rocker](https://hub.docker.com/u/rocker)  
+- Rocker Project GitHub: [https://github.com/rocker-org/rocker](https://github.com/rocker-org/rocker)  
+- Rocker Project Documentation and FAQs: [https://www.rocker-project.org/](https://www.rocker-project.org/)
+- renv (R Dependency Management): [https://rstudio.github.io/renv/](https://rstudio.github.io/renv/)
+- Shiny (R Web Applications): [https://shiny.rstudio.com/](https://shiny.rstudio.com/)
+- Shiny Server: [https://rstudio.com/products/shiny/shiny-server/](https://rstudio.com/products/shiny/shiny-server/)
+
+**Python-Specific Container Resources:**
+
+- Official Python Docker Images: [https://hub.docker.com/_/python](https://hub.docker.com/_/python)
+- PyPI (Python Package Index): [https://pypi.org/](https://pypi.org/)
+- requirements.txt documentation: [https://pip.pypa.io/en/stable/user_guide/#requirements-files](https://pip.pypa.io/en/stable/user_guide/#requirements-files)
+- ContinuumIO/Miniconda: [https://hub.docker.com/r/continuumio/miniconda3](https://hub.docker.com/r/continuumio/miniconda3)  
+- Conda Documentation: [https://docs.conda.io/](https://docs.conda.io/)
+
+**Deployment References:**
+
+- Docker Compose (Multi-Container Apps): [https://docs.docker.com/compose/](https://docs.docker.com/compose/)
+- Docker Hub (Public Image Registry): [https://hub.docker.com/](https://hub.docker.com/)
+- Amazon Elastic Container Service (ECS): [https://aws.amazon.com/ecs/](https://aws.amazon.com/ecs/)
+- Amazon Elastic Container Registry (ECR): [https://aws.amazon.com/ecr/](https://aws.amazon.com/ecr/)
+- Azure Container Instances (ACI): [https://azure.microsoft.com/en-us/products/container-instances](https://azure.microsoft.com/en-us/products/container-instances)
+- Google Cloud Run: [https://cloud.google.com/run](https://cloud.google.com/run)
+- Heroku Container Registry: [https://devcenter.heroku.com/articles/container-registry-and-runtime](https://devcenter.heroku.com/articles/container-registry-and-runtime)
+
+**GitHub Codespaces and Dev Containers:**
+
+- GitHub Codespaces Documentation: [https://docs.github.com/en/codespaces](https://docs.github.com/en/codespaces)
+- devcontainer.json reference: [https://code.visualstudio.com/docs/remote/containers#_devcontainerjson-reference](https://code.visualstudio.com/docs/remote/containers#_devcontainerjson-reference)
+- GitHub Container Registry: [https://ghcr.io/](https://ghcr.io/)
+
+**Security and Best Practices:**
+
+- Docker Security Best Practices: [https://docs.docker.com/engine/security/](https://docs.docker.com/engine/security/)
+- Podman Security: [https://docs.podman.io/en/latest/markdown/podman-security.1.html](https://docs.podman.io/en/latest/markdown/podman-security.1.html)
+- Trivy (Vulnerability Scanner): [https://github.com/aquasecurity/trivy](https://github.com/aquasecurity/trivy)
+- Anchore Engine (Security Analysis): [https://anchore.com/](https://anchore.com/)
+- Falco (Runtime Security): [https://falco.org/](https://falco.org/)
+
+**Container Orchestration and Related Tools:**
+
+- Kubernetes: [https://kubernetes.io/](https://kubernetes.io/)
+- Docker Swarm: [https://docs.docker.com/engine/swarm/](https://docs.docker.com/engine/swarm/)
+- OpenShift: [https://www.openshift.com/](https://www.openshift.com/)
+- Jupyter Docker Stacks: [https://hub.docker.com/u/jupyter](https://hub.docker.com/u/jupyter)

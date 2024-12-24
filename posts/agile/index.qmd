@@ -1,6 +1,7 @@
 ---
 title: "Scrum: Just a Framework, Agile: A General Philosophy"
 format: html
+author: "Maciej Nasinski"
 date: "2024-07-18"
 engine: knitr
 image: main.jpeg

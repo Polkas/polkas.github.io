@@ -1,6 +1,7 @@
 ---
 title: "Celebrating a Classic: \"How R Searches and Finds Stuff\" by Suraj Gupta"
 format: html
+author: "Maciej Nasinski"
 date: "2024-08-01"
 engine: knitr
 image: rworld.png

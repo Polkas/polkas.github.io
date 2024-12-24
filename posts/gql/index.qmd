@@ -1,6 +1,7 @@
 ---
 title: "Introduction of GQL - The New ISO Standard for Graph Databases"
 format: html
+author: "Maciej Nasinski"
 date: "2024-07-19"
 engine: knitr
 image: main.png

@@ -7,7 +7,7 @@ image: main.jpg
 ---
 
 TL;DR  
-**[Bernstein–von Mises Theorem](https://en.wikipedia.org/wiki/Bernstein%E2%80%93von_Mises_theorem):** Under certain regularity conditions and large sample sizes, the Bayesian posterior for a parameter converges to a normal distribution centered at the Maximum Likelihood Estimator (MLE) with variance given by the inverse Fisher information.  
+[Bernstein–von Mises Theorem](https://en.wikipedia.org/wiki/Bernstein%E2%80%93von_Mises_theorem): Under certain regularity conditions and large sample sizes, the Bayesian posterior for a parameter converges to a normal distribution centered at the Maximum Likelihood Estimator (MLE) with variance given by the inverse Fisher information.  
 **Bayesian ≈ Frequentist As $n \to \infty$:** As the sample size grows, Bayesian credible sets behave like frequentist confidence intervals, and posterior means (or modes) line up with the MLE.  
 **Same Likelihood, Different Perspectives:** Although Bayesian and frequentist methods start from different philosophies, if they assume the same model (thus the same likelihood), their large-sample results converge to the same distributional conclusions.  
 **Conditions on the Prior:** The theorem requires a prior that is positive and continuous at the true parameter. It doesn’t need to be "uninformative,” just non-degenerate around the truth.
