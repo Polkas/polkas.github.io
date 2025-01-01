@@ -1,0 +1,500 @@
+---
+title: "Object-Oriented Programming for Data Science Developers"
+author: "Maciej Nasinski"
+date: "2024-01-01"
+categories: [programming]
+image: main.png
+filters:
+  - pyodide
+format:
+  html:
+    toc: true
+---
+
+TL;DR 
+For developers creating their own data science libraries or packages, **Object-Oriented Programming (OOP)** is fundamental for structuring and maintaining complex solutions. By examining OOP elements and design patterns in widely used Python libraries like **scikit-learn** and **pandas**, you can gain valuable insights into how object-oriented design promotes modularity, maintainability, and robustness in data science applications. Incorporating **diagrams** into your OOP design process enhances communication, helps identify design flaws early, and ensures clarity for all stakeholders. Ultimately, the choice to use OOP, another programming paradigm, or a combination of both should be driven by your project's specific requirements, the nature of your data, and your development team's preferences. AI assistant (like ChatGPT) cannot help to provide a quality project solution without a solid design, and a solid design cannot be created without a thorough understanding and knowledge from the development team.
+
+## Introduction to OOP
+
+Object-Oriented Programming (OOP) is a **programming paradigm** that organizes code around self-contained entities called **objects**. Each object models some concept or real-world entity, bundling data (**attributes**) with the behaviors (**methods**) that operate on that data. By structuring code in this manner, OOP aims to enhance **maintainability**, **reusability**, and **scalability**, especially in larger or more complex applications.
+
+OOP aligns with how we naturally perceive the world: distinct entities (e.g., a sensor, a bank account, a simulation component) each with its own data and behaviors. Mapping these real-world ideas to software objects makes systems more **intuitive** to design, reason about, and evolve over time.
+
+#### Core OOP Concepts
+
+```{=html}
+<div class="accordion" id="coreConceptsAccordion">
+
+  <!-- Class -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingClass">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseClass" aria-expanded="false" aria-controls="collapseClass">
+        Class
+      </button>
+    </div>
+    <div id="collapseClass" class="accordion-collapse collapse" aria-labelledby="headingClass" data-bs-parent="#coreConceptsAccordion">
+      <div class="accordion-body">
+        A class is a <strong>blueprint</strong> or <em>template</em> defining what data (attributes) 
+        and methods (behaviors) its instances will have. For example, a <code>Car</code> class might 
+        define attributes like <code>color</code>, <code>make</code>, and <code>current_speed</code>, 
+        as well as methods like <code>start_engine()</code>, <code>accelerate()</code>, and 
+        <code>brake()</code>. Classes provide the structural foundation for objects.
+      </div>
+    </div>
+  </div>
+
+  <!-- Object (Instance) -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingObject">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseObject" aria-expanded="false" aria-controls="collapseObject">
+        Object (Instance)
+      </button>
+    </div>
+    <div id="collapseObject" class="accordion-collapse collapse" aria-labelledby="headingObject" data-bs-parent="#coreConceptsAccordion">
+      <div class="accordion-body">
+        An object is a <strong>concrete instantiation</strong> of a class. If <code>Car</code> is 
+        the blueprint, an actual <code>Car</code> object (e.g., <code>my_car = Car("red", "Toyota")</code>) 
+        is the real “thing” in memory. Each object carries its own state (attribute values) and can 
+        invoke the methods defined by the class. Multiple objects from the same class can coexist, 
+        each with unique data.
+      </div>
+    </div>
+  </div>
+
+  <!-- Encapsulation -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingEncapsulation">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEncapsulation" aria-expanded="false" aria-controls="collapseEncapsulation">
+        Encapsulation
+      </button>
+    </div>
+    <div id="collapseEncapsulation" class="accordion-collapse collapse" aria-labelledby="headingEncapsulation" data-bs-parent="#coreConceptsAccordion">
+      <div class="accordion-body">
+        Encapsulation keeps data (attributes) and behaviors (methods) in one cohesive unit (the object) 
+        while restricting direct access to the internal state. This often involves visibility rules 
+        (e.g., public methods, private attributes). By providing a clear interface to interact with 
+        an object’s data, encapsulation promotes <strong>robustness</strong> and <strong>clarity</strong>.
+      </div>
+    </div>
+  </div>
+
+  <!-- Inheritance -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingInheritance">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInheritance" aria-expanded="false" aria-controls="collapseInheritance">
+        Inheritance
+      </button>
+    </div>
+    <div id="collapseInheritance" class="accordion-collapse collapse" aria-labelledby="headingInheritance" data-bs-parent="#coreConceptsAccordion">
+      <div class="accordion-body">
+        Inheritance allows you to create new classes (child or subclass) from existing ones (parent or superclass). 
+        The child class automatically gains the attributes and methods of its parent, enabling <em>code reuse</em> 
+        and a logical hierarchy. For instance, a <code>SportsCar</code> class might inherit from <code>Car</code> 
+        but add specialized attributes like <code>horsepower</code> or override the <code>accelerate()</code> method.
+      </div>
+    </div>
+  </div>
+
+  <!-- Polymorphism -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingPolymorphism">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePolymorphism" aria-expanded="false" aria-controls="collapsePolymorphism">
+        Polymorphism
+      </button>
+    </div>
+    <div id="collapsePolymorphism" class="accordion-collapse collapse" aria-labelledby="headingPolymorphism" data-bs-parent="#coreConceptsAccordion">
+      <div class="accordion-body">
+        Polymorphism enables objects of different classes within a shared hierarchy to be 
+        <strong>treated uniformly</strong>. Typically, a common interface or a set of methods 
+        can be called without knowing the specific subclass. For example, a <code>Vehicle</code> 
+        interface might define <code>start_engine()</code>, and both <code>Car</code> and 
+        <code>Motorcycle</code> implement it differently. Polymorphism yields 
+        <em>flexible</em> and <em>easily extensible</em> code.
+      </div>
+    </div>
+  </div>
+
+  <!-- Abstraction -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingAbstraction">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAbstraction" aria-expanded="false" aria-controls="collapseAbstraction">
+        Abstraction
+      </button>
+    </div>
+    <div id="collapseAbstraction" class="accordion-collapse collapse" aria-labelledby="headingAbstraction" data-bs-parent="#coreConceptsAccordion">
+      <div class="accordion-body">
+        Abstraction involves <strong>hiding lower-level details</strong> and exposing only what’s 
+        necessary for others to use. For example, a <code>DatabaseConnection</code> class might 
+        have methods such as <code>connect()</code>, <code>query()</code>, and <code>disconnect()</code>, 
+        shielding details about network protocols and transaction handling. This simplification 
+        makes the codebase more <em>comprehensible</em> and <em>maintainable</em>.
+      </div>
+    </div>
+  </div>
+
+</div>
+```
+
+#### Additional Modern OOP Considerations
+
+```{=html}
+<div class="accordion" id="modernConsiderationsAccordion">
+
+  <!-- Composition Over Inheritance -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingComposition">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseComposition" aria-expanded="false" aria-controls="collapseComposition">
+        1. Composition Over Inheritance
+      </button>
+    </div>
+    <div id="collapseComposition" class="accordion-collapse collapse" aria-labelledby="headingComposition" data-bs-parent="#modernConsiderationsAccordion">
+      <div class="accordion-body">
+        While inheritance is powerful, many modern OOP designs favor <strong>composition</strong> (assembling or “composing” objects from other objects) 
+        for greater flexibility. Composition can reduce the tight coupling that sometimes arises with deep inheritance hierarchies 
+        and facilitate clearer abstractions.
+      </div>
+    </div>
+  </div>
+
+  <!-- Design Patterns -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingDesignPatterns">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDesignPatterns" aria-expanded="false" aria-controls="collapseDesignPatterns">
+        2. Design Patterns
+      </button>
+    </div>
+    <div id="collapseDesignPatterns" class="accordion-collapse collapse" aria-labelledby="headingDesignPatterns" data-bs-parent="#modernConsiderationsAccordion">
+      <div class="accordion-body">
+        Many teams rely on <strong>design patterns</strong> proven solutions to recurring design problems 
+        (e.g., Strategy, Observer, Factory). Patterns build on OOP principles to address challenges 
+        in object creation, communication, and organization.
+      </div>
+    </div>
+  </div>
+
+  <!-- SOLID Principles -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingSOLIDBrief">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSOLIDBrief" aria-expanded="false" aria-controls="collapseSOLIDBrief">
+        3. SOLID Principles (Briefly)
+      </button>
+    </div>
+    <div id="collapseSOLIDBrief" class="accordion-collapse collapse" aria-labelledby="headingSOLIDBrief" data-bs-parent="#modernConsiderationsAccordion">
+      <div class="accordion-body">
+        OOP practitioners often reference the <strong>SOLID</strong> principles to keep systems 
+        organized and maintainable:
+        <ul>
+          <li><strong>Single Responsibility Principle</strong>: Each class should address one specific concern.</li>
+          <li><strong>Open/Closed Principle</strong>: Classes should be open for extension but closed to modification.</li>
+          <li><strong>Liskov Substitution Principle</strong>: Subclasses should be substitutable for their parent classes without breaking functionality.</li>
+          <li><strong>Interface Segregation Principle</strong>: Avoid forcing clients to depend on interfaces they do not use.</li>
+          <li><strong>Dependency Inversion Principle</strong>: Depend on abstractions, not on concrete implementations.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+<br>
+```
+
+By mastering these core OOP concepts and remaining mindful of modern best practices (including **composition** over inheritance, design patterns, and **SOLID** guidelines), you can build software that is straightforward to develop, debug, and extend. Whether your project is small or large-scale, OOP fosters **logical organization**, **team collaboration**, and **long-term maintainability**.
+
+[Please access wikipedia page for more details and references.](https://en.wikipedia.org/wiki/Object-oriented_programming)
+
+### Programming Paradigms
+
+## Programming Paradigms
+
+Programming paradigms are fundamental approaches to structuring and organizing code, each offering distinct philosophies and methodologies for solving problems. Beyond **Object-Oriented Programming (OOP)**, which organizes code around objects that encapsulate data and behaviors to enhance maintainability and scalability, other paradigms include **Functional Programming (FP)** that emphasizes pure functions and immutability, **Procedural Programming** which focuses on procedures or routines, **Declarative Programming** that specifies what the program should accomplish without detailing how, and **Logic Programming** which relies on formal logic to express facts and rules. While procedural programming is effective for straightforward, linear tasks, it is generally less suitable for creating reusable and maintainable libraries compared to OOP and FP, which provide structures that promote modularity and scalability essential for library development. Additionally, there are other paradigms such as **Event-Driven**, **Reactive**, and **Aspect-Oriented Programming (AOP)** that cater to specific use cases and requirements. Understanding these paradigms, particularly OOP, equips data scientists with the versatility to create efficient, readable, and adaptable code tailored to diverse data science challenges. For a comprehensive overview of programming paradigms, refer to the [Wikipedia page on Programming Paradigm](https://en.wikipedia.org/wiki/Programming_paradigm).
+Python's support for multiple paradigms allows data scientists to leverage the strengths of each approach, whether by using OOP for building scalable data pipelines, FP for efficient data transformations, or blending both to create robust and maintainable data science solutions.
+
+In the realm of software development, **Object-Oriented Programming (OOP)** and **Functional Programming (FP)** represent two popular distinct paradigms, each with its own philosophies, strengths, and ideal use cases.
+Ultimately, the choice between OOP and FP, or the decision to combine them, depends on the specific requirements of your project, the nature of the data you’re handling, and the preferences of your development team. By understanding the core principles and benefits of each paradigm, you can make informed decisions that enhance your data science workflows and contribute to the creation of robust, efficient, and maintainable software solutions.
+**Python’s flexibility** allows data scientists to leverage the strengths of both paradigms, often blending OOP and FP to create hybrid solutions that maximize efficiency and maintainability. For instance, using OOP to structure a data pipeline while employing FP techniques for data transformations can yield highly readable and scalable code.
+
+## Python OOP
+
+Object-Oriented Programming (OOP) in **Python** is built into the language, making it straightforward to write maintainable and extensible code especially beneficial in data science.
+
+### Basic OOP in Python
+
+A typical Python class might look like this:
+
+```{pyodide-python}
+class MyClass:
+    def __init__(self, value):
+        self.value = value  # attribute
+
+    def show_value(self):
+        # a method that operates on the instance
+        print(f"Value is {self.value}")
+
+# Create an instance (object) from the class
+obj = MyClass(10)
+obj.show_value()  # Output: "Value is 10"
+```
+
+
+- **Class**: A blueprint for creating objects, defining attributes and methods.  
+- **Instance (Object)**: A concrete “realization” of a class. Multiple objects can be created from the same class, each holding its own attribute values.  
+- **`__init__`**: The initializer (constructor) that sets an object’s initial state.  
+- **`self`**: A reference to the *current instance*, used within class methods to access attributes and other methods.
+
+For more details, please access [the open-source Think Python book](https://greenteapress.com/wp/think-python-2e/). The Think Python book is often recommended for beginners.
+
+### Real-World Data Science Examples
+
+---
+
+*Package*: [pandas](https://pandas.pydata.org/).  
+*Name*: Dataset Loaders.    
+*Scenario*: Loading data from different sources (CSV, SQL, APIs).  
+*Example*: Reads data with functions like `pd.read_csv`, returning a **DataFrame** object. A DataFrame encapsulates data and provides methods (`head()`, `info()`).  
+
+```{pyodide-python}
+import pandas as pd
+
+df_csv = pd.read_csv("my_data.csv")
+print(df_csv.head())
+```
+
+---
+
+*Package*: [scikit-learn](https://scikit-learn.org/).  
+*Name*: Model Evaluation.  
+*Scenario*: Evaluating different model types (classification vs. regression) with a uniform approach.  
+*Example*: Models like `LogisticRegression` or `RandomForestRegressor` share a common **Estimator** interface (`fit`, `predict`). Metric functions (`accuracy_score`, `r2_score`) encapsulate specialized logic for classification or regression.  
+*Design Patterns*: e.g. Strategy - Distinct estimators (e.g., logistic vs. random forest) act as different “strategies” for learning.
+
+```{pyodide-python}
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+
+X_train, y_train = [[1],[2],[3],[4]], [0,1,0,1]
+X_test, y_test = [[5],[6]], [1,1]
+
+clf = LogisticRegression()
+clf.fit(X_train, y_train)
+preds = clf.predict(X_test)
+
+print("Accuracy:", accuracy_score(y_test, preds))
+```
+
+---
+
+*Package*: [scikit-learn](https://scikit-learn.org/).  
+*Name*: Feature Engineering Pipelines.  
+*Scenario*: Multiple sequential transformations (e.g., imputation, encoding, scaling) before a final estimator.  
+*Example*: A `Pipeline` orchestrates data flow through transformers, culminating in a final estimator.  
+*Design Patterns*: e.g. Chain of Responsibility - The pipeline passes data through each transformation step in sequence. Factory - `Pipeline()` can build a pipeline automatically. Chain of Responsibility - (via `Pipeline`): Data flows through your custom transformer, then the next step, and so on.
+
+
+```{pyodide-python}
+import numpy as np
+from sklearn.pipeline import Pipeline
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression
+
+X = np.array([[1, 2], [2, None], [3, 6], [None, 4]], dtype=float)
+y = np.array([10, 20, 30, 40], dtype=float)
+
+pipeline = Pipeline([
+    ('imputer', SimpleImputer(strategy='mean')),
+    ('scaler', StandardScaler()),
+    ('regressor', LinearRegression())
+])
+
+pipeline.fit(X, y)
+print("Prediction:", pipeline.predict([[5, 5]]))
+```
+
+
+---
+
+*Package*: [scikit-learn](https://scikit-learn.org/).  
+*Name*: Custom Transformer.   
+*Scenario*: You want to apply a specific transformation (log transform, custom encoding, etc.) before scaling or modeling, but need it to fit seamlessly into the scikit-learn pipeline workflow.  
+*Example*: Custom transformers inherit from `BaseEstimator` and `TransformerMixin`, implementing a `fit()` (optionally) and a `transform()` method. This uniform interface lets you drop them into any pipeline just like built-in transformers.  
+*Design Patterns*: e.g. Strategy - Each transformer is effectively a distinct “strategy” for transforming data. Chain of Responsibility - (via `Pipeline`): Data flows through your custom transformer, then the next step, and so on.
+
+```{pyodide-python}
+import numpy as np
+from sklearn.base import BaseEstimator, TransformerMixin
+
+class LogTransformer(BaseEstimator, TransformerMixin):
+    def __init__(self, offset=1.0):
+        self.offset = offset
+
+    def fit(self, X, y=None):
+        # No parameters to learn here, so just return self
+        return self
+
+    def transform(self, X):
+        # Apply log transformation (with offset to avoid log(0))
+        return np.log(X + self.offset)
+```
+
+Integrate the custom transformer into a pipeline:
+
+```{pyodide-python}
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+
+pipeline = Pipeline([
+    ('log_transformer', LogTransformer(offset=1.0)),
+    ('scaler', StandardScaler())
+])
+
+X = np.array([[1, 2], [10, 100], [5, 50]], dtype=float)
+X_transformed = pipeline.fit_transform(X)
+print(X_transformed)
+```
+
+---
+
+*Package*: [matplotlib](https://matplotlib.org/).  
+*Name*: Data Visualization.   
+*Scenario*: Creating object-based plots or subplots with consistent styling and method calls.  
+*Example*: Figure and Axes objects encapsulate data/state, offering methods (`plot()`, `set_title()`, etc.).  
+*Design Patterns*: e.g. Facade - `plt.subplots()` simplifies object creation.  
+Composite - A figure can have multiple Axes, each with sub-elements like lines or text.
+
+```{pyodide-python}
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots()
+ax.plot([1, 2, 3], [4, 5, 6], label="Example")
+ax.set_title("My Plot")
+ax.set_xlabel("X-axis")
+ax.set_ylabel("Y-axis")
+ax.legend()
+plt.show()
+```
+
+---
+
+### Why These Examples Matter
+
+1. **Consistency**: scikit-learn’s Estimator interface, pandas DataFrame methods, and matplotlib’s Axes objects rely on consistent OOP constructs.  
+2. **Scalability**: Common design patterns like Strategy, Factory, Chain of Responsibility, Template Method, Facade, Composite enable libraries to support both small demos and large-scale production systems.  
+3. **Collaboration**: Standard method names (`fit`, `predict`, `plot`, `log`) help teams integrate each step with minimal friction.  
+4. **Extensibility**: Adding new features like a custom transformer or specialized plotting style usually means creating a new class or subclass, not rewriting everything.
+
+By identifying these OOP elements and design patterns in widely used Python libraries, you can better appreciate how object-oriented design fosters modular, maintainable, and powerful data science solutions.
+
+## Addressing Potential Concerns
+
+```{=html}
+<div class="accordion" id="concernsAccordion">
+
+  <!-- Over-Engineering -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingOverEngineering">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOverEngineering" aria-expanded="false" aria-controls="collapseOverEngineering">
+        Over-Engineering
+      </button>
+    </div>
+    <div id="collapseOverEngineering" class="accordion-collapse collapse" aria-labelledby="headingOverEngineering" data-bs-parent="#concernsAccordion">
+      <div class="accordion-body">
+        While OOP provides structure, it can add unnecessary complexity for small or short-lived scripts. 
+        Consider starting with minimal classes and only introduce advanced OOP features as your project grows. 
+        This way, you keep simple tasks simple, while still having the option to scale up when your needs become more complex.
+      </div>
+    </div>
+  </div>
+
+  <!-- Performance -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingPerformance">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePerformance" aria-expanded="false" aria-controls="collapsePerformance">
+        Performance
+      </button>
+    </div>
+    <div id="collapsePerformance" class="accordion-collapse collapse" aria-labelledby="headingPerformance" data-bs-parent="#concernsAccordion">
+      <div class="accordion-body">
+        In Python, the additional abstraction of OOP can introduce overhead, particularly in performance-critical sections 
+        (like large loops or intensive numeric operations). Use profiling tools to pinpoint bottlenecks and optimize them selectively through vectorization, 
+        C++ extensions, or specialized data structures without sacrificing the maintainability 
+        that OOP affords.
+      </div>
+    </div>
+  </div>
+
+  <!-- Learning Curve -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingLearningCurve">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLearningCurve" aria-expanded="false" aria-controls="collapseLearningCurve">
+        Learning Curve
+      </button>
+    </div>
+    <div id="collapseLearningCurve" class="accordion-collapse collapse" aria-labelledby="headingLearningCurve" data-bs-parent="#concernsAccordion">
+      <div class="accordion-body">
+        Not everyone on your team may be familiar with OOP patterns and design principles, and some may prefer a more 
+        procedural or functional style. However, once the team experiences the clarity and extensibility that 
+        well-designed OOP brings, especially on larger or evolving projects-resistance often diminishes. Demonstrating 
+        real-world benefits, such as clearer code organization or easier feature integration, can help new adopters 
+        see the practical value.
+      </div>
+    </div>
+  </div>
+
+</div>
+```
+
+## My Experience and Approach
+
+Working alongside my senior developer teammates, we consistently highlighted that maintaining complex, production-quality code at scale is nearly impossible without a robust **Object-Oriented Programming (OOP)** framework. Initially, some team members were hesitant to move away from procedural or functional approaches. However, the advantages of enhanced **abstraction**, **maintainability**, and **reusability** quickly won them over. Over time, I realized that **fully embracing OOP** is especially beneficial for **large-scale or complex** projects. I adhere to modern OOP principles such as **composition over inheritance**, which reduces coupling and fosters a more flexible architecture. While inheritance remains valuable for building structured hierarchies, composition offers clearer abstractions and facilitates incremental changes with fewer side effects.
+Additionally, I reference well-established design patterns and SOLID principles to reinforce stability and extensibility.
+
+To successfully implement Object-Oriented Programming (OOP), it is essential to organize a team design meeting where you can establish a comprehensive plan, effectively distribute tasks among team members, and set clear accountability. Iterative collaboration with AI assistants like ChatGPT can significantly aid in drafting plans, seeking feedback, and refining designs until a confident and robust architecture is achieved. Once the foundational elements are in place, I develop prototypes and leverage AI-assisted reviews to explore coding alternatives and identify potential pitfalls early on. This cyclical workflow combines thoughtful design with practical, iterative feedback, ultimately resulting in more robust and production-ready solutions. It is important to recognize that an AI assistant cannot help to provide a quality project solution without a solid design, and a solid design cannot be created without a thorough understanding and knowledge from the development team.
+
+I recommend starting with minimal classes and introducing advanced OOP features as your project evolves. This strategy keeps simple tasks straightforward while providing the scalability needed for increasing complexity. For simpler scenarios, a **lightweight functional** approach can often suffice, allowing teams to maintain a minimal codebase. Additionally, blending OOP and Functional Programming (FP) can create **hybrid solutions** that maximize both efficiency and maintainability.
+
+Before writing any code, visualizing how your classes interact and defining their responsibilities is crucial. This visualization can involve various diagram types such as *UML* and *User Journey* to ensure clarity and alignment on requirements. **Separate diagrams** provide high-level overviews for stakeholders or end users, while more detailed designs (e.g., inheritance, interfaces) cater to developers. Diagrams help align everyone on responsibilities, data flow, and interactions **before** implementation begins. Tools like the [Mermaid Live Editor](https://mermaid.live/) enable quick iteration on class structures and relationships.
+
+Very simple UML Mermaid class diagram example:
+
+```{mermaid}
+%%| echo: true
+classDiagram
+    class Dataset {
+        -source: string
+        -size: numeric
+        +loadData()
+        +showStats()
+    }
+```
+
+I plan to explore diagrams further in a separate post. Notably, some diagrams like User Journey can be equally useful in functional programming, facilitating clear communication and design regardless of the chosen paradigm.
+
+## Conclusion
+
+Object-Oriented Programming remains a cornerstone for building and maintaining complex data science solutions. By identifying OOP elements and design patterns in widely used Python libraries like **sklearn** or **pandas**, you can better appreciate how object-oriented design fosters modular, maintainable, and powerful data science solutions.
+Ultimately, the choice between OOP and another paradigm, or the decision to combine them, depends on the specific requirements of your project, the nature of the data you’re handling, and the preferences of your development team. 
+
+Pairing **diagrams** with an OOP design ethos makes it easier to communicate ideas, spot design flaws early, and ensure clarity for everyone involved.
+
+It is important to recognize that an AI assistant cannot help to provide a quality project solution without a solid design, and a solid design cannot be created without a thorough understanding and knowledge from the development team.
+
+## References & Further Reading
+
+- **General OOP & Design**  
+  - [OOP (Wikipedia)](https://en.wikipedia.org/wiki/Object-oriented_programming)
+  - [SOLID (Wikipedia)](https://en.wikipedia.org/wiki/SOLID)  
+  - [Software Design Pattern (Wikipedia)](https://en.wikipedia.org/wiki/Software_design_pattern)  
+  - *Design Patterns: Elements of Reusable Object-Oriented Software* (Gamma et al.)  
+  - *Clean Code* by Robert C. Martin  
+
+- **OOP in Python**  
+  - [Python Official Docs: Classes](https://docs.python.org/3/tutorial/classes.html)  
+  - [Python Data Model (Magic Methods)](https://docs.python.org/3/reference/datamodel.html)  
+
+- **scikit-learn**  
+  - [scikit-learn.org](https://scikit-learn.org/stable/)  
+  - [Developing Custom Estimators](https://scikit-learn.org/stable/developers/develop.html)  
+
+- **Mermaid** 
+  - [Mermaid Docs](https://mermaid.js.org/intro/)
+  - [Mermaid Live Editor](https://mermaid.live/)
