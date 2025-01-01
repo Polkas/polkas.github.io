@@ -1,5 +1,5 @@
 ---
-title: "Understanding Python Enhancement Proposals (PEPs)"
+title: "Python Enhancement Proposals (PEPs)"
 author: "Maciej Nasinski"
 date: "2025-01-02"
 categories: [pythonprogramming]
