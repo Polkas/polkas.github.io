@@ -9,7 +9,11 @@ format:
     toc: true
 ---
 
-TL;DR: Containers provide reproducible, secure, and portable environments for data scientists and statistical programmers. While tools like renv for R and requirements.txt for Python lock dependencies at the package level, containers go beyond this by bundling programming languages, system libraries, and operating system dependencies into a single, isolated runtime. Tools like Docker and Podman streamline setup, ensuring consistent environments across local machines, cloud servers, and CI/CD pipelines. Features like container layering and caching make builds efficient, while orchestration platforms like Kubernetes scale these environments for production. Containers eliminate the "works on my machine" problem, empowering you to produce reliable, credible, and easily shared data science workflows.
+TL;DR: Containers provide reproducible, secure, and portable environments for data scientists and statistical programmers. 
+While tools like renv for R and requirements.txt for Python lock dependencies at the package level, containers go beyond this by bundling programming languages, system libraries, and operating system dependencies into a single, isolated runtime. 
+Tools like Docker and Podman streamline setup, ensuring consistent environments across local machines, cloud servers, and CI/CD pipelines. 
+Features like container layering and caching make builds efficient, while orchestration platforms like Kubernetes scale these environments for production. 
+Containers eliminate the "works on my machine" problem, empowering you to produce reliable, credible, and easily shared data science workflows.
 
 ```{=html}
 <a href="#experimenting-in-github-codespaces">
@@ -1295,7 +1299,8 @@ GitHub Codespaces offers a cloud-based development environment that seamlessly i
 
 [I created a ready playground to play with containers using GitHub codespaces.](https://github.com/Polkas/docker_in_docker).  
 To get started, fork the repository and start the GitHub Codespace.  
-You can run examples or experiment with `docker` directly.  
+The playground includes four examples: Python Shiny apps, R Shiny apps, Jupyter Notebook, and RStudio. 
+You can also play directly with Docker.  
 
 [![](codespaces.png)](https://github.com/Polkas/docker_in_docker)
 
@@ -1303,7 +1308,6 @@ You can run examples or experiment with `docker` directly.
 
 This repository features a ready-to-use playground that explores **Docker-in-Docker (DinD)** capabilities within GitHub Codespaces.
 The `devcontainer.json` file uses the Docker-in-Docker feature to simplify the setup process. When you start the Codespace, a base container is built specifically for the environment, equipped with Docker and additional tools. Within this environment, you can create, manage, and run individual containers for various examples in the repository. This nested containerization approach is ideal for learning and experimenting with Docker, Docker Compose, and containerized application development.
-The playground includes four examples: Python Shiny apps, R Shiny apps, Jupyter Notebook, and RStudio. You can also play directly with Docker.
 
 ### Handling Security Issues in Containers
 
