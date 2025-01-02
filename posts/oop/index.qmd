@@ -20,7 +20,7 @@ Object-Oriented Programming (OOP) is a **programming paradigm** that organizes c
 
 OOP aligns with how we naturally perceive the world: distinct entities (e.g., a sensor, a bank account, a simulation component) each with its own data and behaviors. Mapping these real-world ideas to software objects makes systems more **intuitive** to design, reason about, and evolve over time.
 
-#### Core OOP Concepts
+## Core OOP Concepts
 
 ```{=html}
 <div class="accordion" id="coreConceptsAccordion">
@@ -135,7 +135,7 @@ OOP aligns with how we naturally perceive the world: distinct entities (e.g., a 
 </div>
 ```
 
-#### Additional Modern OOP Considerations
+## Additional Modern OOP Considerations
 
 ```{=html}
 <div class="accordion" id="modernConsiderationsAccordion">
@@ -201,8 +201,6 @@ OOP aligns with how we naturally perceive the world: distinct entities (e.g., a 
 By mastering these core OOP concepts and remaining mindful of modern best practices (including **composition** over inheritance, design patterns, and **SOLID** guidelines), you can build software that is straightforward to develop, debug, and extend. Whether your project is small or large-scale, OOP fosters **logical organization**, **team collaboration**, and **long-term maintainability**.
 
 [Please access wikipedia page for more details and references.](https://en.wikipedia.org/wiki/Object-oriented_programming)
-
-### Programming Paradigms
 
 ## Programming Paradigms
 
