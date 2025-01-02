@@ -1,5 +1,5 @@
 ---
-title: "Object-Oriented Programming for Data Science Developers"
+title: "Object-Oriented Programming for Data Science Developers [In-Depth]"
 author: "Maciej Nasinski"
 date: "2025-01-01"
 categories: [programming]

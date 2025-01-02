@@ -1,5 +1,5 @@
 ---
-title: "Containers for Data Scientists"
+title: "Containers for Data Scientists [In-Depth]"
 author: "Maciej Nasinski"
 date: "2024-12-23"
 categories: [programming]
