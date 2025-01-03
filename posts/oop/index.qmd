@@ -252,7 +252,8 @@ For more details, please access [the open-source Think Python book](https://gree
 
 ```{pyodide-python}
 import pandas as pd
-
+with open("my_data.csv", "w") as file:
+    file.write("Col1,Col2,Col3\n1,2,3\n1,4,5")
 df_csv = pd.read_csv("my_data.csv")
 print(df_csv.head())
 ```
