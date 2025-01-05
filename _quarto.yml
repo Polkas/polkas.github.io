@@ -3,8 +3,7 @@ project:
   resources:
     - /posts/webr/webr-serviceworker.js
     - /posts/webr/webr-worker.js
-    - /posts/amino/coupons.json
-    
+
 website:
   title: "Agile Data Science"
   google-analytics: "G-M97VH8JRQ0"
@@ -26,5 +25,30 @@ format:
         - flatly
       dark:
         - darkly
-
+    lang: en-US
+    page-layout: full
+    toc: true
+    webr:
+      cell-options:
+        autorun: true
+        timelimit: 60
+        max-lines: 30
+    pyodide:
+      cell-options:
+        autorun: true
+        max-lines: 30
+    page-footer:
+      left: |
+        Made by polkas
+    comments:
+      giscus:
+        # Reference: https://quarto.org/docs/reference/projects/books.html#giscus
+        # Also https://giscus.app/ for all options
+        repo: polkas/polkas.github.io
+        category: General
+        reactions-enabled: true
+        theme: light
+        language: en
+        loading: lazy
+        mapping: pathname
 
