@@ -4,7 +4,7 @@ format: html
 author: "Maciej Nasinski"
 date: "2025-01-07"
 engine: knitr
-image: main.jpeg
+image: main.png
 categories: [programming]
 filters: 
   - pyodide
@@ -68,7 +68,7 @@ app = App(app_ui, server)
 ### Trinket
 
 **Trinket**, a platform dedicated to interactive coding, leverages WebAssembly to enable educators and learners to execute Python, HTML, and JavaScript snippets directly in their browsers. This eliminates the need for local installations, democratizing access to coding education. 
-
+  
 For an example in action, visit the [Python for Everybody Book](https://books.trinket.io/pfe/index.html), where Trinket facilitates hands-on coding exercises right in the browser.
 
 ## Bridging the Gap Between Development and Deployment
