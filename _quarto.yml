@@ -6,7 +6,7 @@ project:
     - /posts/amino/coupons.json
     
 website:
-  title: "Agile Dev"
+  title: "Agile Data Science"
   google-analytics: "G-M97VH8JRQ0"
   navbar:
     right:
@@ -19,7 +19,12 @@ website:
         href: https://github.com/polkas
 format:
   html:
-    theme: flatly
     css: styles.css
+    search: true
+    theme:
+      light:
+        - flatly
+      dark:
+        - darkly
 
 

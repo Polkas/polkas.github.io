@@ -1,5 +1,5 @@
 ---
-title: "Agile StatP Development"
+title: "Agile Data Science"
 listing:
   contents: posts
   sort: "date desc"
