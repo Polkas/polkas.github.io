@@ -8,39 +8,31 @@ filters:
   - webr
 ---
 
-TL;DR Suppose you want to organize a perfect lottery where people genuinely believe in winning and have no chance of winning. 
-In that case, you need to hire a good mathematician. 
-However, the statistical programmer can easily expose the mechanism with proper data.
+TL;DR If you want to design the perfect lottery where participants believe they have a chance to win but can never actually do so, you'll need the expertise of a skilled mathematician. However, with enough data, a capable statistical programmer can unravel the mechanism and expose the illusion.
 
-NB: Updated 2025-01-03
+**Updated 2025-01-05**
 
 ## Introduction
 
-Kasa Romana is a popular lottery in Poland organized by the Amino food company. Established in the 90s, the lottery provides an opportunity to win real money by collecting a set of coupons that sum up to full hundreds up to 1000. In this blog post, we will analyze the data from the last Kasa Romana event held in 2016 using the Knapsack Algorithm in R.
+**Kasa Romana** is a well-known lottery in Poland, organized by the Amino food company. Originating in the 1990s, this lottery gives participants the chance to win cash prizes by collecting coupons that sum up to round hundreds, up to 1000 PLN. In this blog post, we delve into the data from the last Kasa Romana event, held in 2016, and analyze it using the **Knapsack Algorithm** implemented in R.
 
-[BezKanalu](https://www.facebook.com/BezKanalu/), a popular YouTube channel in Poland that tests products during promotions, collected precisely 1002 coupons from the last event, providing a sufficient amount of data for analysis. The main objective is to find patterns in the data and determine if the collected coupons give any chance to win real money.
+The data for this analysis was meticulously gathered by [BezKanalu](https://www.facebook.com/BezKanalu/), a popular Polish YouTube channel known for testing promotional products. They collected an impressive 1002 coupons from the final event, providing a robust dataset to explore. The goal? To uncover patterns in the data and assess whether these coupons could realistically lead to a monetary win.
 
-To achieve the goal, I used the Knapsack Algorithm, a classic optimization problem that involves finding the optimal way to pack a set of items into a limited space while maximizing their total value. 
+To tackle this challenge, I utilized the Knapsack Algorithm, a well-established optimization technique. The algorithm identifies the optimal way to select items (in this case, coupons) that meet specific constraints (summing to full hundreds) while maximizing value. Using R, I implemented this algorithm to determine if any subset of the collected coupons could satisfy the winning conditions of the lottery.
 
-In this case, the "items" are the coupons, and the "limited space" is the need to have a set of coupons that sum up to full hundreds up to 1000.
+Surprisingly, the analysis revealed that **no combination of coupons from the dataset allowed participants to win real money**. This finding was further reinforced through a theoretical proof using modular arithmetic.
 
-I implemented the Knapsack Algorithm in R programming environment to check if there are any combinations of coupons that enable the lottery participants to win any money. 
+In conclusion, this blog post highlights the power of the Knapsack Algorithm as a tool for solving complex optimization problems like the Kasa Romana lottery. The analysis not only sheds light on the patterns and limitations of the lottery but also demonstrates how programming and mathematical approaches can provide valuable insights into real-world scenarios.
 
-The algorithm works by iterating over all possible subsets of the coupons and selecting the one that satisfies the constraints and maximizes the total value.
+## Apply Knapsack Algorithm on Lottery Coupons
 
-The analysis with 1000 coupons revealed that there are NO combinations of coupons that enable the participants to win real money in the Kasa Romana lottery.
-
-Additionally, theoretical proof by modular arithmetic was provided. 
-
-In conclusion, the Knapsack Algorithm is a powerful tool for solving optimization problems like the Kasa Romana lottery. 
-
-By using R programming environment, I was able to analyze the data and provide valuable insights into the lottery's patterns and trends. 
-
-
-## Analysis
+First we will define the lottery coupons and analyze them.  
+It is worth to try to understand the data patterns before running the Knapsack Algorithm.
 
 ```{webr-r}
-#| echo: TRUE
+#| read-only: true
+#| editor-max-height: 200
+
 coupons <- c(455L, 650L, 26L, 464L, 26L, 750L, 490L, 520L, 399L, 390L, 750L, 
 455L, 104L, 260L, 26L, 438L, 633L, 455L, 195L, 516L, 598L, 481L, 
 299L, 724L, 243L, 26L, 533L, 455L, 572L, 208L, 520L, 130L, 455L, 
@@ -158,7 +150,7 @@ hist(coupons, breaks = 100)
 - multiplication of 13 starting from 26
 - multiplication of 13 plus 165
 
-All of the coupons comes from this 2 sequences.
+We can easily confirm that all of the coupons comes from this 2 sequences.
 
 ```{webr-r}
 rep13 <- 13 * 1:52
@@ -168,42 +160,41 @@ rep2_13 <- 165 + (13 * 0:45)
 all(coupons %in% c(rep13, rep2_13))
 ```
 
-*Single knapsack problem:*
+### Single Knapsack Problem
 
 Knapsack is an optimization method, linear programming for integers.
-
-Each of 1000 coupons is replicated 100 times before the procedure. This replication step is not needed to get this certain results although it will be even more convincing. Remainder, I was looking for set of coupons which sum to full hundreds (100, 200, ...) up to 1000.
+Each of 1000 coupons is replicated 10 times before the procedure. 
+This replication step is not needed to get this certain results although it will be even more convincing. Remainder, I was looking for set of coupons which sum to full hundreds (100, 200, ...) up to 1000.
 
 ```{webr-r}
 # adagio can not be downloaded in the WebR R console
 library(adagio)
 
-cupon_we_have = rep(coupons, 100)
+cupon_we_have = rep(coupons, 10)
 
 amount_we_want = seq(100, 1000, 100)
 
 for (i in amount_we_want) {
-
-solution <- try(
-  knapsack(
-    p = cupon_we_have[cupon_we_have<i], 
-    w = cupon_we_have[cupon_we_have<i], 
-    cap = i
+  solution <- try(
+    knapsack(
+      p = cupon_we_have[cupon_we_have<i], 
+      w = cupon_we_have[cupon_we_have<i], 
+      cap = i
+    )
   )
-)
-
-print(sprintf("Best result for %s reward is %s", i, solution$profit))
+  
+  print(sprintf("Best result for %s reward is %s", i, solution$profit))
 }
 ```
 
 Taking into account only coupons provided there is NO chance to win anything.  
 This seems to no be surprising when we know from what sequences the coupons come from.  
 
-## Theoretical Proof: Modular Arithmetic Analysis
+### Theoretical Proof: Modular Arithmetic Analysis
 
 While the Knapsack algorithm provides computational evidence, I also used theoretical modular arithmetic to validate this result mathematically. 
 
-### Key Sequences
+#### Key Sequences
 
 The coupon values are derived from two modular arithmetic sequences:
 
@@ -219,7 +210,7 @@ $$
 S_2 = \{65, 78, 91, 4, 17, 30, 43, \dots\}.
 $$
 
-### Sum of Coupons
+#### Sum of Coupons
 
 Any sum of coupons from $S_1 \cup S_2$ can be expressed as:
 
@@ -238,9 +229,7 @@ $$
 \text{Sum} = 13 \left( \sum k_i + \sum b_j \right) + \sum c_j \mod 100.
 $$
 
-### Why No Sum Can Sum Up to Full Hundreds
-
-#### Coprimality of `13` and `100`
+#### Why No Sum Can Sum Up to Full Hundreds
 
 The number `13` is **coprime to 100**, meaning their greatest common divisor is `1`. 
 As a result Multiples of `13` mod `100` complete residue cycle:
@@ -248,11 +237,9 @@ $\{13, 26, 39, 52, 65, 78, 91, 4, 17, 30, \dots\}$.
 This sequence never includes $0 \mod 100$ because multiples of `13` mod `100` has no integer solutions.
 Thus, $13 \left( \sum k_i + \sum b_j \right) \mod 100$ also cannot equal $0 \mod 100$ (sum to full hundreds).
 
-#### Shift Neutrality
-
 The term $\sum c_j$ introduces a shift, but it does not affect the impossibility of summing to $0 \mod 100$. **Offsets from $S_2$:** The offsets $(c_j = 65$ for $S_2$ shift the residue cycle of $13 \left( \sum k_i + \sum b_j \right)$, creating $13 \left( \sum k_i + \sum b_j \right) + 65 \mod 100.$
 This shifted cycle is still disjoint from $0 \mod 100$ because the original cycle of $13k \mod 100$ does not include `0`. For other shifts (e.g., `1`, `11`, or any value), the term $\sum c_j$ merely shifts the residue cycle, but since $13k \mod 100$ cannot align with $0$, no shift can create $0 \mod 100$.
 
 ## Conclusion
 
-Knapsack Algorithm computationally demonstrates that no combination of Kasa Romana Lottery coupons can sum up to full hundreds.  Theoretical Proof by modular arithmetic make the statement more credible.
+The Knapsack Algorithm computationally confirms that no combination of Kasa Romana lottery coupons can sum up to full hundreds, making it impossible to meet the winning criteria. This conclusion is further validated by a theoretical proof using modular arithmetic, adding credibility and mathematical rigor to the findings.
