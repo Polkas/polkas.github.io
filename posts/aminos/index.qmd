@@ -12,7 +12,7 @@ TL;DR Suppose you want to organize a perfect lottery where people genuinely beli
 In that case, you need to hire a good mathematician. 
 However, the statistical programmer can easily expose the mechanism with proper data.
 
-NB: Update 2025-01-03
+NB: Updated 2025-01-03
 
 ## Introduction
 
