@@ -10,6 +10,8 @@ categories: [programming]
 
 TL;DR In the world of project management, Agile has become a guiding light for many organizations. Often, there's a misconception that Agile is synonymous with Scrum. However, Scrum is merely one of many frameworks under the vast umbrella of Agile. To truly harness the power of Agile, it's essential to understand its broader philosophy, which is founded on four main principles and further elaborated through twelve guiding principles.
 
+**Updated 2025-01-05**
+
 ## The Four Main Principles of Agile
 
 [The Agile Manifesto](https://agilemanifesto.org), created in 2001 by seventeen software developers, distilled the essence of Agile into four core values:
@@ -44,9 +46,37 @@ To truly succeed with Agile, organizations and teams must embrace the underlying
 
 By understanding and internalizing the four main principles and twelve guiding principles of Agile, teams can better navigate the complexities of modern project management and deliver exceptional value to their customers.
 
-In conclusion, while Scrum provides a structured approach to Agile, it's essential to recognize that Agile itself is a broader philosophy that can be implemented in various ways. Embrace the principles of Agile, and let them guide you in selecting and adapting the framework that best fits your team's unique needs and challenges.
+## Agile in Practice
+
+The application of Agile varies widely depending on the context. Here are a few examples of how Agile can manifest in different scenarios:
+
+- **Software Development:** Teams use iterative cycles to deliver features incrementally, allowing for feedback and adjustments.
+- **Marketing:** Agile helps manage campaigns in short, adaptable bursts, ensuring responsiveness to market changes.
+- **Operations:** Continuous improvement initiatives often rely on Agile principles to optimize processes.
+
+## Agile Tools and Techniques
+
+In addition to frameworks like Scrum, several tools and techniques can help teams implement Agile principles effectively.  
+For those looking to dive deeper into specific Agile frameworks:
+
+- **Scrum:** [Scrum - Wikipedia](https://en.wikipedia.org/wiki/Scrum_(software_development))
+- **Kanban:** [Kanban - Wikipedia](https://en.wikipedia.org/wiki/Kanban_(development))
+- **Lean:** [Lean Software Development - Wikipedia](https://en.wikipedia.org/wiki/Lean_software_development)
+- **Extreme Programming (XP):** [Extreme Programming - Wikipedia](https://en.wikipedia.org/wiki/Extreme_programming)
+- **SAFe (Scaled Agile Framework):** [Scaled Agile Framework - Wikipedia](https://en.wikipedia.org/wiki/Scaled_agile_framework)
+
+## In Conclusion
+
+While Scrum provides a structured approach to Agile, it's essential to recognize that Agile itself is a broader philosophy that can be implemented in various ways. Embrace the principles of Agile, and let them guide you in selecting and adapting the framework that best fits your team's unique needs and challenges.
 
 ## References
 
-- https://agilemanifesto.org
-- https://agilemanifesto.org/principles.html
+- [Agile Software Development - Wikipedia](https://en.wikipedia.org/wiki/Agile_software_development)
+- [The Agile Manifesto](https://agilemanifesto.org)
+- [The Twelve Principles of Agile](https://agilemanifesto.org/principles.html)
+- [Scrum - Wikipedia](https://en.wikipedia.org/wiki/Scrum_(software_development))
+- [Kanban - Wikipedia](https://en.wikipedia.org/wiki/Kanban_(development))
+- [Lean Software Development - Wikipedia](https://en.wikipedia.org/wiki/Lean_software_development)
+- [Extreme Programming - Wikipedia](https://en.wikipedia.org/wiki/Extreme_programming)
+- [Scaled Agile Framework - Wikipedia](https://en.wikipedia.org/wiki/Scaled_agile_framework)
+
