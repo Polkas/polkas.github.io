@@ -3,10 +3,12 @@ project:
   resources:
     - /posts/webr/webr-serviceworker.js
     - /posts/webr/webr-worker.js
+    - /logo.svg
 
 website:
   title: "Agile Data Science"
   google-analytics: "G-M97VH8JRQ0"
+  favicon: logo.svg
   navbar:
     right:
       - author.qmd
