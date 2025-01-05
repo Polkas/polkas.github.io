@@ -16,11 +16,15 @@ TL;DR: WebAssembly (WASM) revolutionizes web development by enabling near-native
 
 ## WebAssembly: A True Web Revolution
 
+![Source: https://www.spiceworks.com/](wasm.png)
+
 WebAssembly, or WASM, represents a paradigm shift in web development. As a low-level, binary instruction format designed to run on modern web browsers, WebAssembly enables developers to build web applications with near-native performance. This technology has ushered in a new era where web applications are not only faster but also more versatile, supporting languages beyond JavaScript, such as Rust, C++, R, and Python.
 
 The most striking feature of WebAssembly is its ability to eliminate the traditional barriers to high-performance computing on the web. By compiling code written in various languages into a compact binary format, WebAssembly ensures that applications can execute efficiently, rivaling desktop applications in performance. This capability extends to interactive and computationally heavy applications, such as gaming, data visualization, and machine learning.
 
-## A Gateway to Simpler and Cheaper Development
+Please access [what is webassembly blog post](https://www.spiceworks.com/tech/devops/articles/what-is-webassembly/) to read more technical detailes of webassembly. 
+
+## WebAssembly Examples
 
 WebAssembly enables the development of powerful tools like Pyodide and WebR, which act as the building blocks for higher-level frameworks.
 
@@ -79,7 +83,7 @@ The elegance of WebAssembly lies in its universality. Unlike traditional web app
 
 WebAssembly is more than just a tool for optimization; it is the foundation for a new generation of web applications. Its impact spans industries, enabling high-performance applications in gaming, scientific computing, and even augmented reality. As more frameworks and libraries integrate with WebAssembly, the ecosystem continues to grow, paving the way for innovative applications that were previously impractical for the web.
 
-## Conslusion
+## Conclusion
 
 In conclusion, WebAssembly is not just a technological advancement; it is a revolution in web development. By combining high performance with simplicity and cost-effectiveness, WebAssembly is set to redefine what is possible on the web. Whether you are a seasoned developer or new to the field, embracing WebAssembly and frameworks like Shiny Live, PyShiny, Quarto, and Trinket will empower you to build applications that are faster, cheaper, and more accessible than ever before.
 
