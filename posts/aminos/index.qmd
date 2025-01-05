@@ -1,7 +1,7 @@
 ---
 title: "Analyzing the Kasa Romana Lottery with Knapsack Algorithm [Updated]"
 author: "Maciej Nasinski"
-date: "2025-01-03"
+date: "2023-04-08"
 categories: [knapsack, rprogramming]
 image: main.png
 filters:
@@ -11,6 +11,8 @@ filters:
 TL;DR Suppose you want to organize a perfect lottery where people genuinely believe in winning and have no chance of winning. 
 In that case, you need to hire a good mathematician. 
 However, the statistical programmer can easily expose the mechanism with proper data.
+
+NB: Update 2025-01-03
 
 ## Introduction
 
