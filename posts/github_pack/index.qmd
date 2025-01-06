@@ -28,6 +28,7 @@ From coding your first app to engaging in complex projects, the Student Pack is 
 - **GitHub Copilot**: Acts as an AI pair programmer, offering real-time code suggestions and function ideas to enhance learning and coding efficiency.
 - **GitLens Pro**: Offers insights into code authorship and history, improving understanding of codebase evolution and fostering better collaboration.
 - **GitKraken**: Simplifies Git workflows with its user-friendly interface, making version control more accessible to students.
+- **Digital Ocean**: Cloud platform, on which you can receive a $200 credit.
 - and much more, [full list of tools](https://education.github.com/pack)
 
 #### Accessing the Pack

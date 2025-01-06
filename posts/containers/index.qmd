@@ -26,7 +26,7 @@ Access a playground for playing with containers using GitHub codespaces.
 
 ```{=html}
 <a href="#deploying-rdevdash-app-to-digital-ocean">
-Deploying r shiny rdevdash app to Digital Ocean
+Deploying r shiny rdevdash app to Digital Ocean by using Docker Hub app image.
 </a>
 ```
 
@@ -1581,6 +1581,9 @@ Deploying containers is a multifaceted process that transforms development artif
 [`rdevdash` shiny app was deployed with containers to Digital Ocean in less than 10 minutes](https://rdevdash-app-oygos.ondigitalocean.app/).  
 [`rdevdash`](https://github.com/Polkas/rdevdash) is R Package Developer Dashboard, a comprehensive tool designed to streamline the process of tracking and managing CRAN packages.
 
+[Please take into account that with GitHub Student Pack you get 200$ from Digital Ocean.](https://www.digitalocean.com/github-students)  
+[Read more about GitHub Student Pack in my another blog post.](https://polkas.github.io/posts/github_pack/)
+
 The image for the rdevdash app is available on the docker hub `polas/rdevdash-app`. 
 
 ```bash
@@ -1621,7 +1624,7 @@ CMD R -e "shiny::runApp('.', host = '0.0.0.0', port = 3838)"
 
 Deploying the `rdevdash` app to DigitalOcean was a straightforward and efficient process. By leveraging Docker and DigitalOcean's App Platform, I was able to package and deploy the app with minimal effort. For those looking for a detailed guide on hosting Shiny apps on DigitalOcean, I highly recommend the blog [How to Host Shiny Apps on the DigitalOcean App Platform](https://hosting.analythium.io/how-to-host-shiny-apps-on-the-digitalocean-app-platform/). It provides step-by-step instructions and valuable insights for deploying Shiny apps effectively.
 
-In my deployment, I used a prebuilt Docker image hosted on Docker Hub: `polkas/rdevdash-app:latest`. This image contained the fully prepared `rdevdash` app, making the process even faster and more reliable. To begin, I logged into my DigitalOcean account and navigated to the App Platform section. There, I created a new app and selected "Deploy from Container Registry." I linked my Docker Hub account and specified the image `polkas/rdevdash-app:latest` as the source.
+In my deployment, I used a prebuilt Docker image of my app hosted on Docker Hub: `polkas/rdevdash-app:latest`. This image contained the fully prepared `rdevdash` app, making the process even faster and more reliable. To begin, I logged into my DigitalOcean account and navigated to the App Platform section. There, I created a new app and selected "Deploy from Container Registry." I linked my Docker Hub account and specified the image `polkas/rdevdash-app:latest` as the source.
 
 Next, I configured the app by selecting a deployment region close to my target audience for optimal performance and ensured that port 3838 (the default port for Shiny apps) was exposed. With these configurations in place, I initiated the deployment. DigitalOcean's platform pulled the Docker image, set up the app, and launched it seamlessly. The entire process, from start to finish, took less than ten minutes. After deployment, I accessed my app through the provided URL and confirmed that everything, including static assets like CSS and icons, was functioning as expected.
 
