@@ -2,7 +2,7 @@
 title: "WebAssembly: A True Web Revolution"
 format: html
 author: "Maciej Nasinski"
-date: "2025-01-06"
+date: "2025-01-07"
 engine: knitr
 image: main.png
 categories: [programming]
@@ -22,31 +22,29 @@ WebAssembly, or WASM, represents a paradigm shift in web development. As a low-l
 
 The most striking feature of WebAssembly is its ability to eliminate the traditional barriers to high-performance computing on the web. By compiling code written in various languages into a compact binary format, WebAssembly ensures that applications can execute efficiently, rivaling desktop applications in performance. This capability extends to interactive and computationally heavy applications, such as gaming, data visualization, and machine learning.
 
-Please access [what is webassembly blog post](https://www.spiceworks.com/tech/devops/articles/what-is-webassembly/) to read more technical detailes of webassembly. 
+**WebAssembly** makes it possible to develop powerful tools such as **Pyodide** and **webr**, which serve as foundational building blocks for higher-level frameworks. By compiling entire language runtimes (Python for Pyodide and R for webr) into WebAssembly, these projects allow code to run directly in the browser without a server. The key to their performance is WebAssembly's standardized, low-level bytecode, which modern browsers can execute at near-native speeds. This enables client-side execution of Python or R, including extensive libraries, and supports rich, interactive web applications without a specialized backend.
 
-## WebAssembly Examples
+A critical step between a language's source code (Python or R) and the final WebAssembly binary is **LLVM**, a specialized compiler infrastructure. For instance, **Emscripten** (an LLVM-based toolchain) compiles C and C++ to WebAssembly. Pyodide follows a similar approach by compiling Python's C-based runtime into WebAssembly, and webr does the same for R. By leveraging this workflow, developers can integrate Python or R code, along with their libraries, directly with JavaScript in the browser. This opens up new possibilities for in-browser data analysis, visualization, and education.
 
-WebAssembly enables the development of powerful tools like Pyodide and WebR, which act as the building blocks for higher-level frameworks.
-
-### web-r
-
-WebR brings similar capabilities for R, enabling R code to execute seamlessly within a web environment. Together, these frameworks empower developers to create rich, interactive web applications without relying on a server backend.
+Here is a simple example of R code running via webr:
 
 ```{webr-r}
 print("Hello world!")
 ```
 
-### pyodide
-
-Pyodide empowers developers by bringing Python to the browser. By compiling Python to WebAssembly, Pyodide allows developers to execute Python code, use popular Python libraries, and interact with JavaScript seamlessly, all within a browser environment.
+Below is Python code running through Pyodide:
 
 ```{pyodide-python}
 import this
 ```
 
-### shinylive 
+In short, the combination of WebAssembly, LLVM, and specialized toolchains (such as Pyodide and webr) transforms the browser into a powerful platform for high-performance, client-side computing while maintaining a seamless developer experience.
 
-For example, **PyShiny**, a Python-based framework, allows developers to craft dynamic dashboards that run entirely in the browser. This eliminates the need for maintaining backend servers, simplifying deployment while reducing costs. Similarly, **Shiny Live** provides R developers with the ability to build and host web applications directly in the browser. One practical application is a real-time data visualization tool built with Shiny Live, capable of reflecting changes instantaneously.
+### shinylive
+
+For example, shinylive is available in two versions: one for PyShiny (Python) built on Pyodide, and another for Shiny (R) powered by webr. Both versions allow developers to create dynamic dashboards that run entirely in the browser, removing the need for backend servers and significantly simplifying deployment while reducing costs. A practical example is a real-time data visualization tool built with shinylive, which can instantly reflect updates to the underlying data.
+
+python shinylive:
 
 ```{shinylive-python}
 #| standalone: true
@@ -75,6 +73,11 @@ app = App(app_ui, server)
   
 For an example in action, visit the [Python for Everybody Book](https://books.trinket.io/pfe/index.html), where Trinket facilitates hands-on coding exercises right in the browser.
 
+### Many more examples
+
+There are many more examples of how Webassembly is changing the Internet.  
+Please leave the ones you think should be discussed here as a comment.
+
 ## Bridging the Gap Between Development and Deployment
 
 The elegance of WebAssembly lies in its universality. Unlike traditional web applications that require complex server setups, WebAssembly applications can run seamlessly in the client’s browser. This not only speeds up the development cycle but also minimizes the operational overhead associated with server maintenance. Developers can focus entirely on writing code, knowing their applications can be easily deployed and accessed across various platforms without compatibility concerns.
@@ -85,7 +88,7 @@ WebAssembly is more than just a tool for optimization; it is the foundation for 
 
 ## Conclusion
 
-In conclusion, WebAssembly is not just a technological advancement; it is a revolution in web development. By combining high performance with simplicity and cost-effectiveness, WebAssembly is set to redefine what is possible on the web. Whether you are a seasoned developer or new to the field, embracing WebAssembly and frameworks like Shiny Live, PyShiny, Quarto, and Trinket will empower you to build applications that are faster, cheaper, and more accessible than ever before.
+In conclusion, WebAssembly is not just a technological advancement; it is a revolution in web development. By combining high performance with simplicity and cost-effectiveness, WebAssembly is set to redefine what is possible on the web. Whether you are a seasoned developer or new to the field, embracing WebAssembly and frameworks like webr or pyodide will empower you to build better applications.
 
 ## References
 

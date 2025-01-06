@@ -1,0 +1,268 @@
+---
+title: "Easy and Breezy (Statistical) Analysis with the **{easystats}** Family"
+author: "Maciej Nasinski"
+date: "2025-01-30"
+categories: [statistics, rprogramming]
+draft: true
+image: main.png
+filters:
+  - webr
+---
+
+
+TL;DR The {easystats} R ecosystem provides an integrated suite of R packages (like parameters, performance, report, effectsize, correlation, etc.) to streamline statistical analysis with consistent syntax and human-friendly outputs. Overall, {easystats} makes analyses easier, more consistent, and less error-prone, saving time and effort in presenting results clearly. The **v1.0 stable release** of {easystats} is a major milestone, cementing its place as a go-to ecosystem for streamlined statistical analysis in R.
+
+
+## Introduction
+
+If you’ve been following the R ecosystem lately, you might have heard of the **{easystats}** family: a collection of R packages that aims to streamline statistical workflows. The big news? **{easystats}** has recently reached its first *stable* release (v1.0)! This milestone means the packages have matured into a reliable, consistent toolkit for data analysts, statisticians, and R enthusiasts.
+
+In this post, we’ll explore what {easystats} is, highlight some of its core packages, walk through some code examples, and demonstrate a **real-world case study** using the **MASS::Insurance** dataset. Get ready to see just how *easy* data analysis can be!
+
+## Why {easystats}?
+
+### 1. A Unified Ecosystem
+
+The {easystats} project is an ecosystem of packages built around a common philosophy and interface. No more juggling multiple disparate packages and syntax styles; {easystats} centralizes many tasks under one umbrella.
+
+### 2. Comprehensive Coverage
+
+From data exploration and regression modeling to Bayesian analyses, effect sizes, performance checks, and automated reporting, {easystats} covers it all.
+
+### 3. Human-Friendly Output
+
+One of {easystats}’s greatest strengths is its readable output. Functions like `report()` generate quick “English-like” summaries of your model’s results—perfect for speedy interpretations or even final reporting.
+
+---
+
+## The Core Packages
+
+Here’s a brief overview of some core packages in the {easystats} family:
+
+- **insight**: Extracts and standardizes information from model objects.  
+- **parameters**: Summarizes and interprets model parameters (e.g., estimates, confidence intervals, p-values).  
+- **performance**: Checks and compares model quality and performance (R², AIC, residual diagnostics, etc.).  
+- **report**: Automatically generates text-based reports from models for quick, human-readable results.  
+- **effectsize**: Computes and interprets effect sizes for frequentist and Bayesian analyses.  
+- **correlation**: Simplifies correlation analyses with easy correlation tables and robust methods.  
+- **bayestestR**: Summarizes, describes, and tests Bayesian models.  
+- **see**: Creates beautiful visualizations that integrate neatly with other {easystats} packages.
+
+You can install them individually or grab everything via the main **{easystats}** meta-package. In an environment with **webR** (like an interactive Quarto document), these packages may already be available. Locally, you’d do:
+
+```r
+install.packages("easystats")
+library(easystats)
+```
+
+---
+
+## Quick Example: A Simple Linear Regression
+
+Let’s start with a built-in dataset (`iris`) to show how straightforward these packages are.
+
+```{webr-r}
+#| label: quick-lm
+#| echo: true
+#| warning: false
+#| message: false
+
+# A simple linear model
+model <- lm(Sepal.Length ~ Sepal.Width + Petal.Length + Petal.Width, data = iris)
+
+# Summarize parameters
+library(parameters)
+model_params <- model_parameters(model)
+model_params
+```
+
+You’ll see a neat table of coefficients, standard errors, confidence intervals, and p-values. Next, we can quickly check the model’s performance:
+
+```{webr-r}
+#| label: check-performance
+#| echo: true
+#| warning: false
+#| message: false
+
+library(performance)
+
+performance(model)
+
+performance_cv(model)
+```
+
+And for a more human-friendly summary:
+
+```{webr-r}
+#| label: report-model
+#| echo: true
+#| warning: false
+#| message: false
+
+library(report)
+report(model)
+```
+
+You’ll get an English-like summary of your regression results, instantly ready for write-ups or presentations.
+
+---
+
+## Quick Example: Rapid Correlation Analysis
+
+Maybe you just want to quickly see relationships between numeric variables in `iris`. No need to write a bunch of loops or carefully format your correlation table:
+
+```{webr-r}
+#| label: correlation-analysis
+#| echo: true
+#| warning: false
+#| message: false
+
+library(correlation)
+cor_table <- correlation(iris[, 1:4])  # the first 4 columns are numeric
+summary(cor_table)
+```
+
+This function neatly outputs correlation coefficients, confidence intervals, p-values, and effect size interpretations all at once.
+
+---
+
+## **Case Study: Modeling Insurance Data (MASS::Insurance)**
+
+For a more *real-world* feel, let’s see how we might use {easystats} on an actual dataset. We’ll use the **`Insurance`** dataset from **{MASS}**, which contains Swedish car insurance data from 1977.
+
+The dataset has the following columns:
+
+- **Group**: Risk group classification (7 levels)  
+- **Age**: Age classification (4 levels)  
+- **Holders**: Number of policyholders  
+- **Claims**: Number of claims  
+
+A common approach is to model the number of **Claims** using a **Poisson** regression, with an offset for the number of **Holders** to account for exposure (i.e., the larger the number of policyholders, the more potential claims).
+
+### Step 1: Load and Inspect the Data
+
+```{webr-r}
+#| label: insurance-data
+#| echo: true
+#| warning: false
+#| message: false
+
+library(MASS)
+
+data("Insurance")
+head(Insurance)
+```
+
+You should see a glimpse of the first few rows, showing `Group`, `Age`, `Holders`, and `Claims`.
+
+### Step 2: Fit a Poisson Model
+
+Here, we’re modeling the expected number of claims, adjusting for the number of holders via an offset:
+
+```{webr-r}
+#| label: fit-model
+#| echo: true
+#| warning: false
+#| message: false
+
+# If not already loaded, load easystats:
+library(easystats)
+
+poisson_model <- glm(
+  Claims ~ Age + Group + offset(log(Holders)),
+  family = poisson(link = "log"),
+  data = Insurance
+)
+```
+
+BTW. Both Age and Group are ordered factors (`factor(..., ordered = TRUE)`).
+Ordered Factor default contrasts are polynomial (next powers) in nature (orthonormal).
+Orthonormal polynomials (“contrast” polynomials) are essentially a rotated and scaled version of the raw polynomial powers. This rotation makes it easier to interpret each term’s effect independently.
+
+BTW. An offset in a Poisson (or count) model ensures you’re modeling rates rather than raw counts. It’s especially critical when each data point comes with a different “window of opportunity,” like variable population sizes, policyholder counts, or time spans. By incorporating 
+$log(exposure)$ as an offset, you directly model counts per unit exposure—leading to more accurate inferences about how predictors affect event rates.
+
+### Step 3: Examine Model Parameters
+
+We can use **{parameters}** to get a neat coefficient table. This helps us understand which factors (Age or Group) have the biggest impact on the rate of claims.
+
+```{webr-r}
+#| label: model-parameters
+#| echo: true
+#| warning: false
+#| message: false
+
+model_parameters(poisson_model)
+```
+
+Look at the estimated coefficients, confidence intervals, and p-values. If an Age or Group level has a positive, significant coefficient, it indicates a higher rate of claims compared to the reference group/age.
+
+### Step 4: Check Model Performance
+
+Next, let’s check how well this model fits the data using **{performance}**.
+
+```{webr-r}
+#| label: model-performance
+#| echo: true
+#| warning: false
+#| message: false
+
+performance(poisson_model)
+```
+
+You’ll see a table with various metrics (e.g., AIC, BIC, pseudo-R² for GLMs, etc.). These help determine how good the model is and whether you can improve it by adding or removing predictors.
+
+### Step 5: Generate a Quick Report
+
+We can create a human-readable summary using **{report}**:
+
+```{webr-r}
+#| label: report-case-study
+#| echo: true
+#| warning: false
+#| message: false
+
+poisson_report <- report(poisson_model)
+poisson_report
+```
+
+This gives a narrative-style output describing the effect of each factor level on the claim counts.
+
+### Step 6: Compute and Interpret **Effect Sizes**
+
+Finally, to better understand the magnitude of these effects, we can use **{effectsize}**. For a Poisson model, exponentiated coefficients represent **Incidence Rate Ratios (IRRs)**—telling us how many times higher (or lower) the expected count of claims is, relative to the reference level, for a one-unit increase in the predictor.
+
+```{webr-r}
+#| label: effectsize-analysis
+#| echo: true
+#| warning: false
+#| message: false
+
+library(effectsize)
+poisson_es <- effectsize(poisson_model)
+poisson_es
+```
+
+- **Estimate**: The “log-rate” difference by default for the Poisson model.  
+- **CI**: The confidence interval for that difference.  
+- **Interpretation**: You can interpret IRRs by exponentiating the estimates. If `exp(Estimate) > 1`, it suggests an *increase* in expected claims compared to the reference; if `exp(Estimate) < 1`, it suggests a *decrease*.
+
+By examining effect sizes, you gain additional clarity on *how much* each predictor (e.g., Age group, Risk group) influences insurance claims—a critical piece for real-world decision-making in insurance underwriting and risk assessment.
+
+---
+
+## Why You Should Care
+
+- **Time Saved**: By using {easystats}, you remove the friction of figuring out which functions from which packages to use for each step. You can focus on the *analysis*, not the package management.  
+- **Consistent Syntax**: You don’t have to remember a different function name or argument style for every analysis step. Everything feels cohesive and intuitive.  
+- **Clear & Beautiful Outputs**: From interpretive text to visually appealing plots (with **{see}**), your workflow becomes both faster and more presentation-ready.
+
+---
+
+## Final Thoughts
+
+The **v1.0 stable release** of {easystats} is a major milestone, cementing its place as a go-to ecosystem for streamlined statistical analysis in R. Whether you’re a newbie looking for user-friendly functions or an experienced analyst wanting to reduce boilerplate code, {easystats} has something for you.
+
+**Ready to give it a go?** Explore the {easystats} meta-package, try out the examples above, and check out the [easystats GitHub repo](https://github.com/easystats) for more documentation and vignettes. You’ll be amazed at how quickly you can set up a robust data analysis pipeline—all with fewer headaches and more consistent, high-quality outputs.
+
+*Have any questions, comments, or your own tips on using {easystats}? Feel free to leave a comment.*

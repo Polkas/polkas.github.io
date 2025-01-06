@@ -2,7 +2,7 @@
 title: "Containers for Data Scientists [In-Depth]"
 author: "Maciej Nasinski"
 date: "2024-12-23"
-categories: [programming]
+categories: [programming, in-depth]
 image: main.png
 format:
   html:

@@ -2,7 +2,7 @@
 title: 'webR - WebAssembly for R'
 author: "Maciej Nasinski"
 date: "2023-04-09"
-categories: [webr, rprogramming]
+categories: [rprogramming]
 image: webR.png
 ---
 
