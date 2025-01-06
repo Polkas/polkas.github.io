@@ -222,8 +222,7 @@ We can create a human-readable summary using **{report}**:
 #| warning: false
 #| message: false
 
-poisson_report <- report(poisson_model)
-poisson_report
+report(poisson_model)
 ```
 
 This gives a narrative-style output describing the effect of each factor level on the claim counts.
@@ -239,8 +238,7 @@ Finally, to better understand the magnitude of these effects, we can use **{effe
 #| message: false
 
 library(effectsize)
-poisson_es <- effectsize(poisson_model)
-poisson_es
+effectsize(poisson_model)
 ```
 
 - **Estimate**: The “log-rate” difference by default for the Poisson model.  
