@@ -51,7 +51,7 @@ jobs:
         uses: actions/configure-pages@v3
         
       - name: "Install R Packages: Cache packages"
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         with:
           path: ${{ env.RENV_PATHS_ROOT }}
           key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
@@ -73,7 +73,7 @@ jobs:
         uses: quarto-dev/quarto-actions/render@v2
         
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v3
         with:
           path: './_site'
           
