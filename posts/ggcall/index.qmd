@@ -7,91 +7,130 @@ engine: knitr
 categories: [rprogramming]
 ---
 
-TL;DR Two functions in ggplot2 are overwritten (ggplot and +) to achieve code transparency and reproducibility when ggplot2 is used inside a function. It is believed that merging ggcall-like into ggplot2 can significantly enhance its functionality and accessibility, benefiting the entire R community. Powered by metaprogramming.
+TL;DR Two functions in ggplot2 are overwritten (ggplot and +) to achieve code transparency and reproducibility when ggplot2 is used inside a function.  
+It is believed that merging ggcall-like into ggplot2 can significantly enhance its functionality and accessibility, benefiting the entire R community.  
+Powered by metaprogramming.
 
-### Overview of ggcall
+**Updated 2025-01-07**
 
-`ggcall` enhances `ggplot2` by allowing developers to retrieve the complete code used to generate a `ggplot` object. This is particularly invaluable when the original code is buried within other package internals or when dealing with multi-layered, complex plotting logic. The ability to access and understand the underlying `ggplot2` code not only aids in debugging and learning but also ensures that visualizations are transparent and reproducible across various use cases.
+## Overview
 
-[![](main.png)](https://github.com/Polkas/ggcall)
+Transparency and reproducibility are fundamental principles in data analysis across various fields, from academic
+research to industry applications. The `ggcall` package enhances the functionality of `ggplot2` by enabling users to retrieve the complete code used to generate a `ggplot` object inside a function. This package is beneficial for understanding and replicating complex `ggplot2` plots returned by a function. From technical point of view, `ggcall` extends `ggplot2` `+` operator and `ggplot` function to track the history of plot construction.
 
-### Practical Usage
+`ggcall` makes a developer's life easier and limits the need to use base r metaprogramming or `rlang`.
 
-Here’s how simple it is to start with `ggcall`:
+`patchwork` ggplot2 related operators like `+`, `-`, `*`, `|`, `&` and `/` are optionally supported. 
+`patchwork` is a package that expands the API to allow for arbitrarily complex composition of plots by, 
+among others, providing mathematical operators for combining multiple plots.
+
+An excellent implementation example is to create a bunch of ggplot templates, and we want them to be functions.
+Then, each template will generate the expected plot, and the ggplot2 code behind is easy to get.
+[Please access such templates here](https://github.com/Polkas/ggcall_example).
+
+## Implementation in Your Own Package
+
+The ggcall can be implemented as a standalone solution.
+
+A "standalone" file implements a minimum set of functionality in such a way that it can be copied into another package. 
+`usethis::use_standalone()` makes it easy to get such a file into your own repo/package and later update it if needed.  
+[Example of standalone file in another package, rlang](https://github.com/r-lib/rlang/blob/main/R/standalone-purrr.R)
+
+
+The `usethis` >= 2.2.0 is required.
 
 ```r
-library(ggcall)
-# Example usage within your R package
-gg_plot <- your_function_that_creates_ggplot()
-plot_code <- ggcall(gg_plot)
-plot_code
+install.packages("usethis")
 ```
 
-This functionality makes it a breeze for anyone developing or debugging complex visualizations within their packages.
+STANDALONE means copy paste the files and add dependencies to your own package.
 
-### Examples
-
-#### Example with a dummy function with ggplot2 code
+Please create an R package if not having such yet.
 
 ```r
-remotes::install_github("https://github.com/Polkas/ggcall")
-library(ggcall)
+usethis::create_package()
+```
 
-# Example: Create a function which combines a few ggplot layers
-# Typically, it will be a function from your R package where you implemented ggcall
-func <- function(data, x, y, bool = TRUE) {
-  # layers have to be added with +
-  gg <- ggplot(data, aes(x=!!as.name(x), y=!!as.name(y))) +
-    geom_point(alpha = 0.4) +
-    facet_grid(~gear)
-    
-  if (bool) {
-    gg <- gg + theme(axis.title.x = element_blank())
-  }
+WITH `patchwork` support
 
-  func_internal <- function(gg) {
-    gg + labs(x = "custom xlab")
-  }
+```r
+# Add ggplot2, patchwork as your package dependencies
+# copy paste the ggcall.R file to your own package R directory
+# copy paste the patchwork.R file to your own package R directory
 
-  func_internal(gg)
-}
+usethis::use_standalone("polkas/ggcall", "patchwork.R", ref = "v0.3.4")
+# you may need to update the files time to time with usethis::use_standalone
+```
+
+WITHOUT `patchwork` support
+
+```r
+# Add ggplot2as your package dependencies
+# copy paste the ggcall.R file to your own package R directory
+
+usethis::use_standalone("polkas/ggcall", "ggcall.R", ref = "v0.3.4")
+# you may need to update the files time to time with usethis::use_standalone
+```
+
+GENERAL COMMENTS:
+
+```
+# Apply only if needed
+# In your own code remove all ggplot2:: prefix-ing before ggplot function calls
+# ggplot2::ggplot(...) -> ggplot(...)
+```
+
+```
+# DO NOT import ggplot function from ggplot2
+#' @rawNamespace import(ggplot2, except = c(ggplot))
+```
+
+```
+# Combine ggcall +.gg operator with your own one if you already overwrited it in your package
+# e.g. GGally package requires such step
+```
+
+```
+# Consider moving the ggplot2 from DESCRIPTION Imports to Depends 
+# if your users will benefit from extending results with further layers
+```
+
+## Example
+
+[The ggcall_example repository](https://github.com/Polkas/ggcall_example) contains a simple implementation of ggcall.
+`forest_plot` and `barbell_plot` functions are a part of `ggcall.example` package.
+Typically, it will be a function returning `ggplot2` object from your own R package where you implemented `ggcall`.
+
+```r
+remotes::install_github("https://github.com/Polkas/ggcall_example")
+library(ggcall.example)
+
+# Print the body of the function
+forest_plot
+
+df <- data.frame(
+  Treatment = c("Treatment A", "Treatment B", "Treatment C"),
+  Estimate = c(0.2, 0.5, -0.1),
+  CI_lower = c(0.1, 0.3, -0.3),
+  CI_upper = c(0.3, 0.7, 0.1)
+)
+
+# Call the function, gg_plot is a ggplot object
+gg_forest <- forest_plot(df, "Estimate", "CI_lower", "CI_upper", "Treatment")
+gg_forest
 
 # Retrieve the plot construction code
-gg_plot <- func(mtcars, "wt", "mpg")
-plot_call <- ggcall(gg_plot)
-plot_call
+call_forest <- ggcall(gg_forest)
+
 # Optionally: Style the code with styler
-styler::style_text(backports:::deparse1(plot_call))
+# install.packages("styler")
+styler::style_text(paste(deparse(call_forest), collapse = "\n"))
 
-# Optional
-# Access call environment and/or use it to evaluate the call
-plot_call_env <- ggcall_env(plot_call)
-as.list(plot_call_env)
-# Reproduce the plot by evaluating the code
-eval_ggcall(plot_call)
-# Optionally overwrite variables
-eval_ggcall(plot_call, mtcars = mtcars[1:10, ], x = "gear")
-```
+# Optionally: add assignments to call
+styler::style_text(paste(deparse(ggcall_add_assignments(call_forest)), collapse = "\n"))
 
-#### Example implementation in GGally package
-
-`ggcall` was successfully integrated into popular R packages like `GGally`. Please take into account that `GGally` had already overwritten the + `ggplot2` function. Thus, the overwriting practice seems to be popular.
-
-These implementations demonstrate `ggcall`’s versatility and its capability to enhance the functionality of existing packages.
-
-check out the inst/ggally.R in [the ggcall repository](https://github.com/Polkas/ggcall) for more details
-
-```r
-remotes::install_github("https://github.com/Polkas/ggally")
-library(GGally)
-data(mtcars)
-# only ggmatrix related functions are not supported
-gg <- ggcorr(mtcars, method = "everything", label = TRUE)
-gg_code <- ggcall(gg)
-styler::style_text(backports:::deparse1(gg_code))
-# Optional
-# Reproduce the plot by evaluating the code
-eval_ggcall(gg_code)
+# Optionally: reevaulate the call
+eval_ggcall(call_forest)
 ```
 
 ### Why ggcall matters
@@ -100,10 +139,6 @@ For developers who build R packages that include functions generating `ggplot2` 
 - **Code Tracking**: Extends the `+` operator and the `ggplot` function to maintain a history of plot construction.
 - **Accessible History**: Users can effortlessly access a sequence of `ggplot2` calls used to build plots, enhancing understanding and teaching opportunities.
 - **Reproducibility**: Facilitates the easy replication and modification of plots, which is essential for testing and extending visualizations.
-
-### Implementation Insights
-
-Please check out README file for more information.
 
 ### Join the ggcall Community
 

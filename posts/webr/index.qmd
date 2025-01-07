@@ -1,14 +1,18 @@
 ---
-title: 'webR - WebAssembly for R'
+title: 'webR Console - R code directly in your web browser'
 author: "Maciej Nasinski"
 date: "2023-04-09"
 categories: [rprogramming]
+draft: true
 image: webR.png
 ---
 
-TL;DR Play with R code in real-time in the web browser using webR (WebAssembly for R). Additionally supported a plot output with canvas.
+TL;DR Play with R code in real-time in the web browser using webR (WebAssembly for R).  
+Additionally supported a plot output with canvas.
 
-### WebR R Console to Play with the Code
+**Updated 2025-10-07**
+
+### WebR R Console
 
 Please install any needed dependency with call like `webr::install("dplyr")`.  
 The available R packages can be get with the `rownames(available.packages(repos = "https://repo.r-wasm.org/"))` call.  
@@ -90,7 +94,11 @@ The available R packages can be get with the `rownames(available.packages(repos 
 
 ## Intro
 
-Now you can experiment with R code directly in your web browser, without the need for any installation or server setup.
+[Please read more about WebAssembly in my another blog post.](https://polkas.github.io/posts/webassembly/)
+
+In this blog post we will focus on building webR Console.
+
+You can experiment with R code directly in your web browser, without the need for any installation or server setup.
 
 The webR Console is powered by WebAssembly, a new technology that allows us to run high-performance applications in the web browsers. With the webR Console, you can write, test, and run R code right in your browser, with a user interface that's intuitive and easy to use.
 
@@ -99,6 +107,7 @@ To get started with the webR Console, simply scroll down to the webR terminal. Y
 I am thrilled to offer this powerful tool on my blog, and I hope you'll find it as useful for your own projects.
 
 Please be aware of major limitation which is the limited number of avaiable packages to be installed in the webR console.
+
 The webR team will continuously add more packages, taking into account many factors.
 
 ## How it was done
@@ -106,9 +115,8 @@ The webR team will continuously add more packages, taking into account many fact
 Below is the core of the HTML/JS code that is required to build the WebR Console on a static webpage. 
 The complete code can be found on this [`GitHub page`](https://github.com/Polkas/polkas.github.io/tree/master/posts/webr).
 
-I spent some time adding support for presenting a plot output. This part was challenging because it is not yet well-documented. In order to enable support for graphics, you must use the `canvas` options.
-
-When using the GitHub pages with ServiceWorker, one of two possible communication channels must be utilized. This means that two service worker scripts, `webr-serviceworker.js` and `webr-worker.js`, must be hosted on the same origin as the page loading WebR. It's important to remember to add these two files to the page resources, which in my case, is done in the `_quarto.yaml`.
+When using the GitHub pages with ServiceWorker, one of two possible communication channels must be utilized.  
+This means that two service worker scripts, `webr-serviceworker.js` and `webr-worker.js`, must be hosted on the same origin as the page loading WebR. It's important to remember to add these two files to the page resources, which in my case, is done in the `_quarto.yaml`.
 
 ```html
 <div style="border: solid #333 1px; padding: 5px; width: 100%;">
