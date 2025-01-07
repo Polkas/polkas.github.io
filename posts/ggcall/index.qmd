@@ -135,10 +135,11 @@ eval_ggcall(call_forest)
 
 ### Why ggcall matters
 
-For developers who build R packages that include functions generating `ggplot2` plots, maintaining clarity over how each plot is constructed can be challenging. `ggcall` addresses this by enabling:
-- **Code Tracking**: Extends the `+` operator and the `ggplot` function to maintain a history of plot construction.
-- **Accessible History**: Users can effortlessly access a sequence of `ggplot2` calls used to build plots, enhancing understanding and teaching opportunities.
-- **Reproducibility**: Facilitates the easy replication and modification of plots, which is essential for testing and extending visualizations.
+For developers who build R packages that include functions generating `ggplot2` plots, maintaining clarity over how each plot is constructed can be challenging. `ggcall` addresses this by enabling:  
+
+- **Code Tracking**: Extends the `+` operator and the `ggplot` function to maintain a history of plot construction.  
+- **Accessible History**: Users can effortlessly access a sequence of `ggplot2` calls used to build plots, enhancing understanding and teaching opportunities.  
+- **Reproducibility**: Facilitates the easy replication and modification of plots, which is essential for testing and extending visualizations.  
 
 ### Join the ggcall Community
 

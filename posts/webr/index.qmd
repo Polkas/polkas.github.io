@@ -1,5 +1,5 @@
 ---
-title: 'webR Console - R code directly in your web browser'
+title: 'WebAssembly for R - webR'
 author: "Maciej Nasinski"
 date: "2023-04-09"
 categories: [rprogramming]
