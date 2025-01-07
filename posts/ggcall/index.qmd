@@ -5,6 +5,7 @@ author: "Maciej Nasinski"
 date: "2024-04-13"
 engine: knitr
 categories: [rprogramming]
+image: main.png
 ---
 
 TL;DR Two functions in ggplot2 are overwritten (ggplot and +) to achieve code transparency and reproducibility when ggplot2 is used inside a function.  
