@@ -20,13 +20,13 @@ and was named in honor of Linus Torvalds.*
 - **Collaboration**: Anyone can contribute improvements, from bug fixes to entirely new features.  
 - **Meritocracy**: Generally, quality contributions are recognized and accepted on their merits rather than on the contributor’s status or affiliation.
 
-**Key Reading**:  
-- *Raymond, E. S. (1999). “The Cathedral & The Bazaar.” O’Reilly Media.*  
+**Key Reading**: *Raymond, E. S. (1999). “The Cathedral & The Bazaar.” O’Reilly Media.*  
   A seminal essay on the open source methodology, contrasting traditional development (“cathedral”) with the more decentralized open source approach (“bazaar”).
 
 ## How Open Source Works
 
-Despite its collaborative nature, open source is far from a free-for-all. Typically, open source projects are hosted on platforms like GitHub or GitLab, where collaboration is facilitated through:
+Despite its collaborative nature, open source is far from a free-for-all.  
+Typically, open source projects are hosted on platforms like GitHub or GitLab, where collaboration is facilitated through:
 
 1. **Repositories**: Central locations where the project’s source code is kept.  
 2. **Version Control**: Tools like Git track changes, manage contributions, and merge code from different contributors.  
