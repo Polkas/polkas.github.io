@@ -6,7 +6,7 @@ categories: [programming]
 image: main.png
 ---
 
-TL:DR Open source is software (and sometimes hardware or data) whose source code is publicly accessible. Anyone can view, modify, and distribute it, which fosters collaborative innovation. However, open source is not a leaderless utopia—most successful projects have clearly defined governance structures and maintainers. Licenses like GPL or MIT govern how code is shared. Contributions can range from bug reports to starting entirely new projects. Disagreements in vision often result in “forking,” allowing a project to continue under new leadership if needed.
+TL:DR Open source is software (and sometimes hardware or data) whose source code is publicly accessible. Anyone can view, modify, and distribute it, which fosters collaborative innovation. However, open source is not a leaderless utopia, most successful projects have clearly defined governance structures and maintainers. Licenses like GPL or MIT govern how code is shared. Contributions can range from bug reports to starting entirely new projects. Disagreements in vision often result in “forking,” allowing a project to continue under new leadership if needed.
 
 ```
 Linus's law is the assertion that "given enough eyeballs, all bugs are shallow".  
@@ -94,9 +94,9 @@ Every contribution, no matter how small, is valuable because it helps create a r
 
 ## Conclusion and Further Reading
 
-Open source has proven itself across countless domains, helping to **accelerate innovation**, **foster inclusive communities**, and **support open science**. Whether you are a seasoned developer or new to coding, the open source world offers a place to learn, collaborate, and contribute to projects that matter to you—including those in the critical field of pharma.
+Open source has proven itself across countless domains, helping to **accelerate innovation**, **foster inclusive communities**, and **support open science**. Whether you are a seasoned developer or new to coding, the open source world offers a place to learn, collaborate, and contribute to projects that matter to you, including those in the critical field of pharma.
 
-Open source is more than just freely available code—it's a **collaborative mindset** that has revolutionized how we create software. By embracing open source principles, industries ranging from technology giants to pharmaceuticals have **enhanced innovation** and **shared knowledge** on an unprecedented scale. However, open source is not without structure; maintainers, governance models, and licensing terms guide projects to ensure both sustainability and a clear sense of direction.
+Open source is more than just freely available code, it's a **collaborative mindset** that has revolutionized how we create software. By embracing open source principles, industries ranging from technology giants to pharmaceuticals have **enhanced innovation** and **shared knowledge** on an unprecedented scale. However, open source is not without structure; maintainers, governance models, and licensing terms guide projects to ensure both sustainability and a clear sense of direction.
 
 For those looking to get started in open source:
 
