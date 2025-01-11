@@ -1,0 +1,110 @@
+---
+title: "Open Source: Given enough eyeballs, all bugs are shallow"
+author: "Maciej Nasinski"
+date: "2025-01-12"
+categories: [programming]
+image: main.png
+---
+
+TL:DR Open source is software (and sometimes hardware or data) whose source code is publicly accessible. Anyone can view, modify, and distribute it, which fosters collaborative innovation. However, open source is not a leaderless utopia—most successful projects have clearly defined governance structures and maintainers. Licenses like GPL or MIT govern how code is shared. Contributions can range from bug reports to starting entirely new projects. Disagreements in vision often result in “forking,” allowing a project to continue under new leadership if needed.
+
+
+```
+Linus's law is the assertion that "given enough eyeballs, all bugs are shallow". The law was formulated by Eric S. Raymond in his essay and book The Cathedral and the Bazaar (1999), and was named in honor of Linus Torvalds.
+```
+
+## What Open Source Means
+
+**Open source** refers to software whose **source code** is publicly available, allowing anyone to view, modify, and distribute the code. The Open Source Initiative (OSI) formalized the definition in 1998, emphasizing **collaboration**, **transparency**, and **meritocracy** in software development.
+
+- **Transparency**: Developers can inspect how the software is built.  
+- **Collaboration**: Anyone can contribute improvements, from bug fixes to entirely new features.  
+- **Meritocracy**: Generally, quality contributions are recognized and accepted on their merits rather than on the contributor’s status or affiliation.
+
+**Key Reading**:  
+- *Raymond, E. S. (1999). “The Cathedral & The Bazaar.” O’Reilly Media.*  
+  A seminal essay on the open source methodology, contrasting traditional development (“cathedral”) with the more decentralized open source approach (“bazaar”).
+
+## How Open Source Works
+
+Despite its collaborative nature, open source is far from a free-for-all. Typically, open source projects are hosted on platforms like GitHub or GitLab, where collaboration is facilitated through:
+
+1. **Repositories**: Central locations where the project’s source code is kept.  
+2. **Version Control**: Tools like Git track changes, manage contributions, and merge code from different contributors.  
+3. **Issues & Pull Requests**: Users can raise bug reports or propose new features in “issues.” Proposed changes (code contributions) are submitted as “pull requests,” which are reviewed by the maintainers before merging.
+
+### Case Study: Linux
+
+One of the most prominent examples is **Linux**, a kernel that powers countless servers, smartphones (Android), and embedded devices worldwide. Studies show that Linux’s success is largely attributable to its **community-driven development** model. Despite tens of thousands of contributors, the project’s direction remains consistent thanks to a defined governance structure and leadership. For more details on the Linux development process and its governance model, see:
+
+- *Corbet, J., Kroah-Hartman, G., & McPherson, A. (2015). “Linux Kernel Development: How Fast it is Going, Who is Doing It, What They are Doing, and Who is Sponsoring It.” The Linux Foundation.*  
+
+## Open Source Licenses
+
+Licensing is a cornerstone of open source. While the code is open, the **type of license** dictates how it can be used, modified, and redistributed. Some popular licenses include:
+
+1. **GNU General Public License (GPL)**: A “copyleft” license that requires any derivative work to also be distributed under the GPL.  
+2. **MIT License**: A permissive license that allows code to be reused in proprietary software, as long as attribution is given.  
+3. **Apache License 2.0**: Similar to MIT in its permissiveness but includes explicit patent protection clauses.  
+4. **BSD License**: Another permissive license, used widely by projects like FreeBSD.
+
+**Why Licensing Matters**:  
+
+- Ensures contributors understand how their work will be used.  
+- Provides legal protection for both contributors and users.  
+- Influences a project’s attractiveness to commercial and community contributors.
+
+For a deeper look at the impact of licensing models, consider reading:
+
+- *Lerner, J., & Tirole, J. (2002). “Some Simple Economics of Open Source.” The Journal of Industrial Economics, 50(2), 197–234.*  
+
+## Leadership and Governance in Open Source
+
+While open source is often portrayed as a democratic ideal (and in many ways, it is), it’s **not a utopia**. While collaboration is central, most projects rely on maintainers or a core team to make final decisions. Some projects follow a “Benevolent Dictator" model, in which a single figure or small group has ultimate authority.
+
+Every project, especially successful ones, typically has:
+
+- **Maintainers or Core Team**: The small group of people who have the ultimate say on which contributions are accepted.  
+- **Benevolent Dictator**: Term was popularized by Eric S. Raymond’s essay “Homesteading the Noosphere” (1999). Among other topics related to hacker culture, Raymond elaborates on how the nature of open source forces the “dictatorship” to keep itself benevolent, since a strong disagreement can lead to the forking of the project under the rule of new leaders.
+- **Governance Models**: Some projects use committees or boards to discuss major decisions, while others trust a single leader or a small leadership team.
+
+This structure ensures that the project’s **direction remains cohesive** and that not all changes are accepted blindly. The presence of clear leadership can also **reduce conflicts** and **maintain vision**.
+
+## Different Levels of Contribution
+
+Contributions to open source come in many forms. Whether you’re a coding expert or just starting, there is a level of involvement for everyone:
+
+1. **Creating a New Tool**  
+   - You can start a brand-new project if you see an unmet need.  
+   - Requires strong initiative, clear vision, and willingness to maintain it.
+
+2. **Submitting Code or Documentation to an Existing Project**  
+   - Often the most common form of contribution.  
+   - Ranges from fixing simple bugs to adding substantial new features.
+
+3. **Reporting Issues or Suggesting New Features**  
+   - Equally important as coding, because it guides the project’s roadmap.  
+   - Useful for non-coders who can test functionality or identify missing features.
+
+4. **Community Support and Advocacy**  
+   - Answering user questions, writing tutorials, or evangelizing the project.
+
+Every contribution, no matter how small, is valuable because it helps create a robust ecosystem around the software.
+
+## Conclusion and Further Reading
+
+Open source has proven itself across countless domains, helping to **accelerate innovation**, **foster inclusive communities**, and **support open science**. Whether you are a seasoned developer or new to coding, the open source world offers a place to learn, collaborate, and contribute to projects that matter to you—including those in the critical field of pharma.
+
+Open source is more than just freely available code—it's a **collaborative mindset** that has revolutionized how we create software. By embracing open source principles, industries ranging from technology giants to pharmaceuticals have **enhanced innovation** and **shared knowledge** on an unprecedented scale. However, open source is not without structure; maintainers, governance models, and licensing terms guide projects to ensure both sustainability and a clear sense of direction.
+
+For those looking to get started in open source:
+
+- **Pick a project** that aligns with your interests or work needs.  
+- **Check the contribution guidelines** and issue trackers for “Good First Issues.”  
+- **Engage with the community** through mailing lists, Slack channels, or Discord servers. 
+
+## References
+
+- Raymond, E. S. (1999). *The Cathedral & The Bazaar.* O’Reilly Media.  
+- Lerner, J., & Tirole, J. (2002). “Some Simple Economics of Open Source.” *The Journal of Industrial Economics, 50*(2), 197–234.  
+- Corbet, J., Kroah-Hartman, G., & McPherson, A. (2015). “Linux Kernel Development.” *The Linux Foundation.*
