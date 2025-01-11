@@ -8,11 +8,9 @@ image: main.png
 
 TL:DR Open source is software (and sometimes hardware or data) whose source code is publicly accessible. Anyone can view, modify, and distribute it, which fosters collaborative innovation. However, open source is not a leaderless utopia, most successful projects have clearly defined governance structures and maintainers. Licenses like GPL or MIT govern how code is shared. Contributions can range from bug reports to starting entirely new projects. Disagreements in vision often result in “forking,” allowing a project to continue under new leadership if needed.
 
-```
-Linus's law is the assertion that "given enough eyeballs, all bugs are shallow".  
+*Linus's law is the assertion that "given enough eyeballs, all bugs are shallow".  
 The law was formulated by Eric S. Raymond in his book The Cathedral and the Bazaar (1999),  
-and was named in honor of Linus Torvalds.
-```
+and was named in honor of Linus Torvalds.*
 
 ## What Open Source Means
 
