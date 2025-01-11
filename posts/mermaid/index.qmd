@@ -1,40 +1,137 @@
 ---
-title: 'Unlocking the Power of Mermaid Diagrams'
+title: "Unlocking the Power of Mermaid Diagrams"
 author: "Maciej Nasinski"
-date: "2025-01-10"
-draft: true
+date: "2025-01-11"
 categories: [programming]
 image: main.png
 ---
 
-### Introduction
+TL;DR Mermaid allows anyone to define and render professional-quality diagrams quickly. Whether you are a developer documenting a process, a project manager outlining timelines, or a teacher illustrating concepts, Mermaid provides a versatile and efficient solution for all visualization needs. Mermaid is invaluable for illustrating Object-Oriented Programming (OOP) designs and project timelines. Together with LLMs (like ChatGpt), building mermaid diagrams becomes even easier.
 
-Mermaid is a powerful, Markdown-inspired syntax that enables users to describe and automatically generate a variety of diagrams. With just text, you can create flow charts, UML diagrams, pie charts, Gantt charts, and much more. Its simplicity and flexibility have propelled Mermaid into mainstream usage, becoming a vital tool for developers and content creators alike. Thanks to native support on platforms like GitHub, Mermaid makes it effortless to embed graphs and diagrams directly into repositories, documentation, and presentations, revolutionizing how we visualize and share complex ideas.
+Example User Journey Mermaid Diagram:
 
-Mermaid's approachable syntax requires no specialized software, allowing anyone to quickly define and render professional-quality diagrams. Whether you are a developer documenting a process, a project manager outlining timelines, or a teacher illustrating concepts, Mermaid provides a versatile and efficient solution for all visualization needs.
+```{mermaid}
+%%| echo: true
+%%| fig-height: auto
+journey
+    title Blog Post Visitor Journey
+    section Visitor Journey
+      Visitor Arrives: 5
+      Reads Blog Content: 4
+      Explores Related Links: 3
+      Engages with Comments: 4
+      Shares or Subscribes: 4
+```
 
-### Why Mermaid is a Game-Changer
+## Why Mermaid Is a Game-Changer
 
-One of the most significant developments is Mermaid's seamless integration into GitHub. Now, users can embed diagrams directly into Markdown files within their repositories. This functionality not only enhances the readability of documentation but also makes it easier to communicate ideas visually without relying on external tools.
+Mermaid, a `JavaScript`-based diagramming and charting tool, is more than just a software. It's a community-driven project that transforms Markdown-inspired text definitions into dynamic, professional-quality diagrams. Its open-source nature invites everyone to use, contribute to, and enhance it, fostering a vibrant, collaborative community. Since its inception on `November 16, 2014` (version `0.1.0`), Mermaid has rapidly evolved, with its current version (`11.4.1` as of this writing) reflecting ongoing improvements and innovative features driven by its global user base. This continuous evolution ensures that Mermaid remains at the cutting edge of diagramming technology, making it a reliable and forward-looking choice for visualization needs.
 
-In addition to its GitHub integration, Mermaid has robust support in tools like Quarto, making it a perfect choice for technical blogs and reports. Quarto’s compatibility ensures that Mermaid diagrams are rendered beautifully, whether hosted online or exported as PDFs.
+Mermaid is natively supported or easily integrated into many widely-used platforms, such as `GitHub`, `Quarto`, `static site generators` like Hugo and Jekyll, and `Jupyter Notebooks`. Its broad compatibility means users can seamlessly incorporate diagrams into their existing workflows with minimal effort, whether for project documentation, technical blogs, or interactive data presentations. Furthermore, Mermaid supports a wide range of diagram types, from flowcharts and Gantt charts to sequence diagrams and UML diagrams.
 
-### Open Source and Community-Driven
+The tool’s text-based nature makes it ideal for version control systems like Git, allowing users to track changes and collaborate effectively. **Beginners** find Mermaid approachable due to its simple syntax and extensive documentation, while ** advanced users ** appreciate the ability to ** automate and dynamically generate diagrams ** using scripts. Tools like the **Mermaid Live Editor** and integration with **Large Language Models (LLMs)** such as ChatGPT further enhance its accessibility, enabling users to **describe diagrams in plain text** and receive instant, accurate Mermaid code.
 
-Mermaid is an open-source project, which means its development is community-driven and freely available for everyone to use and contribute to. Its open-source nature fosters innovation and collaboration, ensuring that the tool evolves to meet the diverse needs of its users. Developers can access its source code, propose enhancements, and create plugins to extend its functionality. This openness not only guarantees transparency but also enables rapid adoption and integration into various platforms and workflows. The vibrant community around Mermaid continues to expand its capabilities, making it a reliable and forward-looking choice for visualizations.
+Another strength of Mermaid is customization, with options to style diagrams, adjust layouts, and apply themes, ensuring both functionality and visual appeal. Its ability to render diagrams directly in the browser using JavaScript makes it lightweight and easy to integrate into web applications and static sites without relying on heavy dependencies.
 
-### Tools for Interactive Mermaid Diagrams
+Mermaid’s combination of **simplicity**, **versatility**, and **seamless integration** into modern development and documentation workflows has cemented its status as a **favourite tool for diagramming**. By **transforming plain text into powerful visualizations**, Mermaid continues to meet the evolving needs of developers, writers, and educators, making it a cornerstone of **technical communication and design**.
 
-For those seeking to experiment with Mermaid diagrams, tools like the [Live Editor](https://mermaid-js.github.io/mermaid-live-editor) provide an interactive playground. Here, users can write Mermaid code and see instant previews, making the process of creating and refining diagrams highly efficient. Additionally, platforms like [Mermaid AI](https://www.mermaidchart.com/mermaid-ai) offer drag-and-drop functionality for creating diagrams visually. This tool caters to users who prefer a more hands-on approach, enabling them to design complex diagrams without delving into code.
+## Tools for Interactive Mermaid Diagrams
 
-### Examples of Mermaid Diagrams
+For those seeking to experiment with Mermaid diagrams, tools like the [Live Editor](https://mermaid.live/) provide an interactive playground. Here, users can write Mermaid code and see instant previews, making the process of creating and refining diagrams highly efficient. Additionally, platforms like [Mermaid AI](https://www.mermaidchart.com/mermaid-ai) offer drag-and-drop functionality for creating diagrams visually. This tool caters to users who prefer a more hands-on approach, enabling them to design complex diagrams without delving into code.
 
-Below are a few examples of what you can achieve with Mermaid, integrated directly into a Quarto blog.
+## Mermaid Docs, Tutorials, and Integrations
+
+Mermaid maintains robust official documentation and a thriving ecosystem. Whether you are just starting out or looking to integrate Mermaid into specialized workflows, these resources will help you get up to speed:
+
+- **[Mermaid Intro](https://mermaid.js.org/intro/)**: A concise overview of Mermaid’s goals, syntax, and capabilities.  
+- **[Official Tutorials](https://mermaid.js.org/ecosystem/tutorials.html)**: Step-by-step guides that take you from basic syntax to advanced diagramming scenarios.  
+- **[Community Integrations](https://mermaid.js.org/ecosystem/integrations-community.html)**: A growing list of third-party plugins and tools that incorporate Mermaid, including integrations for popular editors, static site generators, and CI/CD systems.
+
+Mermaid’s ecosystem continues to grow at a rapid pace, which means there is likely already an integration available for your favorite platform or workflow.
+
+## Range of Supported Diagrams
+
+Mermaid supports a broad variety of diagram types, making it extremely flexible for different use cases:
+
+```{=html}
+<ul class="items">
+  <li>
+    <a href="https://mermaid.js.org/syntax/flowchart.html">Flowchart</a> - Used to visualize processes, workflows, and decision-making paths.
+  </li>
+  <li>
+    <a href="https://mermaid.js.org/syntax/sequenceDiagram.html">Sequence Diagram</a> - Illustrates interactions between participants in a system over time.
+  </li>
+  <li>
+    <a href="https://mermaid.js.org/syntax/classDiagram.html">Class Diagram</a> - Models object-oriented class structures and their relationships.
+  </li>
+  <li>
+    <a href="https://mermaid.js.org/syntax/stateDiagram.html">State Diagram</a> - Represents states of a system and transitions between them.
+  </li>
+  <li>
+    <a href="https://mermaid.js.org/syntax/entityRelationshipDiagram.html">Entity Relationship Diagram</a> - Maps entities and their relationships, often used in database design.
+  </li>
+  <li>
+    <a href="https://mermaid.js.org/syntax/userJourney.html">User Journey</a> - Depicts user experiences and actions within a system or process.
+  </li>
+  <li>
+    <a href="https://mermaid.js.org/syntax/gantt.html">Gantt</a> - Visualizes project schedules, tasks, and timelines.
+  </li>
+  <li>
+    <a href="https://mermaid.js.org/syntax/pie.html">Pie Chart</a> - Displays data proportions as slices of a pie.
+  </li>
+  <li>
+    <a href="https://mermaid.js.org/syntax/quadrantChart.html">Quadrant Chart</a> - Categorizes data points into four quadrants based on two variables.
+  </li>
+  <li>
+    <a href="https://mermaid.js.org/syntax/requirementDiagram.html">Requirement Diagram</a> - Tracks system requirements and their relationships.
+  </li>
+  <li>
+    <a href="https://mermaid.js.org/syntax/gitgraph.html">Gitgraph (Git) Diagram</a> - Visualizes Git branches and commit histories.
+  </li>
+  <li>
+    <a href="https://mermaid.js.org/syntax/c4.html">C4 Diagram</a> - Models software architecture with containers, components, and contexts.
+  </li>
+  <li>
+    <a href="https://mermaid.js.org/syntax/mindmap.html">Mindmaps</a> - Helps brainstorm and organize ideas hierarchically.
+  </li>
+  <li>
+    <a href="https://mermaid.js.org/syntax/timeline.html">Timeline</a> - Displays events or milestones in chronological order.
+  </li>
+  <li>
+    <a href="https://mermaid.js.org/syntax/zenuml.html">ZenUML</a> - Simplifies UML diagrams with an easy-to-read syntax.
+  </li>
+  <li>
+    <a href="https://mermaid.js.org/syntax/sankey.html">Sankey</a> - Shows flow quantities between nodes, often used for energy or resource flows.
+  </li>
+  <li>
+    <a href="https://mermaid.js.org/syntax/xyChart.html">XY Chart</a> - Plots data points on X and Y axes for analysis.
+  </li>
+  <li>
+    <a href="https://mermaid.js.org/syntax/block.html">Block Diagram</a> - Represents system components and their connections.
+  </li>
+  <li>
+    <a href="https://mermaid.js.org/syntax/packet.html">Packet</a> - Models data packets and their flows in a network.
+  </li>
+  <li>
+    <a href="https://mermaid.js.org/syntax/kanban.html">Kanban</a> - Visualizes task management workflows in a Kanban-style board.
+  </li>
+  <li>
+    <a href="https://mermaid.js.org/syntax/architecture.html">Architecture</a> - Details system architectures and their interactions.
+  </li>
+  <li>
+    <a href="https://mermaid.js.org/syntax/examples.html">Other Examples</a> - Explore additional diagrams and customizations supported by Mermaid.
+  </li>
+</ul>
+```
+
+With such a comprehensive list, it’s easy to tailor Mermaid to your specific project or documentation needs.
+
+Below are a few simpler examples demonstrating different diagram types. Please note we use the `echo` option for these examples so you see the raw graph code.
 
 #### Flowchart
 
 ```{mermaid}
-#| echo: true
+%%| echo: true
 graph TD
     A[Start] --> B{Decision}
     B -->|Yes| C[Do Task]
@@ -46,7 +143,7 @@ graph TD
 #### Sequence Diagram
 
 ```{mermaid}
-#| echo: true
+%%| echo: true
 sequenceDiagram
     participant User
     participant System
@@ -57,7 +154,7 @@ sequenceDiagram
 #### Gantt Chart
 
 ```{mermaid}
-#| echo: true
+%%| echo: true
 gantt
 title Project Timeline
     section Planning
@@ -68,9 +165,85 @@ title Project Timeline
     Task D : a4, 2025-01-21, 2025-01-30
 ```
 
-### Conclusion
+#### Sankey
 
-Whether you’re creating software documentation, educational content, or project planning materials, Mermaid offers a powerful and accessible way to add visualizations. With the ability to integrate into platforms like GitHub and Quarto, along with interactive tools like the Live Editor and Mermaid AI, Mermaid is poised to remain a cornerstone of modern diagramming and visualization.
+```{mermaid}
+%%| echo: true
+sankey-beta
 
-Incorporating Mermaid into your workflow not only saves time but also elevates the quality of your content. With its growing ecosystem and widespread adoption, there’s never been a better time to explore the capabilities of Mermaid.
+%% source,target,value
+Electricity grid,Over generation / exports,104.453
+Electricity grid,Heating and cooling - homes,113.726
+Electricity grid,H2 conversion,27.14
+```
 
+
+## Alternatives to Mermaid Diagrams
+
+While Mermaid is a powerful and flexible tool for creating diagrams using a text-based approach, there are several alternatives available depending on your use case and preferences:
+
+| **Tool**        | **Type**              | **Features**                                                                 | **Advantages**                       | **Best For**                         | **Link**                     |
+|------------------|-----------------------|------------------------------------------------------------------------------|--------------------------------------|---------------------------------------|------------------------------|
+| **Mermaid**      | Text-based           | Supports flowcharts, UML diagrams, Gantt charts, and more.                   | Easy syntax, integrates with GitHub. | Developers, content creators.         | [Mermaid](https://mermaid.js.org/) |
+| **Graphviz**     | Text-based           | Uses DOT language for graphs and hierarchical diagrams.                      | Highly customizable.                 | Graphs and tree structures.           | [Graphviz](https://graphviz.org/) |
+| **PlantUML**     | Text-based           | Rich UML support including sequence and class diagrams.                      | Great UML support, IDE integrations. | UML modeling.                         | [PlantUML](https://plantuml.com/) |
+| **Draw.io**      | Drag-and-drop        | Cloud and local storage, prebuilt templates, supports multiple formats.      | User-friendly, no coding required.   | Quick flowcharts and wireframes.      | [Draw.io](https://app.diagrams.net/) |
+| **D3.js**        | Code-based (JavaScript) | Dynamic, interactive, and data-driven visualizations.                        | Full control, supports animations.   | Custom, interactive visualizations.   | [D3.js](https://d3js.org/) |
+| **Lucidchart**   | Drag-and-drop        | Collaborative, cloud-based, integrates with productivity tools.              | Team collaboration, templates.       | Collaborative diagramming.            | [Lucidchart](https://www.lucidchart.com/) |
+| **yEd**          | Drag-and-drop        | Automatic layouts, advanced graph creation tools, offline support.           | Free, powerful layout algorithms.    | Graphs, network diagrams.             | [yEd](https://www.yworks.com/products/yed) |
+| **Visio**        | Drag-and-drop        | Extensive templates, enterprise-grade features, integrates with Office 365.  | Professional-grade toolset.          | Corporate use, professional diagrams. | [Visio](https://www.microsoft.com/en-us/microsoft-365/visio/) |
+
+## How LLMs Like ChatGPT Make Using Mermaid Easier
+
+Large Language Models (LLMs), such as ChatGPT, have revolutionized how users interact with tools like Mermaid by simplifying the process of creating and refining diagrams. These models bridge the gap between conceptual ideas and fully realized diagrams, transforming natural language descriptions into precise Mermaid syntax. This eliminates the need for deep technical expertise, saving time and reducing the learning curve for both beginners and experienced users.
+
+One of the most powerful features LLMs offer is **text-to-diagram conversion**, where a simple description of a desired diagram can be instantly translated into the corresponding Mermaid syntax. For instance, providing a prompt like “Create a flowchart where 'Start' leads to 'Decision', with 'Yes' going to 'Task' and 'No' going to 'End'” can generate the correct code in seconds. Additionally, LLMs provide **instant syntax assistance**, helping users navigate the sometimes-tricky process of writing or troubleshooting Mermaid code. They can identify errors, suggest corrections, and optimize diagrams for clarity and functionality.
+
+Beyond assisting with technical details, LLMs also excel at offering **creative diagram suggestions**. For users unsure of the best way to visualize their data or workflows, LLMs can recommend suitable diagram types, such as flowcharts for processes, Gantt charts for timelines, or sequence diagrams for interactions. This ensures that the resulting visualization aligns perfectly with the intended purpose. Furthermore, customization is made effortless with LLMs, as they can generate code with advanced features like colors, labels, and layouts tailored to specific needs, producing professional-quality diagrams without manual effort.
+
+LLMs are particularly valuable for **quick learning**, offering examples, explanations, and answers to user queries. Beginners can experiment and refine their understanding of Mermaid through interactive dialogues, while advanced users can streamline workflows by automating repetitive tasks or generating complex diagrams.
+
+By integrating LLMs like ChatGPT into the diagram creation process, users can describe their ideas in plain language and receive instantly usable Mermaid syntax. This democratizes access to powerful visualization tools, empowering users of all technical levels to create high-quality diagrams with ease. Whether for documentation, presentations, or collaborative projects, the combination of LLMs and Mermaid is transforming how visual content is created and shared.
+
+### vscode-mermAId: Copilot-Powered Diagram Generation
+
+The **vscode-mermAId** extension allows users to collaborate with **GitHub Copilot** to effortlessly generate Mermaid diagrams directly within Visual Studio Code. By interacting with the chat participant, `@mermAId`, users can request diagram creation tailored to their needs, leveraging Copilot's advanced AI capabilities. This extension showcases the power of the **GitHub Copilot extension APIs**, making it an innovative tool for boosting productivity and visualization in development workflows. Key features include the ability to generate diagrams based on the content of the currently open editor. For more information, visit [the VScode marektplace](https://marketplace.visualstudio.com/items?itemName=ms-vscode.copilot-mermaid-diagram).
+
+## Integration Tutorials
+
+[Mermaid diagrams can be integrated into various platforms.](https://mermaid.js.org/ecosystem/integrations-community.html)
+
+Here are some quick integration options:
+
+- **GitHub Markdown**: Use fenced code blocks with `mermaid` to render diagrams directly in your README or other Markdown files. Details can be found in the [GitHub Docs](https://github.blog/2022-02-14-include-diagrams-markdown-files-mermaid/).
+
+- **Jupyter Notebooks**: Mermaid is available directly from Notebooks starting from JupyterLab 4.1 and Notebook 7.1. [Details](https://blog.jupyter.org/jupyterlab-4-1-and-notebook-7-1-are-here-20bfc3c10217)
+
+- **Quarto**: Embed diagrams using Mermaid code blocks in `.qmd` files. Refer to the [Quarto Diagrams Documentation](https://quarto.org/docs/authoring/diagrams.html).
+
+- **VS Code**: Bunch of Marketplace tools like the [Markdown Preview Mermaid Support](https://marketplace.visualstudio.com/items?itemName=bierner.markdown-mermaid) extension to create and preview diagrams.
+
+## Best Practices for Diagram Readability
+
+Effective diagrams do more than just display information; they help readers quickly grasp complex concepts. Below are some tips to keep your Mermaid diagrams clear, concise, and visually appealing:
+
+1. **Use Consistent Naming**  
+   Keep node names and labels meaningful yet short. For example, `User` vs. `User12345` helps maintain clarity.
+
+2. **Simplify Complex Flows**  
+   Break large diagrams into smaller, modular sub-diagrams if possible, so that each visual focuses on one concept.
+
+3. **Leverage Mermaid’s Layout Options**  
+   Mermaid automatically arranges nodes, but you can guide layout with syntax like `graph LR` (left-to-right) or `graph TD` (top-to-bottom) to improve readability.
+
+4. **Use Colors and Styles Sparingly**  
+   Mermaid allows styling of elements (e.g., node backgrounds, text, and lines). A consistent color scheme helps readers identify related parts of a diagram without overwhelming them.
+
+5. **Label Edges Wisely**  
+   Edge labels should clarify transitions or relationships. Avoid cluttering diagrams with too many text labels; short, descriptive phrases work best.
+
+## Conclusion
+
+Whether you’re creating software documentation, educational content, or project planning materials, Mermaid offers a powerful and accessible way to add visualizations. With the ability to integrate into platforms like GitHub, along with interactive tools like the Live Editor and Mermaid AI, Mermaid is poised to remain a cornerstone of modern diagramming and visualization.
+
+Incorporating Mermaid into your workflow not only saves time but also elevates the quality of your content. With its growing ecosystem and widespread adoption, there’s never been a better time to explore the capabilities of Mermaid. From OOP designs to project timelines, Mermaid’s versatility ensures it can meet your unique visualization needs.
