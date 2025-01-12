@@ -55,7 +55,7 @@ Licensing is a cornerstone of open source. While the code is open, the **type of
 
 For a deeper look at the impact of licensing models, consider reading:
 
-- *Lerner, J., & Tirole, J. (2002). “Some Simple Economics of Open Source.” The Journal of Industrial Economics, 50(2), 197–234.*  
+- [Open Source Licenses and the Creative Commons Framework: License Selection and Comparison.  (2006)](https://www.researchgate.net/publication/220587883_Open_Source_Licenses_and_the_Creative_Commons_Framework_License_Selection_and_Comparison) 
 
 ## Leadership and Governance in Open Source
 
@@ -105,5 +105,5 @@ For those looking to get started in open source:
 ## References
 
 - Raymond, E. S. (1999). *The Cathedral & The Bazaar.* O’Reilly Media.  
-- Lerner, J., & Tirole, J. (2002). “Some Simple Economics of Open Source.” *The Journal of Industrial Economics, 50*(2), 197–234.  
+- [Open Source Licenses and the Creative Commons Framework: License Selection and Comparison.  (2006)](https://www.researchgate.net/publication/220587883_Open_Source_Licenses_and_the_Creative_Commons_Framework_License_Selection_and_Comparison). 
 - Corbet, J., Kroah-Hartman, G., & McPherson, A. (2015). “Linux Kernel Development.” *The Linux Foundation.*
