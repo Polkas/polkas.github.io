@@ -44,12 +44,13 @@ In short, the combination of WebAssembly, LLVM, and specialized toolchains (such
 
 For example, shinylive is available in two versions: one for PyShiny (Python) built on Pyodide, and another for Shiny (R) powered by webr. Both versions allow developers to create dynamic dashboards that run entirely in the browser, removing the need for backend servers and significantly simplifying deployment while reducing costs. A practical example is a real-time data visualization tool built with shinylive, which can instantly reflect updates to the underlying data.
 
-python shinylive:
+python shinylive (shiny.express):
 
 ```{shinylive-python}
 #| standalone: true
 #| components: [editor, viewer]
 #| layout: vertical
+#| viewerHeight: 350
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -58,12 +59,11 @@ from shiny.express import ui, input, render
 with ui.sidebar():
     ui.input_slider("n", "N", 0, 100, 20)
 
-
-@render.plot(alt="A histogram")
+@render.plot(alt="A histogram", height=300)
 def histogram():
-    np.random.seed(19680801)
+    np.random.seed(1234)
     x = 100 + 15 * np.random.randn(437)
-    plt.hist(x, input.n(), density=True)
+    plt.hist(x, input.n())
 ```
 
 ### Trinket
