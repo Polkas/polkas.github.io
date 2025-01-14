@@ -1,6 +1,6 @@
 ---
 title: "Author"
-image: profile.jpg
+image: myphoto.jpg
 about:
   template: trestles
   links:
@@ -10,7 +10,7 @@ about:
     - icon: github
       text: Github
       href: https://github.com/polkas
-
+comments: false
 ---
 
 Hi there! My name is Maciej Nasinski and I'm a statistician and programmer who strongly believes in the power of open source and agile methodology. I love being part of a community-driven development process and I actively participate in various open source projects on GitHub. I also enjoy sharing my knowledge and expertise by contributing to the programming community on StackOverflow.
