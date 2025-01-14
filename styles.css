@@ -24,3 +24,15 @@
   overflow: hidden;
   background-color: white;
 }
+
+.main-cotainer {
+  max-width: 800px;
+  margin: 3em auto;
+  background: linear-gradient(145deg, #ffffff, #f7f7f7);
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  padding: 2.5em;
+  font-family: 'Open Sans', Arial, sans-serif;
+  color: #444;
+  text-align: center;
+}
