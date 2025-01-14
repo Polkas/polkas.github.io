@@ -11,7 +11,12 @@ website:
   favicon: logo.svg
   navbar:
     right:
-      - author.qmd
+      - text: Home
+        href: index.qmd
+      - text: Posts
+        href: posts.qmd
+      - text: Author
+        href: author.qmd
       - icon: linkedin
         text: LinkedIn
         href: https://www.linkedin.com/in/maciej-nasinski/

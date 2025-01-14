@@ -1,11 +1,47 @@
 ---
-listing:
-  contents: posts
-  sort: "date desc"
-  type: default
-  categories: true
-  sort-ui: true
-  filter-ui: true
+format:
+  html:
+    toc: false
 page-layout: full
-title-block-banner: true
+comments: false
 ---
+
+```{=html}
+<div class="main-cotainer">
+  <div style="
+    margin: 0 0 0.5em 0;
+    font-size: 2.2em;
+    font-weight: 600;
+    color: #333;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+  ">
+    Welcome to 
+    <em style="color: #375a7f; font-style: normal;">
+      Agile Data Science
+    </em>!
+  </div>
+  
+  <img src="hands.png" height="auto" width="250">
+  
+  <p style="
+    font-size: 1.15em;
+    max-width: 600px;
+    margin: 0.5em auto 2em;
+    line-height: 1.5;
+  ">
+    Your blog for practical insights into modern programming, 
+    data science, and cutting-edge technology topics.
+  </p>
+  
+  <a href="posts.html" title="View Posts" aria-label="View Posts" class="btn btn-lg btn-primary">Blog Posts</a>
+
+  <p style="
+    font-size: 1.15em;
+    margin-top: 1.5em;
+    margin-bottom: 2em;
+    color: #555;
+  ">
+    Explore, learn, and share your thoughts!
+  </p>
+</div>
+```
