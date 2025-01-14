@@ -11,8 +11,6 @@ website:
   favicon: logo.svg
   navbar:
     right:
-      - text: Home
-        href: index.qmd
       - text: Posts
         href: posts.qmd
       - text: Author
