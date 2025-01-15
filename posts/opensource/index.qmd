@@ -9,7 +9,7 @@ image: main.png
 TL:DR Open source is software (and sometimes hardware or data) whose source code is publicly accessible. Anyone can view, modify, and distribute it, which fosters collaborative innovation. However, open source is not a leaderless utopia, most successful projects have clearly defined governance structures and maintainers. Licenses like GPL or MIT govern how code is shared. Contributions can range from bug reports to starting entirely new projects. Disagreements in vision often result in “forking,” allowing a project to continue under new leadership if needed.
 
 *Linus's law is the assertion that "given enough eyeballs, all bugs are shallow".  
-The law was formulated by Eric S. Raymond in his book The Cathedral and the Bazaar (1999),  
+The law was formulated by Eric S. Raymond in his book The Cathedral and the Bazaar (2001),  
 and was named in honor of Linus Torvalds.*
 
 ## What Open Source Means
@@ -20,7 +20,7 @@ and was named in honor of Linus Torvalds.*
 - **Collaboration**: Anyone can contribute improvements, from bug fixes to entirely new features.  
 - **Meritocracy**: Generally, quality contributions are recognized and accepted on their merits rather than on the contributor’s status or affiliation.
 
-**Key Reading**: *Raymond, E. S. (1999). “The Cathedral & The Bazaar.” O’Reilly Media.*  
+**Key Reading**: *Raymond, E. S. (2001). “The Cathedral & The Bazaar.” O’Reilly Media.*  
   A seminal essay on the open source methodology, contrasting traditional development (“cathedral”) with the more decentralized open source approach (“bazaar”).
 
 ## How Open Source Works
@@ -104,6 +104,6 @@ For those looking to get started in open source:
 
 ## References
 
-- Raymond, E. S. (1999). *The Cathedral & The Bazaar.* O’Reilly Media.  
+- Raymond, E. S. (2001). *The Cathedral & The Bazaar.* O’Reilly Media.  
 - [Open Source Licenses and the Creative Commons Framework: License Selection and Comparison.  (2006)](https://www.researchgate.net/publication/220587883_Open_Source_Licenses_and_the_Creative_Commons_Framework_License_Selection_and_Comparison). 
 - Corbet, J., Kroah-Hartman, G., & McPherson, A. (2015). “Linux Kernel Development.” *The Linux Foundation.*
