@@ -215,7 +215,9 @@ Ultimately, the choice between OOP and FP, or the decision to combine them, depe
 
 Object-Oriented Programming (OOP) in **Python** is built into the language, making it straightforward to write maintainable and extensible code especially beneficial in data science.
 
-If you are new to python I recommend to start with [Python for Everybody Book](https://books.trinket.io/pfe/index.html).
+If you are new to python I recommend to start with [Python for Everybody Book](https://books.trinket.io/pfe/index.html).  
+[The OOP chapter is especially linked with this blog post.](https://books.trinket.io/pfe/14-objects.html)
+
 
 ### Basic OOP in Python
 
