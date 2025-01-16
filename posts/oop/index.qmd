@@ -20,7 +20,7 @@ By examining OOP elements and design patterns in widely used Python libraries li
 When diving into Object-Oriented Programming (OOP) or any programming paradigm, it’s easy to get caught up in the nuances of syntax and language-specific implementations. 
 However, what truly matters is not the programming language you choose or its specific syntax, but rather the underlying **way of thinking** that drives your approach to solving problems.
 
-The principles of OOP—such as encapsulation, abstraction, inheritance, and polymorphism—are universal. 
+The principles of OOP, such as encapsulation, abstraction, inheritance, and polymorphism, are universal. 
 They represent a mindset of organizing code around entities and their interactions. 
 Whether you’re implementing these concepts in Python, Java, or C++, the core thought process remains consistent. What changes are the tools and syntax used to express these ideas. 
 For example:  
