@@ -33,6 +33,7 @@ With these insights, you can focus on upskilling in the right areas, updating yo
 ### How to Access Stack Overflow Surveys
 
 To delve deeper into the data, access past surveys through the following links:  
+- [Survey 2024](https://survey.stackoverflow.co/2024/).  
 - [Survey 2023](https://survey.stackoverflow.co/2023/).  
 - [Survey 2022](https://survey.stackoverflow.co/2022/).  
 - [Survey 2021](https://survey.stackoverflow.co/2021/).  
