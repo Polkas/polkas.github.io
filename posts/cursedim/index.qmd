@@ -19,7 +19,7 @@ In the 1920s, the U.S. Air Force began collecting anthropometric data on its pil
 
 However, by the late 1940s, mounting evidence suggested this assumption was flawed. Pilots frequently reported discomfort, difficulty operating controls, and even injuries during emergencies. The Air Force recognized the need for a deeper investigation.
 
-Enter **Lieutenant Gilbert S. Daniels**, a physical anthropologist. [In 1950, Daniels analyzed the body measurements of 4,063 male pilots and challenged the idea of designing for the "average."](https://apps.dtic.mil/sti/tr/pdf/AD0010203.pdf)
+[In 1950, **Lieutenant Gilbert S. Daniels** analyzed the body measurements of 4,063 male pilots and challenged the idea of designing for the "average."](https://apps.dtic.mil/sti/tr/pdf/AD0010203.pdf)
 
 ---
 
@@ -35,7 +35,7 @@ $$
 P(\text{within range for all dimensions}) = P(\text{within range for one dimension})^k
 $$
 
-Here:
+Here:  
 - $P$ is the probability of being within the middle range for a single dimension (30%, or 0.30).  
 - $k$ is the number of dimensions (10 in this case).  
 
@@ -54,7 +54,8 @@ Even when considering just three dimensions, fewer than 5% of pilots were "avera
 
 Daniels’ findings exposed the flaws of designing for the "average." Averages oversimplify human variability and exclude a majority of the population. Designing for the average, it turns out, effectively designs for no one.
 
-Armed with this knowledge, the Air Force adopted a new approach: **designing for diversity.** This included:
+Armed with this knowledge, the Air Force adopted a new approach: **designing for diversity.** This included:  
+
 - **Adjustable seats** to fit pilots of different heights.
 - **Customizable controls** for varied arm lengths and reach.
 - **Flexible straps and harnesses** to accommodate different chest circumferences.
@@ -67,7 +68,8 @@ These changes drastically improved safety, performance, and pilot satisfaction, 
 
 The "average person" fallacy extends far beyond aviation. In fields like product design, workplace ergonomics, education, and healthcare, assuming an "average" user often results in suboptimal outcomes. Daniels’ work underscores the importance of embracing human diversity in all its dimensions.
 
-Modern examples include:
+Modern examples include:  
+
 - Adjustable desks and chairs for ergonomic workplaces.
 - Inclusive sizing in clothing.
 - Software interfaces designed for accessibility.
@@ -142,7 +144,7 @@ within_range <- apply(pilot_data, 1, function(row) {
 
 # Percentage of "average" pilots
 mean(within_range) * 100
-# When assume idependence
+# When idependence assumed
 0.3 ** 3 * 100
 ```
 
@@ -159,3 +161,4 @@ The U.S. Air Force’s experience with cockpit design reveals a fundamental trut
 ### Reference 
 
 - [Unclassfied - An "Average" Man? Gilbert S. Daniels 1952](https://apps.dtic.mil/sti/tr/pdf/AD0010203.pdf)
+- [Wiki](https://en.wikipedia.org/wiki/Curse_of_dimensionality)
