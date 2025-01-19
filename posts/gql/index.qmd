@@ -1,5 +1,5 @@
 ---
-title: "Graph DB"
+title: "Graph Database and GQL"
 author: "Maciej Nasinski"
 date: "2024-07-19"
 engine: knitr
