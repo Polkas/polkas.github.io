@@ -11,7 +11,7 @@ categories: [programming]
 
 TL;DR: Graph databases have emerged as a crucial technology for managing and analyzing data that is highly interconnected. Unlike traditional relational databases that store data in tables, graph databases use a graph structure to represent and store data, making them exceptionally powerful for applications that involve complex relationships and connections. Graph databases have reached a significant milestone with the publication of the Graph Query Language (GQL) as an ISO standard. This development marks a new era in the standardization and usability of graph databases, providing a unified query language that enhances the way we interact with graph data. It is the first database query language to be certified since SQL in 1987.
 
-[Please access the ready Graph DB playground](https://github.com/Polkas/gql-workflow-demo)
+[Please access the ready Graph DB playground](https://github.com/Polkas/graphdb-playground)
 
 **Update: 2025-01-20**
 
@@ -76,7 +76,7 @@ GQL (Graph Query Language) is designed to be the standard query language for gra
 
 This example demonstrates a comprehensive workflow for working with Graph Query Language (GQL) in a graph database. It includes defining a schema, inserting data, querying data, performing advanced queries, and running graph algorithms. 
 
-[Please access the ready playground](https://github.com/Polkas/gql-workflow-demo)
+[Please access the ready Graph DBplayground](https://github.com/Polkas/graphdb-playground)
 
 ## Where to Run These Queries
 
@@ -101,7 +101,7 @@ The introduction of GQL marks a significant advancement in the world of graph da
 
 ## References
 
-- [Graph DB playground](https://github.com/Polkas/gql-workflow-demo)
+- [Graph DB playground](https://github.com/Polkas/graphdb-playground)
 - [ISO GQL Standard](https://www.iso.org/standard/76120.html)
 - [Neo4j's Role in GQL Development](https://neo4j.com/developer/gql/)
 - [GraphQL Foundation: Evolution of GQL](https://www.graphql.org)
