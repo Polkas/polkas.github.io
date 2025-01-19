@@ -1,0 +1,48 @@
+---
+title: 'miceFast'
+author: "Maciej Nasinski"
+image: main.png
+---
+
+Originally developed as a study project for an advanced C++ class, **miceFast** combines low-level optimizations and an object-oriented design to streamline multiple imputation workflows. 
+**miceFast** is a high-performance R package designed to expedite the process of data imputation, particularly for large datasets where speed and efficiency are paramount. 
+
+One of the most notable highlights of **miceFast** is its blazing-fast implementation of predictive mean matching (PMM). By leveraging presorting and binary search algorithms, **miceFast** can significantly outperform many existing solutions in R, including the well-known *mice* package. Indeed, the author’s contributions to *mice* helped enhance its underlying C-level optimizations—an achievement that now fuels the robust performance of **miceFast** itself.
+
+**Key Features & Advantages:**
+
+1. **Speed and Efficiency**  
+   - **Presorting and Binary Search**: Achieves one of the fastest PMM procedures available in R.  
+   - **Group-Based Operations**: Optimizes performance in scenarios where a dataset must be processed by grouping variables.  
+   - **Single Model Evaluation**: Multiple imputations are conducted in a single model pass, eliminating redundant computations.
+
+2. **Object-Oriented Paradigm**  
+   - **Flexible API**: The `miceFast` class offers an array of methods to fill missing data using techniques such as linear regression, Bayesian approaches, and discriminant analysis.  
+   - **Enhanced Readability & Modularity**: Easily integrate custom or advanced imputation strategies without sacrificing clarity.
+
+3. **Integration with Popular R Tools**  
+   - **`data.table` and `dplyr`**: Work seamlessly with major data manipulation packages in R.  
+   - **Boosted BLAS Support**: Encourages Windows, Linux, and macOS users to leverage optimized BLAS libraries for potential 100x speedups.
+
+4. **Extensive Documentation & Benchmarks**  
+   - **Vignettes & Tutorials**: Learn the details of advanced usage via the comprehensive [**miceFast Intro Vignette**](https://polkas.github.io/miceFast/articles/miceFast-intro.html).  
+   - **Performance Validation**: Real-world benchmarks and performance metrics are available in the `performance_validity.R` file within the `extdata` folder.
+
+**Installation:**
+
+```r
+# From CRAN:
+install.packages("miceFast")
+
+# Or the development version from GitHub:
+# install.packages("devtools")
+devtools::install_github("polkas/miceFast")
+```
+
+**Why Choose miceFast?**  
+- **Tens of thousands of downloads** testify to its growing popularity and trust within the R community.  
+- Offers an **object-oriented** approach that allows you to fine-tune and experiment with various imputation models.  
+- **Integrated with performance libraries** for maximum speed, making it a go-to solution for large-scale or time-sensitive projects.  
+- Built upon **proven optimizations**, including direct enhancements to the widely used *mice* package.
+
+For more information, visit the [**miceFast website**](https://polkas.github.io/miceFast/index.html) or consult the in-depth [**Advanced Usage Vignette**](https://polkas.github.io/miceFast/articles/miceFast-intro.html). Whether you’re an academic researcher tackling large longitudinal datasets or an industry professional refining machine learning pipelines, **miceFast** delivers a powerful toolkit to handle missing data with unparalleled speed and flexibility.

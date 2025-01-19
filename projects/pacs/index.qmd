@@ -1,0 +1,116 @@
+---
+title: "pacs & rdevdash"
+author: "Maciej Nasinski"
+image: "main.png"
+---
+
+**pacs** is a versatile toolkit designed to simplify life for developers and maintainers of R packages. Whether you’re validating package dependencies, exploring the complexity of an application, or checking CRAN statuses, **pacs** streamlines these essential tasks into a single, accessible workflow. By leveraging both online resources and local package structures, **pacs** provides reliable, up-to-date insights for anyone serious about building and maintaining robust R ecosystems.
+
+### Key Features
+
+1. **Library Validation**  
+   Quickly detect errors and potential conflicts in your local environment or `renv` lock files with concise, easy-to-interpret diagnostics.  
+
+2. **Complexity and Size Analysis**  
+   Evaluate package size (in bytes) and its dependencies to spot large footprints or performance bottlenecks. This functionality also extends to **Shiny** apps, helping you pinpoint areas for optimization.  
+
+3. **Version Life Duration and CRAN Checks**  
+   Easily assess how long a specific package version has been out and retrieve CRAN’s check page statuses for errors, warnings, or notes—all in one place.  
+
+4. **Version File Retrieval and Comparison**  
+   Download and compare `DESCRIPTION` or `NAMESPACE` files across different package versions, making it simple to track changes or replicate historical setups.  
+
+5. **Release History**  
+   Quickly fetch an entire list of releases for a specific package, including those from **Bioconductor** (partial support), for insight into versioning timelines and dependencies.  
+
+6. **Caching and Speed**  
+   Internet-based queries are automatically memoized for 30 minutes using the `memoise` package, dramatically speeding up repeated calls within a session.
+
+### Use Cases
+
+- **Package Validation**: Quickly verify your `renv` or system environment for missing, outdated, or conflicting dependencies.  
+- **Shiny Application Optimization**: Determine your Shiny app’s dependency load and overall size to improve performance.  
+- **Continuous Integration**: Incorporate **pacs** checks into CI pipelines to catch potential CRAN or Bioconductor issues early.  
+- **Historical Package States**: Retrieve older versions of dependencies to replicate past environments for debugging or reproducible research.
+
+### Installation
+
+- **CRAN**:
+
+  ```r
+  install.packages("pacs")
+  ```
+  
+- **Development Version**:
+
+  ```r
+  # install.packages("remotes")
+  remotes::install_github("polkas/pacs")
+  ```
+
+### Examples
+
+- **Library Validation**:  
+  ```r
+  pacs::lib_validate()
+  ```
+- **CRAN Check Statuses for All Packages**:  
+  ```r
+  pacs::checked_packages()
+  ```
+- **Retrieve All CRAN Releases of a Package**:  
+  ```r
+  pacs::pac_timemachine("dplyr")
+  ```
+- **Compare Dependencies Across Versions**:  
+  ```r
+  pacs::pac_compare_versions("shiny", "1.0.0", "1.5.0")
+  ```
+- **Identify Heavy Dependencies**:  
+  ```r
+  pacs::pac_deps_heavy("caret")
+  ```
+
+### Achievements
+
+ *pacs* won a poster panel at the Ruser conference, underscoring its innovative approach to package validation and maintenance in the R ecosystem.
+
+### Project Details & Community
+
+Developed and maintained by **Maciej Nasinski**, **pacs** is licensed under the MIT License, ensuring an open and collaborative environment for contributions. For complete documentation, including function references, code examples, and advanced usage, visit the [**pacs website**](https://polkas.github.io/pacs/) or explore the [**Functions Reference**](https://polkas.github.io/pacs/reference/index.html).
+
+By offering a structured workflow for package validation and analysis, **pacs** empowers R developers to build more reliable, efficient, and maintainable software. Whether you’re auditing a single package or a large pipeline, **pacs** brings clarity and speed to your entire development process.
+
+---
+
+## **rdevdash**
+
+**rdevdash** (R Package Developer Dashboard) is a comprehensive, Shiny-based application that streamlines the process of tracking and managing CRAN packages. Built on top of the [**pacs**](https://CRAN.R-project.org/package=pacs) toolkit, **rdevdash** offers a unified interface for visualizing package downloads, comparing versions, analyzing dependencies, and retrieving essential details about any CRAN package.
+
+### Key Dashboard Features
+
+1. **Package Information**  
+   Quickly access package meta-data (e.g., latest version, license, maintainer, and more).  
+
+2. **Package Downloads**  
+   Visualize historical download statistics, making it easy to compare trends over time.  
+
+3. **Version Differences**  
+   Compare changes across multiple versions to track feature additions, bug fixes, or dependency evolutions.  
+
+4. **CRAN Check Results**  
+   Stay informed about potential build issues or errors flagged in CRAN check logs.  
+
+5. **Package Dependencies**  
+   Explore user and developer dependencies to better understand the impact of your package within the R ecosystem.  
+
+6. **CRAN Releases**  
+   View the entire release history of a package in one convenient location.
+
+### Powered by `pacs`
+
+The [**pacs**](https://CRAN.R-project.org/package=pacs) package underpins **rdevdash**, providing the core functionality for querying CRAN, analyzing dependencies, and comparing package versions. By leveraging **pacs**, **rdevdash** ensures real-time updates and fast retrieval of comprehensive package data.
+
+### Try It Out
+
+Explore **rdevdash** live at [**polkas.shinyapps.io/rdevdash**](https://polkas.shinyapps.io/rdevdash/) to see how it can optimize your R package development workflow. Whether you’re a solo developer or managing multiple packages, **rdevdash** offers the tools you need to stay on top of version control, CRAN checks, and usage trends—so you can focus more on creating and maintaining high-quality R packages, and less on manual tracking or guesswork.

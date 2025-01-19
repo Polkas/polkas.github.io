@@ -1,0 +1,161 @@
+---
+title: "Curse of Dimensionality: Lessons from the U.S. Air Force Cockpit Design"
+author: "Maciej Nasinski"
+date: "2025-01-19"
+categories: [statistics]
+draft: true
+image: main.png
+filters:
+  - webr
+---
+ 
+TL;DR: In the late 1940s, the U.S. Air Force faced a potentially life-threatening challenge. Despite state-of-the-art technology in their fighter planes, pilots were struggling with control and comfort issues, leading to accidents and reduced performance. The root cause? The assumption that designing cockpits based on the "average" pilot’s body measurements would create an optimal fit for everyone. What they discovered revolutionized our understanding of design and human variability.
+
+---
+
+### The Myth of the "Average" Pilot
+
+In the 1920s, the U.S. Air Force began collecting anthropometric data on its pilots to improve cockpit designs. Engineers focused on 10 key body dimensions—height, chest circumference, arm length, leg length, etc.—to define an "average" pilot. The assumption was simple: if a cockpit suited the average pilot, it would suit most pilots.
+
+However, by the late 1940s, mounting evidence suggested this assumption was flawed. Pilots frequently reported discomfort, difficulty operating controls, and even injuries during emergencies. The Air Force recognized the need for a deeper investigation.
+
+Enter **Lieutenant Gilbert S. Daniels**, a physical anthropologist. [In 1950, Daniels analyzed the body measurements of 4,063 male pilots and challenged the idea of designing for the "average."](https://apps.dtic.mil/sti/tr/pdf/AD0010203.pdf)
+
+---
+
+### The Statistical Groundwork: Why Averages Fail
+
+From a statistical perspective, each body measurement follows a normal distribution, especially with large sample sizes. The Air Force’s approach defined "average" as the middle 30% of values (between the 35th and 65th percentiles) for a single dimension. For example, if a pilot’s height fell within this range, they were considered "average" for height.
+
+But what happens when multiple dimensions are considered simultaneously?
+
+For independent variables:
+  
+$$
+P(\text{within range for all dimensions}) = P(\text{within range for one dimension})^k
+$$
+
+Here:
+- $P$ is the probability of being within the middle range for a single dimension (30%, or 0.30).  
+- $k$ is the number of dimensions (10 in this case).  
+
+Thus:
+$$
+P = 0.30^{10} \approx 0.0000059 \quad \text{or } 0.00059\%
+$$
+
+This means the likelihood of a pilot being "average" across all 10 dimensions is virtually zero! Daniels confirmed this in his dataset: **not a single pilot was "average" across all 10 dimensions.**
+
+Even when considering just three dimensions, fewer than 5% of pilots were "average" in all.
+
+---
+
+### Breaking the Myth: Implications for Cockpit Design
+
+Daniels’ findings exposed the flaws of designing for the "average." Averages oversimplify human variability and exclude a majority of the population. Designing for the average, it turns out, effectively designs for no one.
+
+Armed with this knowledge, the Air Force adopted a new approach: **designing for diversity.** This included:
+- **Adjustable seats** to fit pilots of different heights.
+- **Customizable controls** for varied arm lengths and reach.
+- **Flexible straps and harnesses** to accommodate different chest circumferences.
+
+These changes drastically improved safety, performance, and pilot satisfaction, reducing accidents and fatalities.
+
+---
+
+### The Broader Lesson: Design for Diversity
+
+The "average person" fallacy extends far beyond aviation. In fields like product design, workplace ergonomics, education, and healthcare, assuming an "average" user often results in suboptimal outcomes. Daniels’ work underscores the importance of embracing human diversity in all its dimensions.
+
+Modern examples include:
+- Adjustable desks and chairs for ergonomic workplaces.
+- Inclusive sizing in clothing.
+- Software interfaces designed for accessibility.
+
+By prioritizing adaptability, we can create systems and products that truly serve diverse users.
+
+---
+
+### Statistical Considerations: Multivariate Normality
+
+While Daniels’ analysis assumed independence between dimensions, body measurements are often correlated. For example, taller individuals generally have longer arms and legs. Accounting for these correlations requires evaluating probabilities within a **multivariate normal distribution**, which involves the joint probability density function:
+
+$$
+P = \int \cdots \int_{R} f(x_1, x_2, \ldots, x_k) dx_1 dx_2 \ldots dx_k
+$$
+
+Where $f(x_1, x_2, \ldots, x_k)$ is the joint probability density function and $R$ is the range of interest. Although complex, the conclusion remains the same: the likelihood of being "average" across multiple dimensions is extremely small.
+
+---
+
+### Hands-On: Exploring the Concept with R
+
+For those interested in a practical demonstration, here’s how to explore this concept using R and the `webr` package in Quarto:
+
+This simulation assumes three correlated dimensions: height, chest circumference, and arm length. 
+Each dimension is represented by a mean and variance, with the covariance matrix defining the relationships between dimensions.
+
+#### Simulating Multivariate Normal Data
+
+```{webr-r}
+library(MASS)  # For multivariate normal simulation
+library(ggplot2)  # For visualization
+
+# Define mean and covariance matrix
+mean_vector <- c(170, 100, 75)  # Example: height (cm), chest (cm), arm length (cm)
+cov_matrix <- matrix(c(10, 5, 3,
+                       5, 8, 4,
+                       3, 4, 6),
+                     nrow = 3)
+
+# Simulate data for 4000 pilots
+set.seed(123)
+pilot_data <- mvrnorm(n = 4000, mu = mean_vector, Sigma = cov_matrix)
+colnames(pilot_data) <- c("Height", "Chest", "Arm_Length")
+```
+
+This plot demonstrates the correlation between height and chest circumference, showing a clustering effect that reflects real-world data patterns.
+
+```{webr-r}
+# Visualize Height vs Chest
+pilot_df <- as.data.frame(pilot_data)
+ggplot(pilot_df, aes(x = Height, y = Chest)) +
+  geom_point(alpha = 0.3) +
+  labs(title = "Height vs Chest Circumference") +
+  theme_minimal()
+```
+
+
+#### Calculating "Average" Probabilities
+
+```{webr-r}
+# Define middle 30% range
+middle_range <- function(x) quantile(x, probs = c(0.35, 0.65))
+
+# Compute ranges
+ranges <- apply(pilot_data, 2, middle_range)
+
+# Check pilots within middle range for all dimensions
+within_range <- apply(pilot_data, 1, function(row) {
+  all(row > ranges[1, ] & row < ranges[2, ])
+})
+
+# Percentage of "average" pilots
+mean(within_range) * 100
+# When assume idependence
+0.3 ** 3 * 100
+```
+
+This code demonstrates how the probability of being "average" diminishes rapidly as more dimensions are considered.
+Despite accounting for correlation, the proportion of pilots who are "average" across all three dimensions remains small, typically around 3–5%. This is slightly higher than the independent case (
+0.3 ^ 3 * 100% = 2.7%) but still demonstrates the challenge of designing for the "average" person.
+
+---
+
+### Conclusion
+
+The U.S. Air Force’s experience with cockpit design reveals a fundamental truth: **designing for an "average" that doesn’t exist serves no one.** Whether in aviation, technology, or daily life, we must design for diversity and inclusivity. Daniels’ groundbreaking research remains a powerful reminder that true innovation begins when we embrace the full range of human variability.
+
+### Reference 
+
+- [Unclassfied - An "Average" Man? Gilbert S. Daniels 1952](https://apps.dtic.mil/sti/tr/pdf/AD0010203.pdf)

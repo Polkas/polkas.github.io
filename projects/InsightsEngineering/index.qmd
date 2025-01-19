@@ -1,0 +1,63 @@
+---
+title: 'InsightsEngineering'
+author: "Maciej Nasinski"
+image: main.png
+---
+
+For three remarkable years, I had the privilege of serving as a core developer at **InsightsEngineering**, a project closely tied to **Pharmaverse** and part of **Roche**, one of the world’s leading healthcare companies. This experience was a formative milestone in my career, marked by stimulating challenges, continuous growth, and close collaboration with extraordinarily talented individuals.
+
+## About InsightsEngineering
+
+**InsightsEngineering** is an initiative within Roche, dedicated to creating robust, open-source tools that empower data scientists, researchers, and developers in healthcare and the pharmaceutical industry. By partnering with **Pharmaverse**, this initiative plays a pivotal role in standardizing, expediting, and enhancing the drug development lifecycle through tools for data analysis, visualization, and reporting.
+
+These packages foster collaboration, reproducibility, and transparency—core values that align seamlessly with Roche’s mission to improve patient outcomes.
+
+Explore the projects: [InsightsEngineering GitHub](https://github.com/insightsengineering)
+
+---
+
+## Contributions to *teal* and Family Packages
+
+During my time at InsightsEngineering, I contributed to several projects, including:
+
+- **teal**: A modular and dynamic framework for building Shiny applications tailored to data exploration and analysis. Its ability to streamline the creation of interactive tools for clinical and pharmaceutical data workflows made this work especially rewarding.
+- **Family Packages**: A suite of complementary tools that extend **teal**’s functionality. These packages address challenges in data preprocessing, visualization, and reporting, delivering a comprehensive end-to-end solution for users.
+
+Each project posed unique technical challenges while driving real impact in healthcare—an incredibly fulfilling combination.
+
+---
+
+## Learning and Growing with Remarkable Colleagues
+
+One of the greatest benefits of my three years at InsightsEngineering was collaborating with an outstanding team. This environment went beyond coding lessons: I was inspired daily by the knowledge, creativity, and commitment of my colleagues, and I hope I was able to share a few insights with them in return.
+
+Some of the amazing people I worked alongside include:  
+Dawid Kaledkowski, Pawel Rucki, Nichlas Burkoff, Konrad Pagacz, Francois Collins, Dony Undari, Mahmoud Hallal, Jaime Pires, Tad Lewandowski, Joe Zhu, Bartosz Czernecki, Adrian Waddell, Arkadiusz Beer, Daniel Sabanés Bové, Yuliia Bahatska, Nikols Burkoff, Vaakesan Sundrelingam and Bartosz Baranowski.
+
+Their technical expertise and personal support shaped my experience at InsightsEngineering into something truly unforgettable.
+
+---
+
+## The Roche Connection
+
+Being part of a project within Roche amplified the significance of our work. Knowing our tools would be used to support data analysis in vital areas—such as clinical trials, patient safety, and drug development—gave each line of code a profound sense of purpose. Roche’s commitment to innovation and collaboration laid the groundwork for InsightsEngineering’s success.
+
+---
+
+## Reflections and Gratitude
+
+My time at InsightsEngineering was about more than just building tools. It was about contributing to healthcare advancement, learning from exceptional minds, and serving a vision greater than myself. I’m immensely proud of what we accomplished, and I’m grateful to have participated in an initiative that pairs technical excellence with a meaningful mission.
+
+To everyone at InsightsEngineering and Roche: thank you for granting me the chance to learn, innovate, and make a difference. The skills, experiences, and relationships I gained will guide me for years to come.
+
+---
+
+## Explore InsightsEngineering and Pharmaverse
+
+If you’d like to learn more, I encourage you to explore:
+
+- [InsightsEngineering GitHub](https://github.com/insightsengineering)  
+- [PharmaVerse GitHub](https://github.com/pharmaverse)
+
+
+To my colleagues at InsightsEngineering: you’ve left an indelible mark on my career and my life. Thank you for an unforgettable experience.
