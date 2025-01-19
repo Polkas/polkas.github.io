@@ -1,5 +1,5 @@
 ---
-title: "Introduction of GQL and Graph DB"
+title: "Graph DB"
 author: "Maciej Nasinski"
 date: "2024-07-19"
 engine: knitr
@@ -7,9 +7,7 @@ image: main.png
 categories: [programming]
 ---
 
-# Introduction of GQL and Graph DB
-
-TL;DR: Graph databases have emerged as a crucial technology for managing and analyzing data that is highly interconnected. Unlike traditional relational databases that store data in tables, graph databases use a graph structure to represent and store data, making them exceptionally powerful for applications that involve complex relationships and connections. Graph databases have reached a significant milestone with the publication of the Graph Query Language (GQL) as an ISO standard. This development marks a new era in the standardization and usability of graph databases, providing a unified query language that enhances the way we interact with graph data. It is the first database query language to be certified since SQL in 1987.
+TL;DR Graph databases have emerged as a crucial technology for managing and analyzing data that is highly interconnected. Unlike traditional relational databases that store data in tables, graph databases use a graph structure to represent and store data, making them exceptionally powerful for applications that involve complex relationships and connections.
 
 [Please access the ready Graph DB playground](https://github.com/Polkas/graphdb-playground)
 
@@ -57,54 +55,35 @@ This graph-based structure allows for intuitive and efficient querying of comple
 - **Virtuoso:** A multi-model data server that supports RDF graphs.
 - **Stardog:** A knowledge graph platform supporting both RDF and property graph models.
 
+## Example: Graph DB playground
+
+This example demonstrates a comprehensive workflow for working with a graph database. It includes defining a schema, inserting data, querying data, performing advanced queries, and running graph algorithms. 
+
+[Please access the ready Graph DB playground](https://github.com/Polkas/graphdb-playground)
+
 ## The Journey to GQL
 
 The journey to establish GQL as a standard began in September 2019 and culminated in March 2024 with the unanimous approval of the Final Draft International Standard (FDIS) ballot. This milestone signifies GQL's official status as an ISO standard, placing it alongside SQL in the world of database query languages.
 
-## What is GQL?
-
 GQL (Graph Query Language) is designed to be the standard query language for graph databases. It aims to unify various graph query languages, drawing significant inspiration from existing languages like Cypher. GQL provides a declarative syntax that allows users to describe what data to retrieve rather than how to retrieve it, similar to SQL but optimized for graph data.
-
-## Key Features of GQL
 
 - **Declarative Syntax:** GQL uses a declarative approach, making it easier for users to express complex queries.
 - **Flexibility:** It is designed to work with various types of graph databases, including property graphs and RDF graphs.
 - **Interoperability:** GQL promotes interoperability between different graph database systems, reducing fragmentation in the graph database landscape.
 
-
-## Example: Full GQL Workflow
-
-This example demonstrates a comprehensive workflow for working with Graph Query Language (GQL) in a graph database. It includes defining a schema, inserting data, querying data, performing advanced queries, and running graph algorithms. 
-
-[Please access the ready Graph DBplayground](https://github.com/Polkas/graphdb-playground)
-
-## Where to Run These Queries
-
-To execute the GQL commands provided, you need a graph database system that supports GQL or similar query languages. Follow these steps to get started:
-
-- **Local Setup**:
-   - Install Neo4j, TigerGraph, or another graph database system.
-   - Use their query editor or command-line tools to define schemas, insert data, and run queries.
-
-- **Cloud-Based Platforms**:
-   - Sign up for services like [Neo4j Aura](https://neo4j.com/cloud/aura/) or [TigerGraph Cloud](https://www.tigergraph.com/cloud/).
-   - Deploy a database instance and run your GQL commands in the browser-based query editor.
-
-
-## Why GQL Matters
-
-GQL addresses the fragmentation in the graph database query language landscape by providing a unified standard. This unification simplifies the learning curve for new users and promotes broader adoption of graph databases across various industries. The standardization also ensures long-term viability and support for graph database technologies.
+The introduction of GQL marks a significant advancement in the world of graph databases. As an ISO standard, GQL provides a unified and powerful query language that enhances interoperability and usability. With the support of leading graph database platforms like Neo4j, GQL is set to transform how we interact with graph data, driving innovation and efficiency in data management.
 
 ## Conclusion
 
-The introduction of GQL marks a significant advancement in the world of graph databases. As an ISO standard, GQL provides a unified and powerful query language that enhances interoperability and usability. With the support of leading graph database platforms like Neo4j, GQL is set to transform how we interact with graph data, driving innovation and efficiency in data management.
+Graph databases have emerged as a crucial technology for managing and analyzing data that is highly interconnected. Unlike traditional relational databases that store data in tables, graph databases use a graph structure to represent and store data, making them exceptionally powerful for applications that involve complex relationships and connections.
 
 ## References
 
 - [Graph DB playground](https://github.com/Polkas/graphdb-playground)
+- [Graph Databases for Beginners (Neo4j)](https://neo4j.com/graph-databases-for-beginners/)
+- [Cypher Query Language Overview](https://opencypher.org/)
 - [ISO GQL Standard](https://www.iso.org/standard/76120.html)
 - [Neo4j's Role in GQL Development](https://neo4j.com/developer/gql/)
 - [GraphQL Foundation: Evolution of GQL](https://www.graphql.org)
 - [The GQL Standard Proposal](https://arxiv.org/abs/2009.03000)
-- [Graph Databases for Beginners (Neo4j)](https://neo4j.com/graph-databases-for-beginners/)
-- [Cypher Query Language Overview](https://opencypher.org/)
+
