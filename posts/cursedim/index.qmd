@@ -3,7 +3,7 @@ title: "Curse of Dimensionality: Lessons from the U.S. Air Force Cockpit Design"
 author: "Maciej Nasinski"
 date: "2025-01-19"
 categories: [statistics]
-draft: true
+draft: false
 image: main.png
 filters:
   - webr
