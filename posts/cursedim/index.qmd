@@ -161,4 +161,4 @@ The U.S. Air Force’s experience with cockpit design reveals a fundamental trut
 ### Reference 
 
 - [Unclassfied - An "Average" Man? Gilbert S. Daniels 1952](https://apps.dtic.mil/sti/tr/pdf/AD0010203.pdf)
-- [Wiki](https://en.wikipedia.org/wiki/Curse_of_dimensionality)
+- [Wiki - Curse of Dimensionality](https://en.wikipedia.org/wiki/Curse_of_dimensionality)
