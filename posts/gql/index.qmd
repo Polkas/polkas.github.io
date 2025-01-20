@@ -73,6 +73,16 @@ GQL (Graph Query Language) is designed to be the standard query language for gra
 
 The introduction of GQL marks a significant advancement in the world of graph databases. As an ISO standard, GQL provides a unified and powerful query language that enhances interoperability and usability. With the support of leading graph database platforms like Neo4j, GQL is set to transform how we interact with graph data, driving innovation and efficiency in data management.
 
+[The Neo4j Cypher now accommodates most mandatory GQL features and a substantial portion of its optional ones.](https://neo4j.com/docs/cypher-manual/current/appendix/gql-conformance/)
+Users should, therefore, only expect minimal differences between crafting queries in Cypher and GQL. 
+For example, the following query is valid in both languages:  
+
+```gql
+MATCH (a:Actor)-[:ACTED_IN]->(m:Movie)
+WHERE a.name = 'Tom Hanks'
+RETURN m.title
+```                                                                                                           )
+
 ## Conclusion
 
 Graph databases have emerged as a crucial technology for managing and analyzing data that is highly interconnected. Unlike traditional relational databases that store data in tables, graph databases use a graph structure to represent and store data, making them exceptionally powerful for applications that involve complex relationships and connections.
