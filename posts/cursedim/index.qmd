@@ -97,12 +97,16 @@ For those interested in a practical demonstration, here’s how to explore this 
 This simulation assumes three correlated dimensions: height, chest circumference, and arm length. 
 Each dimension is represented by a mean and variance, with the covariance matrix defining the relationships between dimensions.
 
+```{webr-r}
+#| message: false
+#| warning: false
+library(MASS)  # For multivariate normal simulation
+library(ggplot2)  # For visualization
+```
+
 #### Simulating Multivariate Normal Data
 
 ```{webr-r}
-library(MASS)  # For multivariate normal simulation
-library(ggplot2)  # For visualization
-
 # Define mean and covariance matrix
 mean_vector <- c(170, 100, 75)  # Example: height (cm), chest (cm), arm length (cm)
 cov_matrix <- matrix(c(10, 5, 3,
