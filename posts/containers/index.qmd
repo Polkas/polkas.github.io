@@ -1480,6 +1480,8 @@ By proactively managing security, you ensure that containers not only provide re
 
 ### Image Deployment
 
+![Image Deployment](deploy.png)
+
 In the containerization ecosystem, the deployment of container images is a foundational step that ensures applications are **portable**, **consistent**, and **easily distributable** across various environments. Container images encapsulate all the necessary components—such as application code, runtime, libraries, and configurations—into a single, immutable package. This encapsulation guarantees that an application behaves identically regardless of where it is deployed, eliminating the notorious "it works on my machine" problem that often plagues traditional software deployments.
 
 To effectively manage and distribute these container images, organizations rely on **container registries** or **container hubs**. These registries serve as centralized repositories where container images are stored, versioned, and shared among development teams and deployment environments. Prominent examples include **Docker Hub**, **Amazon Elastic Container Registry (ECR)**, **Google Container Registry (GCR)**, and **Azure Container Registry (ACR)**. By pushing container images to these registries, developers can ensure that their applications are accessible and deployable from any location, whether it's on-premises servers, cloud platforms, or edge devices. Cloud providers like AWS, Google Cloud, and Azure offer their own managed container registries, integrating seamlessly with their respective cloud services and providing robust scalability, high availability, and enhanced security features.
@@ -1495,6 +1497,8 @@ Once the image resides in a registry, it becomes readily available for deploymen
 Furthermore, leveraging **private registries** ensures that proprietary or sensitive applications remain secure and are only accessible to authorized personnel. This is crucial for organizations that handle confidential data or operate in regulated industries, where controlling access to application images is paramount.
 
 ### Container Deployment
+
+![Container Deployment](deploy.png)
 
 Deploying containers transcends the act of merely running them on individual hosts; it involves orchestrating and managing multiple containers to ensure that applications are **scalable**, **resilient**, and **efficiently utilize resources**. Container deployment encompasses the processes and tools that automate the deployment, scaling, and management of containerized applications across diverse environments, from local development machines to expansive cloud infrastructures.
 
@@ -1607,6 +1611,8 @@ Furthermore, **serverless container platforms** like **AWS Fargate** and **Googl
 Deploying containers is a multifaceted process that transforms development artifacts into live, scalable, and secure applications. By leveraging **container registries** for image management, utilizing **orchestration platforms** like Kubernetes, and deploying to robust **cloud platforms** such as AWS, Google Cloud, and Azure, organizations can ensure that their containerized applications perform optimally across diverse environments. Integrating deployment into **CI/CD pipelines** and adhering to **best practices** further enhances the efficiency, security, and reliability of application delivery.
 
 ### Deploying rdevdash app to Digital Ocean
+
+![Digital Ocean](digitaloceanlogo.png)
 
 [`rdevdash` shiny app was deployed with containers to Digital Ocean in less than 10 minutes](https://rdevdash-app-oygos.ondigitalocean.app/).  
 [`rdevdash`](https://github.com/Polkas/rdevdash) is R Package Developer Dashboard, a comprehensive tool designed to streamline the process of tracking and managing CRAN packages.
