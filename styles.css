@@ -36,3 +36,35 @@
   color: #444;
   text-align: center;
 }
+
+.image-row {
+  display: flex;
+  justify-content: space-between; /* Optional: Adds space between the images */
+  align-items: center;           /* Optional: Aligns items vertically centered */
+  max-width: 1000px;             /* Optional: Sets a max width for the container */
+  margin: 0 auto;                /* Optional: Centers the container horizontally */
+  padding: 20px;                 /* Optional: Adds padding around the container */
+  box-sizing: border-box;        /* Ensures padding is included in the total width */
+}
+
+.image-container {
+  flex: 1;                        /* Each container takes up equal space */
+  padding: 10px;                  /* Optional: Adds padding around each image */
+  box-sizing: border-box;         /* Ensures padding is included in the total width */
+  text-align: center;             /* Optional: Centers the image within its container */
+}
+
+.image-container img {
+  max-width: 100%;                /* Makes the image responsive */
+  height: auto;                   /* Maintains aspect ratio */
+}
+
+/* Optional: Add responsiveness for smaller screens */
+@media (max-width: 768px) {
+  .image-row {
+    flex-direction: column;
+  }
+  .image-container {
+    padding: 5px 0;
+  }
+}

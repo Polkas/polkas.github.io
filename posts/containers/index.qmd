@@ -339,6 +339,20 @@ These roles represent a spectrum of container interaction, from straightforward 
 When people think of containers, Docker is often the first tool that comes to mind. However, it is important to recognize that containers are not tied to any single vendor. While Docker popularized containerization, you can now choose from several alternatives:
 
 ```{=html}
+  <div class="image-row">
+    <div class="image-container">
+      <img src="dockerlogo.png" alt="Docker Logo">
+    </div>
+    <div class="image-container">
+      <img src="podmanlogo.png" alt="Podman Logo">
+    </div>
+    <div class="image-container">
+      <img src="apptainerlogo.png" alt="Apptainer Logo">
+    </div>
+  </div>
+```
+
+```{=html}
 <div class="accordion" id="accordionTools">
 
   <!-- Accordion Item 1: Docker -->
@@ -432,6 +446,8 @@ This diversity means you can pick the container technology that best fits your r
 
 
 ### CLI vs. Desktop 
+
+![Source: gitkraken.com](GUIvsCLI.png)
 
 Managing containers can be done through terminal-based (CLI) or desktop (GUI) applications, each catering to different user needs and scenarios. CLI tools like Docker and Podman offer powerful, scriptable solutions that are ideal for advanced users and automation, while GUI-based tools like Docker Desktop and Podman Desktop simplify operations for beginners or those who prefer visual interfaces. For enterprises, licensing considerations, particularly with Docker Desktop, make alternatives like Podman an attractive option. Here's a comparison to help you choose the right approach:
 
