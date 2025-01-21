@@ -1342,7 +1342,11 @@ The `devcontainer.json` file uses the Docker-in-Docker feature to simplify the s
 ### Handling Security Issues in Containers
 
 ```{=html}
-<img src="wall.png" width="auto" height="300px">
+<div class="image-row">
+  <div class="image-container">
+      <img src="wall.png" width="auto" height="300px">
+  </div>
+</div>
 ```
 
 Security is a critical concern in any environment, and containers are no exception. Although containers isolate applications from the host system, you still need to manage security diligently:
@@ -1501,7 +1505,11 @@ Furthermore, leveraging **private registries** ensures that proprietary or sensi
 ### Container Deployment
 
 ```{=html}
-<img src="deploy.png" width="auto" height="300px">
+<div class="image-row">
+  <div class="image-container">
+      <img src="deploy.png" width="auto" height="300px">
+  </div>
+</div>
 ```
 
 Deploying containers transcends the act of merely running them on individual hosts; it involves orchestrating and managing multiple containers to ensure that applications are **scalable**, **resilient**, and **efficiently utilize resources**. Container deployment encompasses the processes and tools that automate the deployment, scaling, and management of containerized applications across diverse environments, from local development machines to expansive cloud infrastructures.
