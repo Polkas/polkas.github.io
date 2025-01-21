@@ -605,7 +605,7 @@ Docker uses a centralized daemon (dockerd) to manage containers, offering robust
       <img src="windowslogo.png" alt="Windows Logo" width="auto" height="300px">
     </div>
     <div class="image-container">
-      <img src="maclogo.png" alt="Mac OS Logo" width="auto" height="300px">
+      <img src="macoslogo.png" alt="Mac OS Logo" width="auto" height="300px">
     </div>
     <div class="image-container">
       <img src="linuxlogo.png" alt="Linux Logo" width="auto" height="300px">
