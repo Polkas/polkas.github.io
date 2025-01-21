@@ -1344,7 +1344,7 @@ The `devcontainer.json` file uses the Docker-in-Docker feature to simplify the s
 ```{=html}
 <div class="image-row">
   <div class="image-container">
-      <img src="wall.png" width="auto" height="300px">
+      <img src="wall.png" style="style="height:300px !important;">
   </div>
 </div>
 ```
@@ -1507,7 +1507,7 @@ Furthermore, leveraging **private registries** ensures that proprietary or sensi
 ```{=html}
 <div class="image-row">
   <div class="image-container">
-      <img src="deploy.png" width="auto" height="300px">
+      <img src="deploy.png" style="style="height:300px !important;">
   </div>
 </div>
 ```
