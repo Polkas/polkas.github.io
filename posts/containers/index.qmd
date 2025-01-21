@@ -600,6 +600,20 @@ All three tools are natively compatible on Linux machines, as the Linux kernel p
 Docker uses a centralized daemon (dockerd) to manage containers, offering robust networking and lifecycle management but requiring elevated privileges unless running in rootless mode. Podman, designed to be daemonless, manages containers as user processes while maintaining strong isolation and offering a secure, rootless experience. Apptainer, in contrast, runs containers as lightweight processes directly within the user's namespace, prioritizing ease of integration with the host environment over isolation. This approach makes Apptainer particularly well-suited for HPC and scientific computing environments where reproducibility and host integration are critical.
 
 ```{=html}
+  <div class="image-row">
+    <div class="image-container">
+      <img src="windowslogo.png" alt="Windows Logo" width="auto" height="300px">
+    </div>
+    <div class="image-container">
+      <img src="maclogo.png" alt="Mac OS Logo" width="auto" height="300px">
+    </div>
+    <div class="image-container">
+      <img src="linuxlogo.png" alt="Linux Logo" width="auto" height="300px">
+    </div>
+  </div>
+```
+
+```{=html}
 <div class="accordion" id="accordionContainerTools">
 
   <!-- Accordion Item 1: Linux -->
