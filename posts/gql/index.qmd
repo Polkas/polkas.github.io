@@ -77,7 +77,7 @@ The introduction of GQL marks a significant advancement in the world of graph da
 Users should, therefore, only expect minimal differences between crafting queries in Cypher and GQL. 
 For example, the following query is valid in both languages:  
 
-```gql
+```
 MATCH (a:Actor)-[:ACTED_IN]->(m:Movie)
 WHERE a.name = 'Tom Hanks'
 RETURN m.title

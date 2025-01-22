@@ -62,21 +62,19 @@ Armed with this knowledge, the Air Force adopted a new approach: **designing for
 
 These changes drastically improved safety, performance, and pilot satisfaction, reducing accidents and fatalities.
 
----
-
-### The Broader Lesson: Design for Diversity
-
-The "average person" fallacy extends far beyond aviation. In fields like product design, workplace ergonomics, education, and healthcare, assuming an "average" user often results in suboptimal outcomes. Daniels’ work underscores the importance of embracing human diversity in all its dimensions.
-
-Modern examples include:  
-
-- Adjustable desks and chairs for ergonomic workplaces.
-- Inclusive sizing in clothing.
-- Software interfaces designed for accessibility.
-
-By prioritizing adaptability, we can create systems and products that truly serve diverse users.
+Below is an example of an additional section you could add to your blog post to explicitly connect the cockpit design story to the **Curse of Dimensionality**:
 
 ---
+
+### The Curse of Dimensionality
+
+The **Curse of Dimensionality**, a term introduced by mathematician Richard Bellman, refers to a suite of phenomena that arise when data is analyzed in spaces with many dimensions, phenomena that simply don’t occur in our everyday three-dimensional world. 
+As [Wikipedia](https://en.wikipedia.org/wiki/Curse_of_dimensionality) notes, “it refers to various phenomena that arise when analyzing and organizing data in high-dimensional spaces that do not occur in low-dimensional settings.”
+
+In the cockpit design example, considering multiple body measurements (height, arm length, etc.) creates a high-dimensional space where the notion of an “average” pilot quickly collapses. Even if a large percentage of individuals are “average” on one or two dimensions, that fraction becomes tiny when you look at all dimensions together. This explains why a cockpit based on average measurements serves almost no one. 
+More broadly, whenever we add more variables—whether in product design, machine learning, or any data-driven field—the space expands exponentially, making intuitive ideas like “typical” or “close together” far less meaningful.
+
+For more information, see the [Wikipedia article on the Curse of Dimensionality](https://en.wikipedia.org/wiki/Curse_of_dimensionality).
 
 ### Statistical Considerations: Multivariate Normality
 
