@@ -1626,7 +1626,7 @@ Deploying containers is a multifaceted process that transforms development artif
 
 ![Digital Ocean](digitaloceanlogo.png)
 
-[`rdevdash` shiny app was deployed with containers to Digital Ocean in less than 10 minutes](https://rdevdash-app-oygos.ondigitalocean.app/).  
+[`rdevdash` shiny app was deployed with containers to Digital Ocean in less than 10 minutes](https://polkas.shinyapps.io/rdevdash/).  
 [`rdevdash`](https://github.com/Polkas/rdevdash) is R Package Developer Dashboard, a comprehensive tool designed to streamline the process of tracking and managing CRAN packages.
 
 [Please take into account that with GitHub Student Pack you get 200$ from Digital Ocean.](https://www.digitalocean.com/github-students)  
