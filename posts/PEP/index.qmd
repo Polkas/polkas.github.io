@@ -91,6 +91,76 @@ if (n := len(a)) > 10:
     print(f"List is too long ({n} elements)")
 ```
 
+# PEP 621: Storing Project Metadata in pyproject.toml
+
+PEP 621 specifies how to write a project’s core metadata in a pyproject.toml file for packaging-related tools to consume. This PEP aims to encourage users to specify core metadata statically for speed, ease of specification, unambiguity, and deterministic consumption by build back-ends. It provides a tool-agnostic way of specifying metadata, making it easier for users to transition between different build back-ends.
+
+Example `pyproject.toml`:
+
+```pyproject.toml
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cat2cat"
+authors = [
+  {name = "Maciej Nasinski", email = "nasinski.maciej@gmail.com"},
+]
+description = "Unifying an inconsistently coded categorical variable in a panel/longtitudal dataset."
+readme = "README.md"
+version = "0.1.6"
+requires-python = ">=3.8"
+keywords = ["panel", "categorical", "longtitudal", "inconsistent", "cat2cat"]
+license = {text = "Apache License 2.0 | file LICENSE"}
+classifiers = [
+"Development Status :: 3 - Alpha",
+"Programming Language :: Python",
+"Programming Language :: Python :: 3",
+"Programming Language :: Python :: 3.8",
+"Programming Language :: Python :: 3.9",
+"Programming Language :: Python :: 3.10",
+"Programming Language :: Python :: 3.11",
+"Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "numpy",
+  "pandas",
+  "scikit-learn",
+  "importlib-resources"
+]
+
+[project.optional-dependencies]
+test = ["pytest", "pytest-cov", "mypy"]
+docs = [
+  "Sphinx", 
+  "myst-parser",
+  "sphinx-autoapi", 
+  "sphinx-rtd-theme"
+]
+build = ["build"]
+benchmark = ["snakeviz"]
+styler = ["flake8", "black"]
+all = ["cat2cat[test,docs,build,benchmark,styler]"]
+
+[project.urls]
+homepage = "https://github.com/Polkas/py-cat2cat"
+documentation = "https://py-cat2cat.readthedocs.io/en/latest/"
+repository = "https://github.com/Polkas/py-cat2cat"
+changelog = "https://raw.githubusercontent.com/Polkas/py-cat2cat/main/CHANGELOG.md"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"cat2cat.data" = ["*"]
+
+[tool.mypy]
+python_version = "3.8"
+disallow_untyped_defs = true
+ignore_missing_imports = true
+```
+
 ## How to Engage with PEPs
 
 Engaging with PEPs is a rewarding way to contribute to Python's development and stay informed about its direction.
@@ -130,4 +200,5 @@ Python Enhancement Proposals (**PEPs**) are the lifeblood of Python's continuous
 - [PEP 20: The Zen of Python](https://www.python.org/dev/peps/pep-0020/)
 - [PEP 484: Type Hints](https://www.python.org/dev/peps/pep-0484/)
 - [PEP 572: Assignment Expressions](https://www.python.org/dev/peps/pep-0572/)
+- [PEP 621 documentation](https://peps.python.org/pep-0621/)
 - [PEP Index](https://www.python.org/dev/peps/)
