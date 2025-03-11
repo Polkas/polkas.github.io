@@ -91,9 +91,11 @@ if (n := len(a)) > 10:
     print(f"List is too long ({n} elements)")
 ```
 
-# PEP 621: Storing Project Metadata in pyproject.toml
+### PEP 621: Storing Project Metadata in pyproject.toml
 
-PEP 621 specifies how to write a project’s core metadata in a pyproject.toml file for packaging-related tools to consume. This PEP aims to encourage users to specify core metadata statically for speed, ease of specification, unambiguity, and deterministic consumption by build back-ends. It provides a tool-agnostic way of specifying metadata, making it easier for users to transition between different build back-ends.
+**PEP 621** specifies how to write a project’s core metadata in a pyproject.toml file for packaging-related tools to consume. 
+This PEP aims to encourage users to specify core metadata statically for speed, ease of specification, unambiguity, and deterministic consumption by build back-ends. 
+It provides a tool-agnostic way of specifying metadata, making it easier for users to transition between different build back-ends.
 
 Example `pyproject.toml`:
 
