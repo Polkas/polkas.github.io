@@ -1,0 +1,228 @@
+---
+title: "GLM Residuals Distributions"  
+author: "Maciej Nasinski"  
+date: "2025-03-23"  
+categories: [statistics]  
+draft: false  
+image: main.png  
+filters:
+  - webr  
+editor:  
+  markdown:  
+    wrap: 72  
+---
+
+**TL;DR**  
+Explains residual analysis in generalized linear models (GLMs), particularly logistic (binary outcomes) and Poisson (count outcomes). Using R, we clearly introduce raw, Pearson, deviance, and quantile residuals and illustrate how residual diagnostics can help verify model assumptions and identify potential misspecifications.
+
+---
+
+## Introduction
+
+Generalized linear models (GLMs), such as logistic regression for binary outcomes and Poisson regression for count data, rely on assumptions about error distributions and link functions. A common misconception is that residuals directly follow these assumed distributions. In reality, observed residuals often differ significantly from the distributions assumed by the GLM.
+
+This post clarifies these distinctions, first describing common residual types used in GLM diagnostics, then demonstrating their application using logistic and Poisson regression examples in R. Finally, we illustrate the behavior of residuals in "good" and "poor" model scenarios.
+
+---
+
+## Generalized Linear Model Formulation
+
+Generalized linear models (GLMs) describe outcomes through a link function and an assumed distribution of the data. The general form of a GLM can be expressed as:
+
+$$
+g(\mu) = X\beta,
+$$
+
+where:
+
+- $\mu = E(Y \mid X)$ is the expected response given predictors $X$.
+- $g(\cdot)$ is the **link function**, connecting the expected value of the response to the linear predictors.
+- $Y$ follows a specific distribution (e.g., binomial for binary data, Poisson for counts, Gamma for positive continuous outcomes).
+
+For instance, in logistic regression (binary outcomes):
+
+- **Distribution**: $Y_i \sim \text{Bernoulli}(p_i)$
+- **Link Function**: $g(p_i) = \log\frac{p_i}{1-p_i} = X_i\beta$
+
+In Poisson regression (count outcomes):
+
+- **Distribution**: $Y_i \sim \text{Poisson}(\mu_i)$
+- **Link Function**: $g(\mu_i) = \log(\mu_i) = X_i\beta$
+
+The important distinction is that the error term or randomness in a GLM is implicitly defined by the assumed distribution of the outcome variable, not directly observed as a separate continuous error term as in classical linear regression. Consequently, the raw residuals $y_i - \hat{\mu}_i$ generally do **not** follow the distribution explicitly assumed by the GLM (binomial, Poisson, etc.). Instead, specialized residuals (Pearson, deviance, quantile) are typically required for meaningful diagnostic interpretation.
+
+---
+
+## Types of GLM Residuals
+
+When diagnosing GLMs, four main residual types are frequently considered:
+
+1. **Raw residuals**:  
+   Simple difference between observed and fitted values:
+   $$
+   r_i^{(\text{raw})} = y_i - \hat{\mu}_i
+   $$
+
+2. **Pearson residuals**:  
+   Raw residuals standardized by the predicted variance:
+   $$
+   r_{i,\text{Pearson}} = \frac{y_i - \hat{\mu}_i}{\sqrt{V(\hat{\mu}_i)}}
+   $$
+
+3. **Deviance residuals**:  
+   Residuals derived from model deviance (likelihood-based):
+   $$
+   r_{i,\text{deviance}} = \text{sign}(y_i - \hat{\mu}_i)\sqrt{d_i}
+   $$
+   *(where \( d_i \) is the contribution of observation \( i \) to model deviance)*
+
+4. **Quantile residuals**:  
+   Transformations that follow a normal distribution if the model is correctly specified, useful in various GLM contexts.
+
+Pearson, deviance, and quantile residuals are typically preferred for diagnostics since raw residuals alone rarely provide sufficient diagnostic insights.
+
+---
+
+## Residual Diagnostics for Logistic Regression
+
+A logistic regression models binary outcomes $Y = 0$ or $Y = 1$ with probabilities:
+
+$$
+\Pr(Y = 1 \mid X) = \frac{1}{1 + \exp(-X\beta)}
+$$
+
+Raw residuals are simply the difference between observed outcomes and predicted probabilities $y_i - \hat{p}_i$, but standardized residuals are more informative.
+
+Here's an example using R to demonstrate raw, pearson and deviance residuals.
+Please notice the x axis scales.
+
+```{webr-r}
+set.seed(123)
+n <- 200
+x <- rnorm(n)
+p_true <- 1 / (1 + exp(-(-1 + 2*x)))
+y <- rbinom(n, size=1, prob=p_true)
+
+logit_mod <- glm(y ~ x, family=binomial)
+raw_res <- residuals(logit_mod, type="response")
+pearson_res <- residuals(logit_mod, type="pearson")
+deviance_res <- residuals(logit_mod, type="deviance")
+
+par(mfrow=c(1,2))
+hist(pearson_res, main="Logistic Pearson Residuals", col="lightblue", xlab="Pearson Residuals")
+hist(deviance_res, main="Logistic Deviance Residuals", col="lightgreen", xlab="Deviance Residuals")
+hist(raw_res, main="Logistic Raw Residuals", col="lightgreen", xlab="Raw Residuals")
+```
+
+---
+
+## Residual Diagnostics for Poisson Regression
+
+Poisson regression assumes outcomes $Y_i$ are counts:
+
+$$
+Y_i \sim \text{Poisson}(\mu_i),\quad \mu_i = \exp(X_i\beta)
+$$
+
+Raw residuals $y_i - \hat{\mu}_i$ often vary in magnitude depending on the predicted mean, hence Pearson or deviance residuals are preferred.
+
+Using R's built-in `Insurance` dataset from the MASS package.
+Here's an example using R to demonstrate raw, pearson and deviance residuals.
+Please notice the x axis scales.
+
+```{webr-r}
+library(MASS)
+
+data(Insurance)
+pois_mod <- glm(Claims ~ Age + District + Group, family=poisson, data=Insurance)
+
+raw_res <- residuals(pois_mod, type="response")
+pearson_res <- residuals(pois_mod, type="pearson")
+deviance_res <- residuals(pois_mod, type="deviance")
+
+par(mfrow=c(1,3))
+hist(pearson_res, main="Poisson Pearson Residuals", col="lightblue", xlab="Pearson Residuals")
+hist(deviance_res, main="Poisson Deviance Residuals", col="lightgreen", xlab="Deviance Residuals")
+hist(raw_res, main="Poisson Raw Residuals", col="lightgreen", xlab="Raw Residuals")
+```
+
+Pearson residuals versus fitted values:
+
+```{webr-r}
+# Residual plot against fitted values
+fitted_vals <- fitted(pois_mod)
+plot(fitted_vals, pearson_res, 
+     xlab="Fitted values", ylab="Pearson residuals",
+     main="Residuals vs Fitted Values (Poisson)")
+abline(h=0, lty=2, col="red")
+```
+
+Residuals evenly scattered indicate good model specification; patterns suggest missing predictors or model issues.
+
+---
+
+## Practical GLM Residual Diagnostics Checklist
+
+- **Avoid relying solely on raw residuals**: Always check standardized residuals (Pearson, deviance, quantile).
+- **Plot Pearson or deviance residuals versus fitted values**: Patterns like curvature or funnel shapes suggest issues such as missing predictors or incorrect link functions.
+- **Use QQ-plots for standardized residuals**: Deviations from normality may indicate model inadequacies or overdispersion.
+- **Consider quantile residuals**: Particularly useful for complex or non-standard GLMs.
+
+---
+
+## Additional Example: "Good vs. Poor" Logistic Models
+
+Below, we illustrate residual patterns in scenarios with poor (no predictive ability) and good (high predictive accuracy) logistic models:
+
+```{webr-r}
+set.seed(123)
+n <- 200
+x <- rnorm(n)
+
+# Poor-fitting model: random outcomes
+y_bad <- sample(0:1, n, replace=TRUE)
+bad_mod <- glm(y_bad ~ x, family=binomial)
+# raw residuals
+bad_res <- residuals(bad_mod, type="response")
+
+# Good-fitting model: true logistic relationship
+prob_good <- 1 / (1 + exp(-(-1 + 2 * x)))
+y_good <- rbinom(n, size=1, prob=prob_good)
+good_mod <- glm(y_good ~ x, family=binomial)
+# raw residuals
+good_res <- residuals(good_mod, type="response")
+
+par(mfrow=c(1,2))
+hist(bad_res, main="Poor Logistic Model", col="salmon", xlab="Raw Residuals")
+hist(good_res, main="Good Logistic Model", col="lightgreen", xlab="Raw Residuals")
+```
+
+Notice clustered residuals around ±0.5 in the poor model versus more distributed residuals in the good model.
+
+---
+
+## FAQ: Common GLM Residual Questions
+
+- **Why aren't raw residuals normally or logistically distributed in GLMs?**  
+  Because they directly depend on predicted values and outcome types, not on the assumed error distributions themselves.
+
+- **Which residuals should I primarily use?**  
+  Pearson or deviance residuals are common standards. Quantile residuals are increasingly preferred for general use.
+
+- **What do clustered residuals indicate in logistic regression?**  
+  Clustering around specific values, like ±0.5, indicates low predictive power or uncertainty in the model.
+
+---
+
+## Conclusion
+
+Residual diagnostics are essential for correctly interpreting and validating GLMs. Observed residuals differ fundamentally from assumed distributions at the link-level. Always use standardized residuals (Pearson, deviance, or quantile) alongside diagnostic plots to assess model fit effectively.
+
+---
+
+## References & Further Reading
+
+- McCullagh & Nelder (1989). *Generalized Linear Models*.
+- Agresti (2015). *Foundations of Linear and Generalized Linear Models*.
+- Dunn & Smyth (2018). *Generalized Linear Models with Examples in R*.
+- R documentation (`?glm`, `?residuals.glm`).
