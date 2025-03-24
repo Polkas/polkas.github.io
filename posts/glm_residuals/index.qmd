@@ -12,8 +12,8 @@ editor:
     wrap: 72  
 ---
 
-**TL;DR**  
-Explains residual analysis in generalized linear models (GLMs), particularly logistic (binary outcomes) and Poisson (count outcomes). Using R, we clearly introduce raw, Pearson, deviance, and quantile residuals and illustrate how residual diagnostics can help verify model assumptions and identify potential misspecifications.
+TL;DR Explains residual analysis in generalized linear models (GLMs), particularly logistic (binary outcomes) and Poisson (count outcomes). 
+Using R, we clearly introduce raw, Pearson, deviance, and quantile residuals and illustrate how residual diagnostics can help verify model assumptions and identify potential misspecifications.
 
 ---
 
