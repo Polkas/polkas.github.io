@@ -111,7 +111,7 @@ deviance_res <- residuals(logit_mod, type="deviance")
 par(mfrow=c(1,2))
 hist(pearson_res, main="Logistic Pearson Residuals", col="lightblue", xlab="Pearson Residuals")
 hist(deviance_res, main="Logistic Deviance Residuals", col="lightgreen", xlab="Deviance Residuals")
-hist(raw_res, main="Logistic Raw Residuals", col="lightgreen", xlab="Raw Residuals")
+hist(raw_res, main="Logistic Raw Residuals", col="lightred", xlab="Raw Residuals")
 ```
 
 ---
@@ -143,7 +143,7 @@ deviance_res <- residuals(pois_mod, type="deviance")
 par(mfrow=c(1,3))
 hist(pearson_res, main="Poisson Pearson Residuals", col="lightblue", xlab="Pearson Residuals")
 hist(deviance_res, main="Poisson Deviance Residuals", col="lightgreen", xlab="Deviance Residuals")
-hist(raw_res, main="Poisson Raw Residuals", col="lightgreen", xlab="Raw Residuals")
+hist(raw_res, main="Poisson Raw Residuals", col="lightred", xlab="Raw Residuals")
 ```
 
 Pearson residuals versus fitted values:
