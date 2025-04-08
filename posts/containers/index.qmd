@@ -32,10 +32,13 @@ Deploying r shiny rdevdash app to Digital Ocean by using Docker Hub app image.
 
 ### Motivation
 
-Containers have become an essential tool for modern development and data science workflows, addressing many common frustrations associated with dependency conflicts, environment setup, and reproducibility. If you've ever struggled with inconsistencies between development and production environments or had to debug a project that mysteriously broke after a package update, containers offer a practical solution. They encapsulate your code, dependencies, and configurations into a portable and consistent runtime environment, ensuring your work runs the same way everywhere. Whether you're a developer deploying applications, a data scientist ensuring reproducibility, or a team onboarding new members, containers simplify and streamline the process.
+Containers have become an essential tool for modern development and data science workflows, addressing many common frustrations associated with dependency conflicts, environment setup, and reproducibility. 
+If you've ever struggled with inconsistencies between development and production environments or had to debug a project that mysteriously broke after a package update, containers offer a practical solution. 
+They encapsulate your code, dependencies, and configurations into a portable and consistent runtime environment, ensuring your work runs the same way everywhere. Whether you're a developer deploying applications, a data scientist ensuring reproducibility, or a team onboarding new members, containers simplify and streamline the process.
 
 As data scientists and statistical programmers, we rely on reproducible and transparent workflows. 
-We have all encountered familiar pain points: a project that works perfectly on your machine but fails on a colleague's system or the struggle to maintain multiple versions of R, Python, or system libraries for different projects. These challenges do not just affect convenience; they directly impact the credibility and reliability of our analyses. Containers address these issues by providing isolated, portable, and secure environments that capture every dependency needed to run your project successfully.
+We have all encountered familiar pain points: a project that works perfectly on your machine but fails on a colleague's system or the struggle to maintain multiple versions of R, Python, or system libraries for different projects. 
+These challenges do not just affect convenience; they directly impact the credibility and reliability of our analyses. Containers address these issues by providing isolated, portable, and secure environments that capture every dependency needed to run your project successfully.
 
 #### Key Advantages of Containers
 
@@ -949,6 +952,103 @@ Key Instructions in a Dockerfile:
     </div>
   </div>
 
+    <div class="accordion-item">
+    <div class="accordion-header" id="headingVolume">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseVolume" aria-expanded="false" aria-controls="collapseVolume">
+        VOLUME
+      </button>
+    </div>
+    <div id="collapseVolume" class="accordion-collapse collapse" aria-labelledby="headingVolume" data-bs-parent="#accordionDockerfile">
+      <div class="accordion-body">
+        Defines a mount point for volumes that persist data independent of the container lifecycle. Useful for databases or file storage.  
+        <br><br>
+        <strong>Example:</strong>
+        <pre><code>VOLUME ["/data"]</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingAdd">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAdd" aria-expanded="false" aria-controls="collapseAdd">
+        ADD
+      </button>
+    </div>
+    <div id="collapseAdd" class="accordion-collapse collapse" aria-labelledby="headingAdd" data-bs-parent="#accordionDockerfile">
+      <div class="accordion-body">
+        Similar to <code>COPY</code>, but can also handle URLs or automatically extract archives (.tar, .zip).  
+        <br><br>
+        <strong>Example:</strong>
+        <pre><code>ADD data.tar.gz /var/lib/data/</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingEnv">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEnv" aria-expanded="false" aria-controls="collapseEnv">
+        ENV
+      </button>
+    </div>
+    <div id="collapseEnv" class="accordion-collapse collapse" aria-labelledby="headingEnv" data-bs-parent="#accordionDockerfile">
+      <div class="accordion-body">
+        Sets environment variables inside the container. Useful for configuring application settings and paths.  
+        <br><br>
+        <strong>Example:</strong>
+        <pre><code>ENV R_LIBS_USER=/home/rstudio/R/library</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingLabel">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLabel" aria-expanded="false" aria-controls="collapseLabel">
+        LABEL
+      </button>
+    </div>
+    <div id="collapseLabel" class="accordion-collapse collapse" aria-labelledby="headingLabel" data-bs-parent="#accordionDockerfile">
+      <div class="accordion-body">
+        Adds metadata to the image, useful for describing the author, version, or other information.  
+        <br><br>
+        <strong>Example:</strong>
+        <pre><code>LABEL maintainer="user@example.com" \
+      version="1.0" \
+      description="My R application container"</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingExpose">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExpose" aria-expanded="false" aria-controls="collapseExpose">
+        EXPOSE
+      </button>
+    </div>
+    <div id="collapseExpose" class="accordion-collapse collapse" aria-labelledby="headingExpose" data-bs-parent="#accordionDockerfile">
+      <div class="accordion-body">
+        Declares the network ports the container will listen on at runtime. Helpful when running web services or applications that expose ports.  
+        <br><br>
+        <strong>Example:</strong>
+        <pre><code>EXPOSE 8787</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingShell">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseShell" aria-expanded="false" aria-controls="collapseShell">
+        SHELL
+      </button>
+    </div>
+    <div id="collapseShell" class="accordion-collapse collapse" aria-labelledby="headingShell" data-bs-parent="#accordionDockerfile">
+      <div class="accordion-body">
+        Overrides the default shell used when running commands with <code>RUN</code>, <code>CMD</code>, and <code>ENTRYPOINT</code>. Useful when customizing scripts or environments.  
+        <br><br>
+        <strong>Example:</strong>
+        <pre><code>SHELL ["/bin/bash", "-c"]</code></pre>
+      </div>
+    </div>
+  </div>
 </div>
 <br>
 ```
@@ -1175,7 +1275,29 @@ Examples of base images:
 ```{=html}
 <div class="accordion" id="accordionPitfalls">
 
-  <!-- Pitfall 1: Overly Large Image Sizes -->
+  <div class="accordion-item">
+    <div class="accordion-header" id="headingVersionTag">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseVersionTag" aria-expanded="false" aria-controls="collapseVersionTag">
+        Not Specifying Image Version Tags
+      </button>
+    </div>
+    <div id="collapseVersionTag" class="accordion-collapse collapse" aria-labelledby="headingVersionTag" data-bs-parent="#accordionPitfalls">
+      <div class="accordion-body">
+        <p>
+          <strong>Why It Happens:</strong> Omitting explicit version tags in the base image defaults to using <code>latest</code>, which can lead to unpredictable behaviors and inconsistency between different builds or development environments.
+        </p>
+        <p>
+          <strong>How to Avoid:</strong>
+          <ul>
+            <li>Always specify exact version tags for your base images (e.g., <code>FROM alpine:3.15.0</code> instead of <code>FROM alpine</code>).</li>
+            <li>Avoid using the <code>latest</code> tag, as it does not guarantee that the most recent or stable image is used.</li>
+            <li>Regularly review and update the version tags in your Dockerfiles to apply security patches and improvements intentionally.</li>
+          </ul>
+        </p>
+      </div>
+    </div>
+  </div>
+  
   <div class="accordion-item">
     <div class="accordion-header" id="headingSize">
       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSize" aria-expanded="true" aria-controls="collapseSize">
@@ -1200,7 +1322,6 @@ Examples of base images:
     </div>
   </div>
 
-  <!-- Pitfall 2: Cache Invalidation -->
   <div class="accordion-item">
     <div class="accordion-header" id="headingCache">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCache" aria-expanded="false" aria-controls="collapseCache">
@@ -1224,7 +1345,6 @@ Examples of base images:
     </div>
   </div>
 
-  <!-- Pitfall 3: Permission Errors and Running as Root -->
   <div class="accordion-item">
     <div class="accordion-header" id="headingPermissions">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePermissions" aria-expanded="false" aria-controls="collapsePermissions">
@@ -1248,7 +1368,6 @@ Examples of base images:
     </div>
   </div>
 
-  <!-- Pitfall 4: Over-Exposing Ports -->
   <div class="accordion-item">
     <div class="accordion-header" id="headingPorts">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePorts" aria-expanded="false" aria-controls="collapsePorts">
@@ -1272,7 +1391,6 @@ Examples of base images:
     </div>
   </div>
 
-  <!-- Pitfall 5: Data Persistence and Volumes -->
   <div class="accordion-item">
     <div class="accordion-header" id="headingVolumes">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseVolumes" aria-expanded="false" aria-controls="collapseVolumes">
@@ -1296,7 +1414,6 @@ Examples of base images:
     </div>
   </div>
 
-  <!-- Pitfall 6: Inefficient Multistage Builds -->
   <div class="accordion-item">
     <div class="accordion-header" id="headingMultistage">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMultistage" aria-expanded="false" aria-controls="collapseMultistage">
@@ -1354,7 +1471,6 @@ Security is a critical concern in any environment, and containers are no excepti
 ```{=html}
 <div class="accordion" id="accordionContainerSecurity">
 
-  <!-- Accordion Item 1: Use Trusted Base Images -->
   <div class="accordion-item">
     <div class="accordion-header" id="headingTrustedImages">
       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTrustedImages" aria-expanded="true" aria-controls="collapseTrustedImages">
@@ -1374,7 +1490,6 @@ Security is a critical concern in any environment, and containers are no excepti
     </div>
   </div>
 
-  <!-- Accordion Item 2: Keep Dependencies Up-to-Date -->
   <div class="accordion-item">
     <div class="accordion-header" id="headingDependencies">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDependencies" aria-expanded="false" aria-controls="collapseDependencies">
@@ -1395,7 +1510,6 @@ Security is a critical concern in any environment, and containers are no excepti
     </div>
   </div>
 
-  <!-- Accordion Item 3: Scan for Vulnerabilities -->
   <div class="accordion-item">
     <div class="accordion-header" id="headingScanVulnerabilities">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseScanVulnerabilities" aria-expanded="false" aria-controls="collapseScanVulnerabilities">
@@ -1416,7 +1530,6 @@ Security is a critical concern in any environment, and containers are no excepti
     </div>
   </div>
 
-  <!-- Accordion Item 4: Implement the Principle of Least Privilege -->
   <div class="accordion-item">
     <div class="accordion-header" id="headingLeastPrivilege">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLeastPrivilege" aria-expanded="false" aria-controls="collapseLeastPrivilege">
@@ -1437,7 +1550,6 @@ Security is a critical concern in any environment, and containers are no excepti
     </div>
   </div>
 
-  <!-- Accordion Item 5: Network Security and Isolation -->
   <div class="accordion-item">
     <div class="accordion-header" id="headingNetworkSecurity">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNetworkSecurity" aria-expanded="false" aria-controls="collapseNetworkSecurity">
@@ -1458,7 +1570,6 @@ Security is a critical concern in any environment, and containers are no excepti
     </div>
   </div>
 
-  <!-- Accordion Item 6: Monitor and Log Activity -->
   <div class="accordion-item">
     <div class="accordion-header" id="headingMonitorLogs">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMonitorLogs" aria-expanded="false" aria-controls="collapseMonitorLogs">
@@ -1529,7 +1640,6 @@ Furthermore, **serverless container platforms** like **AWS Fargate** and **Googl
 ```{=html}
 <div class="accordion" id="accordionContainerDeployment">
 
-  <!-- Accordion Item 1: Orchestration Platforms -->
   <div class="accordion-item">
     <div class="accordion-header" id="headingOrchestrationPlatforms">
       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOrchestrationPlatforms" aria-expanded="true" aria-controls="collapseOrchestrationPlatforms">
@@ -1550,7 +1660,6 @@ Furthermore, **serverless container platforms** like **AWS Fargate** and **Googl
     </div>
   </div>
 
-  <!-- Accordion Item 2: Cloud Deployment Services -->
   <div class="accordion-item">
     <div class="accordion-header" id="headingCloudServices">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCloudServices" aria-expanded="false" aria-controls="collapseCloudServices">
@@ -1572,7 +1681,6 @@ Furthermore, **serverless container platforms** like **AWS Fargate** and **Googl
     </div>
   </div>
 
-  <!-- Accordion Item 3: Monitoring and Observability Tools -->
   <div class="accordion-item">
     <div class="accordion-header" id="headingMonitoring">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMonitoring" aria-expanded="false" aria-controls="collapseMonitoring">
@@ -1594,7 +1702,6 @@ Furthermore, **serverless container platforms** like **AWS Fargate** and **Googl
     </div>
   </div>
 
-  <!-- Accordion Item 4: Security and Compliance Tools -->
   <div class="accordion-item">
     <div class="accordion-header" id="headingSecurityTools">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSecurityTools" aria-expanded="false" aria-controls="collapseSecurityTools">
