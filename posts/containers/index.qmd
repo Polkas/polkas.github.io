@@ -486,9 +486,44 @@ Once you have set up a containerization tool like Docker, Podman, or Apptainer o
 | `push`                | Uploads an image to a container registry.                                                           | `push <image_name>`                         |
 
 
-Docker and Podman share nearly identical commands, making it easy to switch between the two tools. For instance, `docker run` works the same as `podman run`, and both are well-suited for managing containerized applications and services. These tools support features like advanced networking, port mapping, and lifecycle management, allowing users to handle complex workflows effectively. This consistency in command structure makes Podman a natural alternative for users already familiar with Docker.
+Docker and Podman share nearly identical commands, making it easy to switch between the two tools. For instance, `docker run` works the same as `podman run`, and both are well-suited for managing containerized applications and services. 
+These tools support features like advanced networking, port mapping, and lifecycle management, allowing users to handle complex workflows effectively. This consistency in command structure makes Podman a natural alternative for users already familiar with Docker.
 
-Apptainer, on the other hand, is designed with a focus on executing single tasks or applications, rather than managing long-running services. Its command set includes options like `exec` for running commands or applications inside containers, but it lacks Docker and Podman's built-in support for port mapping or advanced networking features. Additionally, Apptainer uses a different approach to building images; instead of the `build` command for creating layered images, Apptainer converts existing container formats (e.g., Docker images) into its `.sif` format for portability and reproducibility. Despite these differences, mastering the core commands across these tools equips users to manage containers effectively in various environments.
+Apptainer, on the other hand, is designed with a focus on executing single tasks or applications, rather than managing long-running services. 
+Its command set includes options like `exec` for running commands or applications inside containers, but it lacks Docker and Podman's built-in support for port mapping or advanced networking features. 
+Additionally, Apptainer uses a different approach to building images; instead of the `build` command for creating layered images, Apptainer converts existing container formats (e.g., Docker images) into its `.sif` format for portability and reproducibility. 
+Despite these differences, mastering the core commands across these tools equips users to manage containers effectively in various environments.
+
+
+```bash
+# Display help information for Docker (lists available commands and usage details)
+docker --help
+
+# List all Docker images currently available on your local system
+docker images
+
+# Display help information specifically for the 'docker images' command,
+# including options and usage details for listing images
+docker images --help
+
+# Pull the v0.2 version of the Docker image 'polkas/rdevdash-app' from a registry (e.g., Docker Hub)
+docker pull polkas/rdevdash-app:v0.2
+
+# List Docker images again to confirm that the new image has been downloaded to your system
+docker images
+
+# Run a container from the 'polkas/rdevdash-app:v0.2' image, mapping port 3838 on your host machine to port 3838 in the container.
+# This allows you to access services running inside the container via the host's IP on port 3838.
+docker run -p 3838:3838 polkas/rdevdash-app:v0.2
+
+# List all currently running containers to verify that the container has started
+docker ps
+
+# Stop all containers:
+#   'docker ps -a -q' fetches the IDs of all containers (running or stopped),
+#   and 'docker stop' stops them. This is a quick way to stop all running containers.
+docker stop $(docker ps -a -q)
+```
 
 ### Ports
 
