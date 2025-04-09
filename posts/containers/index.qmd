@@ -486,15 +486,6 @@ Once you have set up a containerization tool like Docker, Podman, or Apptainer o
 | `push`                | Uploads an image to a container registry.                                                           | `push <image_name>`                         |
 
 
-Docker and Podman share nearly identical commands, making it easy to switch between the two tools. For instance, `docker run` works the same as `podman run`, and both are well-suited for managing containerized applications and services. 
-These tools support features like advanced networking, port mapping, and lifecycle management, allowing users to handle complex workflows effectively. This consistency in command structure makes Podman a natural alternative for users already familiar with Docker.
-
-Apptainer, on the other hand, is designed with a focus on executing single tasks or applications, rather than managing long-running services. 
-Its command set includes options like `exec` for running commands or applications inside containers, but it lacks Docker and Podman's built-in support for port mapping or advanced networking features. 
-Additionally, Apptainer uses a different approach to building images; instead of the `build` command for creating layered images, Apptainer converts existing container formats (e.g., Docker images) into its `.sif` format for portability and reproducibility. 
-Despite these differences, mastering the core commands across these tools equips users to manage containers effectively in various environments.
-
-
 ```bash
 # Display help information for Docker (lists available commands and usage details)
 docker --help
@@ -524,6 +515,14 @@ docker ps
 #   and 'docker stop' stops them. This is a quick way to stop all running containers.
 docker stop $(docker ps -a -q)
 ```
+
+Docker and Podman share nearly identical commands, making it easy to switch between the two tools. For instance, `docker run` works the same as `podman run`, and both are well-suited for managing containerized applications and services. 
+These tools support features like advanced networking, port mapping, and lifecycle management, allowing users to handle complex workflows effectively. This consistency in command structure makes Podman a natural alternative for users already familiar with Docker.
+
+Apptainer, on the other hand, is designed with a focus on executing single tasks or applications, rather than managing long-running services. 
+Its command set includes options like `exec` for running commands or applications inside containers, but it lacks Docker and Podman's built-in support for port mapping or advanced networking features. 
+Additionally, Apptainer uses a different approach to building images; instead of the `build` command for creating layered images, Apptainer converts existing container formats (e.g., Docker images) into its `.sif` format for portability and reproducibility. 
+Despite these differences, mastering the core commands across these tools equips users to manage containers effectively in various environments.
 
 ### Ports
 
