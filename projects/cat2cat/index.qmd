@@ -4,7 +4,9 @@ author: "Maciej Nasinski"
 image: main.png
 ---
 
-**cat2cat** is a data harmonization procedure designed to unify inconsistently coded categorical variables in longitudinal or panel datasets. When categorical coding schemes evolve over time—due to new regulations, updated classifications, or shifting study requirements—these changes can hamper meaningful data analysis. **cat2cat** addresses this challenge by using a mapping (transition) table between two distinct time points. 
+**cat2cat** is a data harmonization procedure designed to unify inconsistently coded categorical variables in longitudinal or panel datasets. 
+When categorical coding schemes evolve over time—due to new regulations, updated classifications, or shifting study requirements—these changes can hamper meaningful data analysis. 
+**cat2cat** addresses this challenge by using a mapping (transition) table between two distinct time points. 
 
 If a single category could match multiple new categories, **cat2cat** replicates the observations and uses a variety of methods—ranging from simple frequency counts to advanced machine learning—to approximate the probability of assignment to each candidate category. This flexible, probability-driven approach ensures that final, harmonized data retain critical information without discarding ambiguous observations. 
 
@@ -28,15 +30,12 @@ The algorithm and concepts behind **cat2cat** originate from two key publication
 
 **Benefits:**. 
 - **Retain Maximum Information**: By replicating rather than discarding ambiguous observations, users preserve the dataset’s statistical richness.  
-- **Flexibility in Approach**: Ranging from simpler frequency-based methods to advanced ML, **cat2cat** caters to both novice and expert users.
-- **Peer-Reviewed & Validated**: The methodology is backed by published research, ensuring reliability and trustworthiness.
-
-**License & Contributions**    
-Developed by **Maciej Nasinski** and contributors, **cat2cat** is released under the GPL License, promoting open-source collaboration. If you’re interested in contributing, please refer to the project’s guidelines in either repository.
+- **Flexibility in Approach**: Ranging from simpler frequency-based methods to advanced ML.
+- **Peer-Reviewed & Validated**: The methodology is backed by published research
 
 For more details, tutorials, and examples, visit the official repositories:
 
 - **R version**: [GitHub Repo](https://github.com/polkas/cat2cat) | [CRAN Package](https://cran.r-project.org/package=cat2cat)  
 - **Python version**: [GitHub Repo](https://github.com/polkas/py-cat2cat) | [PyPI Page](https://pypi.org/project/cat2cat/)
 
-By providing a clear transition plan for categorical codes and robust probability-based assignment, **cat2cat** proves invaluable for researchers, data scientists, and analysts managing longitudinal datasets requiring meticulous categorization.
+By providing a clear transition plan for categorical codes and robust probability-based assignment, **cat2cat** proves invaluable for researchers, data scientists, and analysts managing longitudinal datasets with inconsistently coded categorical variables.

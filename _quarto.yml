@@ -13,14 +13,13 @@ website:
     right:
       - text: Posts
         href: posts.qmd
+      - text: Projects
+        href: projects.qmd
       - text: Author
         href: author.qmd
-      - icon: linkedin
-        text: LinkedIn
-        href: https://www.linkedin.com/in/maciej-nasinski/
       - icon: github
         text: Github
-        href: https://github.com/polkas
+        href: https://github.com/Polkas/polkas.github.io
 format:
   html:
     css: styles.css

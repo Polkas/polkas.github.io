@@ -4,7 +4,9 @@ author: "Maciej Nasinski"
 image: "main.png"
 ---
 
-**pacs** is a versatile toolkit designed to simplify life for developers and maintainers of R packages. Whether you’re validating package dependencies, exploring the complexity of an application, or checking CRAN statuses, **pacs** streamlines these essential tasks into a single, accessible workflow. By leveraging both online resources and local package structures, **pacs** provides reliable, up-to-date insights for anyone serious about building and maintaining robust R ecosystems.
+**pacs** is a versatile toolkit designed to simplify life for developers and maintainers of R packages. 
+Whether you’re validating package dependencies, exploring the complexity of an application, or checking CRAN statuses, **pacs** streamlines these essential tasks into a single, accessible workflow. 
+**pacs** provides reliable, up-to-date insights for anyone serious about building and maintaining robust R ecosystems.
 
 ### Key Features
 
@@ -85,7 +87,8 @@ By offering a structured workflow for package validation and analysis, **pacs** 
 
 ## **rdevdash**
 
-**rdevdash** (R Package Developer Dashboard) is a comprehensive, Shiny-based application that streamlines the process of tracking and managing CRAN packages. Built on top of the [**pacs**](https://CRAN.R-project.org/package=pacs) toolkit, **rdevdash** offers a unified interface for visualizing package downloads, comparing versions, analyzing dependencies, and retrieving essential details about any CRAN package.
+**rdevdash** (R Package Developer Dashboard) is a comprehensive, Shiny-based application that streamlines the process of tracking and managing CRAN packages. 
+Built on top of the [**pacs**](https://CRAN.R-project.org/package=pacs) toolkit, **rdevdash** offers a unified interface for visualizing package downloads, comparing versions, analyzing dependencies, and retrieving essential details about any CRAN package.
 
 ### Key Dashboard Features
 

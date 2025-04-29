@@ -4,10 +4,11 @@ author: "Maciej Nasinski"
 image: main.png
 ---
 
-Originally developed as a study project for an advanced C++ class, **miceFast** combines low-level optimizations and an object-oriented design to streamline multiple imputation workflows. 
+Originally developed as a study project for the[Andrzej Nagorko](https://www.mimuw.edu.pl/pl/pracownicy/1860/) advanced C++ class, **miceFast** combines low-level optimizations and an object-oriented design to streamline multiple imputation workflows. 
 **miceFast** is a high-performance R package designed to expedite the process of data imputation, particularly for large datasets where speed and efficiency are paramount. 
 
-One of the most notable highlights of **miceFast** is its blazing-fast implementation of predictive mean matching (PMM). By leveraging presorting and binary search algorithms, **miceFast** can significantly outperform many existing solutions in R, including the well-known *mice* package. Indeed, the author’s contributions to *mice* helped enhance its underlying C-level optimizations—an achievement that now fuels the robust performance of **miceFast** itself.
+One of the most notable highlights of **miceFast** is its blazing-fast implementation of predictive mean matching (PMM). 
+By leveraging presorting and binary search algorithms, **miceFast** can significantly outperform many existing solutions in R, including the well-known *mice* package. Indeed, the author’s contributions to *mice* helped enhance its underlying C-level optimizations—an achievement that now fuels the robust performance of **miceFast** itself.
 
 **Key Features & Advantages:**
 
