@@ -12,30 +12,30 @@ If a single category could match multiple new categories, **cat2cat** replicates
 
 The algorithm and concepts behind **cat2cat** originate from two key publications:  
 - **(Nasinski, Majchrowska, and Broniatowska, 2020)** where the core procedure and replication rules were introduced.  
-- **(Nasinski, Gajowniczek, 2023)** which provides in-depth explanations of applying **cat2cat** in real-world longitudinal datasets.
+- **(Nasinski, Gajowniczek, 2023)** which provides in-depth explanations of applying **cat2cat** in real-world longitudinal datasets.  
 
-**Key Features:**. 
-1. **Mapping Table**: Central to **cat2cat** is a transition table that links categories from an older time point to those in a newer time point (or vice versa), allowing both forward and backward mappings.
-2. **Replication of Ambiguous Observations**: When more than one category is possible, **cat2cat** creates multiple copies of the observation, each assigned to a different candidate category.
-3. **Probability Estimation**: Users can choose simpler frequency-based methods or integrate more sophisticated machine learning techniques (e.g., k-Nearest Neighbors, Random Forest) for assigning probabilities to each replicated observation.
+**Key Features:**  
+1. **Mapping Table**: Central to **cat2cat** is a transition table that links categories from an older time point to those in a newer time point (or vice versa), allowing both forward and backward mappings.  
+2. **Replication of Ambiguous Observations**: When more than one category is possible, **cat2cat** creates multiple copies of the observation, each assigned to a different candidate category.  
+3. **Probability Estimation**: Users can choose simpler frequency-based methods or integrate more sophisticated machine learning techniques (e.g., k-Nearest Neighbors, Random Forest) for assigning probabilities to each replicated observation.  
 4. **Multiple Language Implementations**:  
    - **R**: Available on CRAN, offering easy integration with R’s statistical and data manipulation capabilities.  
    - **Python**: Distributed through PyPI, aligning with Python’s extensive data science libraries.  
 5. **Rich Documentation & Examples**: Both R and Python packages include comprehensive vignettes/notebooks, guiding users through set-up, data preparation, and best practices for effectively harmonizing their datasets.
 
-**Use Cases:**. 
-- **Surveys Conducted Over Multiple Years**: Where occupational or demographic codes may change between survey waves.
-- **Administrative Datasets**: Which may update classifications or coding schemas over time, causing inconsistencies.
-- **Research Studies**: Involving evolving or newly introduced categorization structures requiring backward or forward compatibility.
+**Use Cases:**  
+- **Surveys Conducted Over Multiple Years**: Where occupational or demographic codes may change between survey waves.  
+- **Administrative Datasets**: Which may update classifications or coding schemas over time, causing inconsistencies.  
+- **Research Studies**: Involving evolving or newly introduced categorization structures requiring backward or forward compatibility.  
 
-**Benefits:**. 
+**Benefits:**  
 - **Retain Maximum Information**: By replicating rather than discarding ambiguous observations, users preserve the dataset’s statistical richness.  
-- **Flexibility in Approach**: Ranging from simpler frequency-based methods to advanced ML.
-- **Peer-Reviewed & Validated**: The methodology is backed by published research
+- **Flexibility in Approach**: Ranging from simpler frequency-based methods to advanced ML.  
+- **Peer-Reviewed & Validated**: The methodology is backed by published research   
 
-For more details, tutorials, and examples, visit the official repositories:
+For more details, tutorials, and examples, visit the official repositories:  
 
 - **R version**: [GitHub Repo](https://github.com/polkas/cat2cat) | [CRAN Package](https://cran.r-project.org/package=cat2cat)  
-- **Python version**: [GitHub Repo](https://github.com/polkas/py-cat2cat) | [PyPI Page](https://pypi.org/project/cat2cat/)
+- **Python version**: [GitHub Repo](https://github.com/polkas/py-cat2cat) | [PyPI Page](https://pypi.org/project/cat2cat/)  
 
 By providing a clear transition plan for categorical codes and robust probability-based assignment, **cat2cat** proves invaluable for researchers, data scientists, and analysts managing longitudinal datasets with inconsistently coded categorical variables.
