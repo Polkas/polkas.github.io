@@ -10,7 +10,9 @@ filters:
 ---
 
 
-TL;DR The {easystats} R ecosystem provides an integrated suite of R packages (like parameters, performance, report, effectsize, correlation, etc.) to streamline statistical analysis with consistent syntax and human-friendly outputs. Overall, {easystats} makes analyses easier, more consistent, and less error-prone, saving time and effort in presenting results clearly. The **v1.0 stable release** of {easystats} is a major milestone, cementing its place as a go-to ecosystem for streamlined statistical analysis in R.
+TL;DR The {easystats} R ecosystem provides an integrated suite of R packages (like parameters, performance, report, effectsize, correlation, etc.) to streamline statistical analysis with consistent syntax and human-friendly outputs. 
+Overall, {easystats} makes analyses easier, more consistent, and less error-prone, saving time and effort in presenting results clearly. 
+The **v1.0 stable release** of {easystats} is a major milestone, cementing its place as a go-to ecosystem for streamlined statistical analysis in R.
 
 
 ## Introduction
