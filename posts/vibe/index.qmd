@@ -1,0 +1,150 @@
+---
+title: "Vibe Coding: Adopting the Exponential Future of AI-Assisted Development"
+format: html
+author: "Maciej Nasinski"
+date: "2025-08-31"
+engine: knitr
+categories: [programming]
+image: main.png
+---
+
+## TL;DR
+
+Vibe coding, highlighted by Andrej Karpathy, means "fully giving in to the vibes" and letting AI generate code while you guide it with natural language. My practical approach involves breaking solutions into modules, demanding unit tests for everything, suggesting specific patterns, intervening when needed, and maintaining a living design document with diagrams. Select the appropriate AI model (Claude excels in programming). The key is maintaining architectural control while adopting AI's capabilities. I recently built a solution prototype in 8 working hours that would have traditionally taken over 100 working hours. We're no longer writing code; we're orchestrating solutions at a higher level. Vibe coding, as Karpathy envisioned it, isn't about becoming passive consumers of AI-generated code. It's about ascending to a higher level of abstraction where we can focus on what truly matters: solving problems, creating value, and building systems that work.
+
+**Please be ready that I will time to time update this blog post, as the topic is very dynamic**
+
+## The Dawn of Vibe Coding
+
+In the rapidly evolving landscape of software development, [Andrej Karpathy](https://karpathy.ai) popularises a new "vibe coding" paradigm. "Vibe coding" is a method where developers "fully give in to the vibes, embrace exponentials, and forget that the code even exists."
+
+This isn't about abandoning programming knowledge or becoming passive observers. Instead, it's about fundamentally reimagining the developer's role in the age of AI. When Karpathy built prototypes like MenuGen, he demonstrated this philosophy in action: letting LLMs generate all the code while he provided goals, examples, and feedback through natural language instructions. The programmer transforms from a manual coder into a guide, tester, and feedback provider for AI-generated source code.
+
+## A Spectrum of Interpretations
+
+Vibe coding is a relatively new term that can be interpreted differently depending on the sector and type of product. Each developer brings their own perspective to this paradigm. As the Udemy blog articulates: "Vibe coding isn't just about creativity or aesthetics, it's about working in flow with AI to build smarter, faster, and more intuitively. It's when your technical instincts align with your tools, and you're designing scalable, secure solutions at record speed, without sacrificing clarity or quality."
+
+The emergence of agent modes in tools like Cursor and GitHub Copilot (Agent mode) has turned vibe coding from an experimental concept into a practical reality. These aren't just autocomplete tools anymore, they're collaborative partners that can understand context, implement entire features, and even reason about architecture. 
+
+[**If you are a student/teacher, please read about GitHub pack to get access (broader) to GitHub Copilot (with Agent mode)**](https://polkas.github.io/posts/github_pack/)
+
+What makes this revolution particularly interesting is how different developers are finding their own rhythms and methodologies. Among my colleagues, I've observed a fascinating spectrum of approaches, each reflecting personal preferences and project requirements.
+
+## My Approach: Modular Construction with Safety Rails
+
+Through extensive experimentation with GitHub Copilot's agent mode, I've developed a systematic approach that balances the exponential productivity gains with necessary control mechanisms.
+
+The Agent mode solutions can be better suited for more classical web app development, where for more niche problems, it can struggle and needs more help.
+
+### 1. Modular Decomposition
+
+Rather than letting the AI tackle entire systems at once, I break solutions into discrete modules. This serves multiple purposes:
+
+- **Cognitive manageable chunks**: Both for the AI and for my own understanding
+- **Clear boundaries**: Each module has well-defined interfaces
+- **Incremental progress**: Building confidence step by step
+
+For each module, I provide the agent with clear context about where it fits within the larger system, while keeping the immediate scope focused.
+
+### 2. Test-Driven Validation
+
+I insist on unit tests and performance checks for every bigger piece of generated code. After each code generation cycle, I prompt:
+
+> "Please create comprehensive unit tests for this module, covering edge cases and expected behaviours. Confirm that time performance is maintained."
+
+Before moving forward, I ensure these tests pass. This practice has saved me countless hours. As systems grow in complexity, it's remarkably easy for new code to break existing functionality. The testing layer acts as a safety net, preventing the accumulation of technical debt that could derail the entire vibe.
+
+With the design document and comprehensive unit testing in place, the AI can effectively debug itself when issues arise, creating a self-correcting development cycle.
+
+### 3. Living Design Documentation with Visual Diagrams
+
+I maintain a `DESIGN.md` file that serves as the single source of truth for architectural decisions. Frequently, I ask the agent:
+
+> "Based on what we just implemented, please update the DESIGN.md file to reflect the current architecture, including the new module and its interactions. Include Mermaid diagrams for the UML and User Journey."
+
+The inclusion of Mermaid graphs for UML diagrams and User Journeys makes the architecture immediately understandable for team members. This living document becomes invaluable as projects grow, serving as both a reference and a checkpoint for ensuring the AI maintains consistency with established patterns.
+
+### 4. Pattern Guidance
+
+AI agents perform significantly better when given architectural context. Instead of vague requests, I've found success with specific pattern suggestions:
+
+> "Let's consider a Factory pattern here, be critical if you not agree"
+
+Copilot and similar tools excel when they understand not just what to build, but how to structure it according to established patterns.
+
+### 5. Active Intervention
+
+One crucial insight: it's perfectly fine, even beneficial, to interrupt the agent mid-flow. If I see it heading in the wrong direction, I stop it immediately:
+
+> "Wait, let's reconsider another approach ..."
+
+This isn't a failure of vibe coding; it's an essential part of the collaborative dance.
+
+## The Model Matters: Real-World Experience
+
+Not all AI models are created equal for vibe coding. Through extensive testing with my team, we've developed strong preferences:
+
+- **Claude**: Me and my friends have a feeling Claude is better for programming, excellent for complex architectural decisions and understanding of requirements
+- **GPT**: Strong for generating boilerplate and handling well-established patterns
+- **Specialized models**: Sometimes, smaller, fine-tuned models excel at specific domains
+
+The key is matching the model to the task at hand, not assuming one size fits all.
+
+## Real Metrics: A 10x Improvement Story
+
+Let me share concrete numbers: I recently developed an R package prototype in 8 working hours, which would have taken me at least 100+ working hours using a traditional approach. This 10x improvement isn't theoretical; it's the actual result of applying the strategies I've outlined above.
+
+## Team Collaboration in the Vibe Coding Era
+
+How do you handle code reviews in this paradigm? I prefer to provide code for each module to the team separately. This modular approach makes reviews manageable and focused. Team members can understand each piece without being overwhelmed by complexity. A module is, for example, a small r/python package for a specific purpose.
+
+One developer can "vibe code" while the rest review and provide feedback later. Another team member can work on a different module if needed. This creates a natural parallelisation of effort while maintaining quality control through peer review.
+
+## The Dark Side: Maintaining Your Edge
+
+I've already identified a critical problem: losing touch with code by using too much vibe coding. When you're not writing code directly, you feel less connected to it. The syntax becomes foreign, the patterns less intuitive.
+
+To combat this, I deliberately continue programming myself on picked-up projects and specific critical components. It's essential to maintain that direct connection to code, even as we leverage AI for productivity. Think of it like a pianist who still practices scales despite having access to digital composition tools.
+
+## Maintaining Control in the Exponential Flow
+
+The essence of successful vibe coding isn't about control; it's about exercising a different kind of control. We're no longer micromanaging syntax and implementation details. Instead, we're:
+
+- **Orchestrating** the overall direction
+- **Validating** the quality and correctness
+- **Refining** the approach based on outcomes
+- **Maintaining** architectural coherence
+- **Preserving** our coding skills through deliberate practice
+
+This requires us to be more aware, not less. 
+We need to understand what's happening at a higher level, even if we're not writing every line of code.
+
+## Looking Forward: The Evolution of Development
+
+As we embrace vibe coding, we're not just adopting new tools; we're participating in the evolution of software development itself. The exponential improvements in AI capabilities suggest that this is just the beginning.
+
+The developers who thrive in this new paradigm won't be those who resist the change or those who unquestioningly accept all AI output. They'll be the ones who find the sweet spot: leveraging AI's exponential capabilities while maintaining the judgment, creativity, architectural vision, and hands-on skills that make great software possible.
+
+## Conclusion
+
+Vibe coding, as Karpathy envisioned it, isn't about becoming passive consumers of AI-generated code. It's about ascending to a higher level of abstraction where we can focus on what truly matters: solving problems, creating value, and building systems that work.
+
+My approach, with its emphasis on modularity, testing, visual documentation, and active guidance, may seem to add friction to the pure "vibe." But I've found that they actually enable me to "ride the exponential wave more confidently". They're the surfboard that lets me navigate the powerful currents of AI-assisted development.
+
+The 10x productivity gains are real, but so are the challenges. Maintaining our connection to code, ensuring quality through modular reviews, and preserving our fundamental programming skills are all critical considerations as we navigate this new landscape.
+
+As we continue to explore this new frontier, one thing is clear: the future of programming isn't about humans versus machines. It's about humans with machines, creating at scales and speeds we never thought possible, while staying grounded in the fundamentals that make us effective engineers.
+
+---
+
+*What's your approach to vibe coding? How do you balance control with the exponential possibilities of AI assistance? How do you maintain your coding skills while leveraging AI? Please share your experiences, and let's continue this conversation about the future of development.*
+
+## References
+
+1. Karpathy, A., Personal blog and Twitter discussions on vibe coding methodology. Available at: https://karpathy.ai
+2. GitHub. (2024). "GitHub Copilot Documentation: Agent Mode and Advanced Features." GitHub Docs. Available at: https://docs.github.com/copilot
+3. Anthropic. (2024). "Claude 4.0 Documentation for Developers." Available at: https://docs.anthropic.com
+4. OpenAI. (2024). "GPT-4.1 Technical Documentation and Best Practices." Available at: https://platform.openai.com/docs
+5. Cursor. (2024). "Cursor IDE: AI-First Code Editor Documentation." Available at: https://cursor.sh/docs
+6. Udemy Blog. (2025). "What is vibe coding." Available at: https://blog.udemy.com/what-is-vibe-coding/
+7. Various contributors. (2024). "Vibe Coding." Wikipedia. Available at: https://en.wikipedia.org/wiki/Vibe_coding
