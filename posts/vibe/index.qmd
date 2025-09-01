@@ -39,7 +39,7 @@ AI models are trained on vast amounts of publicly available code, which means th
 
 ### 1. Modular Decomposition
 
-Rather than letting the AI tackle entire systems at once, I break solutions into discrete modules. This serves multiple purposes:
+Rather than letting the AI tackle entire systems at once, I break BIG projects into discrete modules. This serves multiple purposes:
 
 - **Cognitive manageable chunks**: Both for the AI and for my own understanding
 - **Clear boundaries**: Each module has well-defined interfaces
