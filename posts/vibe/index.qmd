@@ -34,7 +34,8 @@ What makes this revolution particularly interesting is how different developers 
 
 Through extensive experimentation with GitHub Copilot's agent mode, I've developed a systematic approach that balances the exponential productivity gains with necessary control mechanisms.
 
-The Agent mode solutions can be better suited for more classical web app development, where for more niche problems, it can struggle and needs more help.
+Agent mode solutions excel at classical web application development, where patterns are well-established and extensively documented. However, when tackling more niche problems or specialized domains, these tools often struggle and require significantly more guidance from the developer.
+AI models are trained on vast amounts of publicly available code, which means they've seen countless examples of REST APIs, React components, and CRUD operations. But for domain-specific algorithms, proprietary protocols, or cutting-edge research implementations, you'll find yourself providing more detailed instructions and corrections to keep the AI on track.
 
 ### 1. Modular Decomposition
 
@@ -79,6 +80,14 @@ One crucial insight: it's perfectly fine, even beneficial, to interrupt the agen
 > "Wait, let's reconsider another approach ..."
 
 This isn't a failure of vibe coding; it's an essential part of the collaborative dance.
+
+### 6. Abandon Early: The Fresh Start Strategy
+
+From my experience, it's better to abandon recent work at the startup phase and begin from scratch if you're not satisfied with the development direction, rather than trying to polish something you're not happy about. This strategy assumes you have high query limits with your AI tool, but it can save you significant frustration and deliver much better results.
+
+The key is quick decision-making: usually within less than an hour, I can determine whether the current approach is worth continuing or if it's time to pivot. When the vibe isn't right, no amount of refinement will fix fundamental architectural issues. Starting fresh with lessons learned from the failed attempt often leads to cleaner, more elegant solutions.
+
+This might seem wasteful, but in vibe coding, the cost of iteration is so low that perfectionism through restart becomes a viable strategy. It's better to spend two hours getting it right than four hours fixing something that was wrong from the beginning.
 
 ## The Model Matters: Real-World Experience
 
