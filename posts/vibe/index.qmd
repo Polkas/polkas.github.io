@@ -37,7 +37,9 @@ Through extensive experimentation with GitHub Copilot's agent mode, I've develop
 Agent mode solutions excel at classical web application development, where patterns are well-established and extensively documented. However, when tackling more niche problems or specialized domains, these tools often struggle and require significantly more guidance from the developer.
 AI models are trained on vast amounts of publicly available code, which means they've seen countless examples of REST APIs, React components, and CRUD operations. But for domain-specific algorithms, proprietary protocols, or cutting-edge research implementations, you'll find yourself providing more detailed instructions and corrections to keep the AI on track.
 
-### 1. Modular Decomposition
+**Please rememebr that Agent mode is great in prototyping but the solution often is far away from a production state.**
+
+### 1. Modular Decomposition - For BIG projects
 
 Rather than letting the AI tackle entire systems at once, I break BIG projects into discrete modules. This serves multiple purposes:
 
@@ -64,6 +66,7 @@ I maintain a `DESIGN.md` file that serves as the single source of truth for arch
 > "Based on what we just implemented, please update the DESIGN.md file to reflect the current architecture, including the new module and its interactions. Include Mermaid diagrams for the UML and User Journey."
 
 The inclusion of Mermaid graphs for UML diagrams and User Journeys makes the architecture immediately understandable for team members. This living document becomes invaluable as projects grow, serving as both a reference and a checkpoint for ensuring the AI maintains consistency with established patterns.
+Moreover, with a DESIGN document you not have to afraid your session crushed.
 
 ### 4. Pattern Guidance
 
