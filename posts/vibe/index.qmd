@@ -89,6 +89,10 @@ The key is quick decision-making: usually within less than an hour, I can determ
 
 This might seem wasteful, but in vibe coding, the cost of iteration is so low that perfectionism through restart becomes a viable strategy. It's better to spend two hours getting it right than four hours fixing something that was wrong from the beginning.
 
+### 7. Commit frequently
+
+The AI can break the code you were happy about a few minutes ago.
+
 ## The Model Matters: Real-World Experience
 
 Not all AI models are created equal for vibe coding. Through extensive testing with my team, we've developed strong preferences:
