@@ -2,7 +2,7 @@
 title: "Vibe Coding: Adopting the Exponential Future of AI-Assisted Development"
 format: html
 author: "Maciej Nasinski"
-date: "2025-08-31"
+date: "2025-09-10"
 engine: knitr
 categories: [programming]
 image: main.png
@@ -13,6 +13,16 @@ image: main.png
 Vibe coding, highlighted by Andrej Karpathy, means "fully giving in to the vibes" and letting AI generate code while you guide it with natural language. My practical approach involves breaking solutions into modules, demanding unit tests for everything, suggesting specific patterns, intervening when needed, and maintaining a living design document with diagrams. Select the appropriate AI model (Claude excels in programming). The key is maintaining architectural control while adopting AI's capabilities. I recently built a solution prototype in 8 working hours that would have traditionally taken over 100 working hours. We're no longer writing code; we're orchestrating solutions at a higher level. Vibe coding, as Karpathy envisioned it, isn't about becoming passive consumers of AI-generated code. It's about ascending to a higher level of abstraction where we can focus on what truly matters: solving problems, creating value, and building systems that work.
 
 **Please be ready that I will time to time update this blog post, as the topic is very dynamic**
+
+## The Genesis: From Attention Mechanisms to Vibe Coding
+
+It's crucial to understand where the vibe coding revolution began. The foundation was laid in 2017 with the groundbreaking paper "Attention Is All You Need" by Vaswani et al., which introduced the Transformer architecture. This wasn't just another incremental improvement in machine learning; it was a paradigm shift that would eventually enable everything we now call vibe coding.
+
+The Transformer architecture revolutionized how AI models process sequential data by replacing recurrent neural networks with attention mechanisms. Instead of processing information step-by-step, transformers could examine all parts of the input simultaneously, understanding relationships and context in ways that seemed almost magical compared to previous approaches. This "attention" mechanism allowed models to focus on relevant parts of the input when generating each part of the output.
+
+What makes this particularly relevant to vibe coding is that transformers excel at understanding context and generating coherent, contextually appropriate responses. When we provide natural language instructions to AI coding assistants, we're leveraging the same attention mechanisms that allow these models to understand the relationship between our requirements, existing code patterns, and desired outcomes.
+
+The journey from that 2017 paper to today's vibe coding reality involved scaling these architectures to unprecedented sizes, training them on vast codebases, and refining them through techniques like reinforcement learning from human feedback. The result is AI systems that don't just complete code snippets but can understand architectural intent, generate entire modules, and even reason about trade-offs between different implementation approaches.
 
 ## The Dawn of Vibe Coding
 
@@ -37,9 +47,7 @@ Through extensive experimentation with GitHub Copilot's agent mode, I've develop
 Agent mode solutions excel at classical web application development, where patterns are well-established and extensively documented. However, when tackling more niche problems or specialized domains, these tools often struggle and require significantly more guidance from the developer.
 AI models are trained on vast amounts of publicly available code, which means they've seen countless examples of REST APIs, React components, and CRUD operations. But for domain-specific algorithms, proprietary protocols, or cutting-edge research implementations, you'll find yourself providing more detailed instructions and corrections to keep the AI on track.
 
-**Please rememebr that Agent mode is great in prototyping but the solution often is far away from a production state.**
-
-### 1. Modular Decomposition - For BIG projects
+### 1. Modular Decomposition
 
 Rather than letting the AI tackle entire systems at once, I break BIG projects into discrete modules. This serves multiple purposes:
 
@@ -66,7 +74,6 @@ I maintain a `DESIGN.md` file that serves as the single source of truth for arch
 > "Based on what we just implemented, please update the DESIGN.md file to reflect the current architecture, including the new module and its interactions. Include Mermaid diagrams for the UML and User Journey."
 
 The inclusion of Mermaid graphs for UML diagrams and User Journeys makes the architecture immediately understandable for team members. This living document becomes invaluable as projects grow, serving as both a reference and a checkpoint for ensuring the AI maintains consistency with established patterns.
-Moreover, with a DESIGN document you not have to afraid your session crushed.
 
 ### 4. Pattern Guidance
 
@@ -92,9 +99,19 @@ The key is quick decision-making: usually within less than an hour, I can determ
 
 This might seem wasteful, but in vibe coding, the cost of iteration is so low that perfectionism through restart becomes a viable strategy. It's better to spend two hours getting it right than four hours fixing something that was wrong from the beginning.
 
-### 7. Commit frequently
+## The Cautionary Tale: When Vibe Coding Goes Wrong
 
-The AI can break the code you were happy about a few minutes ago.
+A recent experience with my friend perfectly illustrates the dangers of uncontrolled vibe coding. Excited by the potential of agent mode solutions, I introduced him to AI-assisted development for a side project app he was working on. Initially, he was amazed by the rapid progress and the AI's ability to generate seemingly sophisticated code.
+
+However, without the systematic approach, he quickly fell into what I now call the "vibe coding trap." He became overly ambitious, asking the AI to implement increasingly complex features without proper modular breakdown, testing, or architectural planning. The AI, eager to please, generated code that looked impressive but lacked coherent structure. Within a few days, the project had spiraled into an unmaintainable mess of interconnected functions with no clear boundaries or testing strategy.
+
+What made this particularly frustrating was that it was his passion project, something he was building in his spare time to solve a real problem he cared about. When bugs started appearing (which they inevitably did), debugging became nearly impossible because neither my friend nor the AI had a clear understanding of the overall system architecture.
+
+This experience taught me that vibe coding without discipline is worse than traditional development. The speed of AI code generation can mask fundamental problems until they become catastrophic. We had to abandon the entire project and start over using the structured approach I outline in this post.
+
+The lesson is clear: vibe coding amplifies both good practices and bad practices. If you bring discipline, modular thinking, and systematic testing to the process, AI can accelerate your development exponentially. If you approach it as a magic solution that requires no oversight or structure, it will create technical debt faster than you ever thought possible.
+
+This has broader implications for the industry. As more developers adopt AI-assisted development, we're likely to see a divergence: those who master disciplined vibe coding will become incredibly productive, while those who treat AI as a replacement for good engineering practices will create increasingly problematic codebases. The emergence of "vibe coding cleaners", specialists who can untangle and refactor AI-generated code disasters, may become a necessary profession in the near future.
 
 ## The Model Matters: Real-World Experience
 
@@ -158,9 +175,10 @@ As we continue to explore this new frontier, one thing is clear: the future of p
 ## References
 
 1. Karpathy, A., Personal blog and Twitter discussions on vibe coding methodology. Available at: https://karpathy.ai
-2. GitHub. (2024). "GitHub Copilot Documentation: Agent Mode and Advanced Features." GitHub Docs. Available at: https://docs.github.com/copilot
-3. Anthropic. (2024). "Claude 4.0 Documentation for Developers." Available at: https://docs.anthropic.com
-4. OpenAI. (2024). "GPT-4.1 Technical Documentation and Best Practices." Available at: https://platform.openai.com/docs
-5. Cursor. (2024). "Cursor IDE: AI-First Code Editor Documentation." Available at: https://cursor.sh/docs
-6. Udemy Blog. (2025). "What is vibe coding." Available at: https://blog.udemy.com/what-is-vibe-coding/
-7. Various contributors. (2024). "Vibe Coding." Wikipedia. Available at: https://en.wikipedia.org/wiki/Vibe_coding
+2. Vaswani, A., et al. (2017). "Attention Is All You Need." Advances in Neural Information Processing Systems, 30.
+3. GitHub. (2024). "GitHub Copilot Documentation: Agent Mode and Advanced Features." GitHub Docs. Available at: https://docs.github.com/copilot
+4. Anthropic. (2024). "Claude 4.0 Documentation for Developers." Available at: https://docs.anthropic.com
+5. OpenAI. (2024). "GPT-4.1 Technical Documentation and Best Practices." Available at: https://platform.openai.com/docs
+6. Cursor. (2024). "Cursor IDE: AI-First Code Editor Documentation." Available at: https://cursor.sh/docs
+7. Udemy Blog. (2025). "What is vibe coding." Available at: https://blog.udemy.com/what-is-vibe-coding/
+8. Various contributors. (2024). "Vibe Coding." Wikipedia. Available at: https://en.wikipedia.org/wiki/Vibe_coding
