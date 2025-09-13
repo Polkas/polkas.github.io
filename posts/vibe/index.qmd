@@ -14,6 +14,10 @@ Vibe coding, highlighted by Andrej Karpathy, means "fully giving in to the vibes
 
 **Please be ready that I will time to time update this blog post, as the topic is very dynamic**
 
+<div style="display: flex; justify-content: center;">
+<a href="https://polkas.github.io/posts/vibe/"><img src="main.png" alt="Main Vibe Coding image" height="400px" width="auto"></a>
+</div>
+
 ## The Dawn of Vibe Coding
 
 In the rapidly evolving landscape of software development, [Andrej Karpathy](https://karpathy.ai) popularises a new "vibe coding" paradigm. "Vibe coding" is a method where developers "fully give in to the vibes, embrace exponentials, and forget that the code even exists."
@@ -26,9 +30,45 @@ Vibe coding is a relatively new term that can be interpreted differently dependi
 
 The emergence of agent modes in tools like Cursor and GitHub Copilot (Agent mode) has turned vibe coding from an experimental concept into a practical reality. These aren't just autocomplete tools anymore, they're collaborative partners that can understand context, implement entire features, and even reason about architecture. 
 
-[**If you are a student/teacher, please read about GitHub pack to get access (broader) to GitHub Copilot (with Agent mode)**](https://polkas.github.io/posts/github_pack/)
-
 What makes this revolution particularly interesting is how different developers are finding their own rhythms and methodologies. Among my colleagues, I've observed a fascinating spectrum of approaches, each reflecting personal preferences and project requirements.
+
+## The Fundamental Paradigm Shift
+
+Traditional programming centers on implementation precision—every semicolon, function, and import must be manually crafted. Vibe coding shifts focus to problem articulation. Your expertise isn't measured by memorizing syntax patterns, but by how clearly you can describe outcomes:
+
+| Aspect | Traditional Programming | Vibe Coding |
+|--------|------------------------|-------------|
+| **Code Creation** | Manual writing | AI-generated from prompts |
+| **Developer Role** | Architect/Implementer | Outcome Describer & Guide |
+| **Expertise Focus** | Syntax/framework mastery | Problem articulation |
+| **Debugging** | Manual analysis | AI-driven fixes via prompts |
+| **Quality Control** | Code reviews | Outcome validation |
+| **Speed** | Limited by typing/syntax recall | Limited by problem understanding |
+
+### From Syntax to Semantics: The New Skill Set
+
+Vibe coding demands mastery in three critical areas:
+
+**1. Advanced Prompt Engineering**
+
+For complex modules, I use the **BASIC** framework:
+
+- **Background**: Current project context
+- **Action**: Specific task needed  
+- **Specifics**: Technical requirements
+- **Intent**: Why this solution is needed
+- **Constraints**: Limitations and patterns to follow
+
+**Example:**
+> "**Background**: R package for statistical analysis. **Action**: Create ARD data validation module. **Specifics**: Check for missing values, outliers, data types. **Intent**: Prevent analysis errors downstream in the project XYZ. **Constraints**: Use tidyverse patterns, include comprehensive tests."
+
+**2. AI Output Refinement**
+
+Treat AI as a skilled junior developer—verify outputs, test thoroughly, and guide architectural decisions.
+
+**3. Domain-Driven Articulation**
+
+The clearer your understanding of the problem domain, the better AI executes. Vague requests fail; specificity wins.
 
 ## My Approach: Modular Construction with Safety Rails
 
@@ -89,6 +129,22 @@ The key is quick decision-making: usually within less than an hour, I can determ
 
 This might seem wasteful, but in vibe coding, the cost of iteration is so low that perfectionism through restart becomes a viable strategy. It's better to spend two hours getting it right than four hours fixing something that was wrong from the beginning.
 
+## The Vibe Coding Toolbox: My Tested Recommendations
+
+| Tool | Best For | My Experience | Key Strength |
+|------|----------|---------------|--------------|
+| **GitHub Copilot (Agent)** | Full project orchestration | Primary choice - excellent context | Project-wide understanding |
+| **Claude** | Complex architectural decisions | Superior for programming logic | Deep reasoning ability |
+| **Cursor** | VS Code alternative with AI | Great for quick iterations | Seamless IDE integration |
+
+and more ...
+
+<div style="display: flex; justify-content: center;">
+<a href="https://github.com/copilot"><img src="github-copilot.jpg" alt="GitHub Copilot" height="400px" width="auto"></a>
+</div>
+
+[**If you are a student/teacher, please read about GitHub pack to get access (broader) to GitHub Copilot (with Agent mode)**](https://polkas.github.io/posts/github_pack/)
+
 ## The Model Matters: Real-World Experience
 
 Not all AI models are created equal for vibe coding. Through extensive testing with my team, we've developed strong preferences:
@@ -129,6 +185,22 @@ I've already identified a critical problem: losing touch with code by using too 
 
 To combat this, I deliberately continue programming myself on picked-up projects and specific critical components. It's essential to maintain that direct connection to code, even as we leverage AI for productivity. Think of it like a pianist who still practices scales despite having access to digital composition tools.
 
+### The Hallucination Problem
+
+AI can generate plausible-looking but fundamentally broken code. My rule: **Always test before integration**. I've seen AI confidently implement non-existent APIs or use deprecated patterns that look correct.
+
+### Security Vulnerabilities  
+
+Generated code may include vulnerable dependencies or insecure patterns. I never deploy AI-generated code without:
+
+- Automated security scanning
+- Manual review of authentication/authorization logic
+- Verification of data handling practices
+
+### Technical Debt Acceleration
+
+Without proper structure, AI can generate technical debt faster than any human programmer. The speed advantage becomes a liability when the codebase becomes unmaintainable.
+
 ## Maintaining Control in the Exponential Flow
 
 The essence of successful vibe coding isn't about control; it's about exercising a different kind of control. We're no longer micromanaging syntax and implementation details. Instead, we're:
@@ -142,21 +214,40 @@ The essence of successful vibe coding isn't about control; it's about exercising
 This requires us to be more aware, not less. 
 We need to understand what's happening at a higher level, even if we're not writing every line of code.
 
-## Looking Forward: The Evolution of Development
 
-As we embrace vibe coding, we're not just adopting new tools; we're participating in the evolution of software development itself. The exponential improvements in AI capabilities suggest that this is just the beginning.
+## Future-Proofing Your Vibe Coding Skills
+
+The field is evolving rapidly toward:
+
+**Outcome-Driven Development**: Describing what you want, not how to build it. The focus shifts from implementation details to business value.
+
+**Architecture-First Thinking**: As AI handles implementation, human value concentrates on system design, integration patterns, and strategic technical decisions.
+
+In my opinion, the most valuable developers will excel at:
+
+1. Problem decomposition and clear articulation
+2. System architecture and integration strategy  
+3. Quality validation and testing frameworks
+4. Human-AI collaboration workflows
+5. Maintaining technical judgment in an AI-augmented world
+
+As we adopt vibe coding, we're not just adopting new tools; we're participating in the evolution of software development itself. The exponential improvements in AI capabilities suggest that this is just the beginning.
 
 The developers who thrive in this new paradigm won't be those who resist the change or those who unquestioningly accept all AI output. They'll be the ones who find the sweet spot: leveraging AI's exponential capabilities while maintaining the judgment, creativity, architectural vision, and hands-on skills that make great software possible.
 
 ## Conclusion
 
-Vibe coding, as Karpathy envisioned it, isn't about becoming passive consumers of AI-generated code. It's about ascending to a higher level of abstraction where we can focus on what truly matters: solving problems, creating value, and building systems that work.
+Vibe coding isn't replacing developers, it's elevating us. By offloading syntax to AI, we focus on what truly matters: creative problem-solving, architecture, and building systems that create real value.
+
+We're no longer writing code; we're orchestrating solutions at a higher level of abstraction. The future belongs to those who can clearly describe outcomes and guide AI toward elegant implementations while maintaining the technical judgment to validate and refine the results.
 
 My approach, with its emphasis on modularity, testing, visual documentation, and active guidance, may seem to add friction to the pure "vibe." But I've found that they actually enable me to "ride the exponential wave more confidently". They're the surfboard that lets me navigate the powerful currents of AI-assisted development.
 
-The 10x productivity gains are real, but so are the challenges. Maintaining our connection to code, ensuring quality through modular reviews, and preserving our fundamental programming practices are all critical considerations as we navigate this new landscape.
+The 10x productivity gains are real, but they require discipline, systematic thinking, and continuous learning. Those who master this balance will thrive; those who treat AI as magic will struggle with increasingly complex technical debt.
 
-As we continue to explore this new frontier, one thing is clear: the future of programming isn't about humans versus machines. It's about humans with machines, creating at scales and speeds we never thought possible, while staying grounded in the fundamentals that make us effective engineers.
+*"The best code is no code at all. The next best? Code that writes itself while you focus on what it should accomplish."*
+
+As we continue exploring this frontier, remember: the future of programming isn't humans versus machines, it's humans with machines, creating at unprecedented scales while staying grounded in engineering fundamentals.
 
 ---
 
