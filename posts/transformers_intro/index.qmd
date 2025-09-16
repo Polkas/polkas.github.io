@@ -185,63 +185,6 @@ Each type excels at different tasks, and the course teaches you when and how to 
 
 **Tokenization** (how text becomes numbers), **fine-tuning** (adapting models to your data), and **framework choices** are all covered comprehensively in the course. The beauty of starting with pipelines is that you can see results immediately, then dive deeper into the technical details as you progress through the chapters.
 
-## From Learning to Building: My First Fine-Tuned Model
-
-After completing the Hugging Face course, I decided to put my knowledge to the test by fine-tuning my own transformer model. The result? [**polkas/educational-story-outcome-predictor**](https://huggingface.co/polkas/educational-story-outcome-predictor) - a model that predicts whether educational interventions will succeed or fail based on the situation and proposed solution.
-
-### The Journey: Surprisingly Accessible
-
-What struck me most was how **accessible** the entire process has become. Just a few years ago, training custom language models required extensive infrastructure, deep technical expertise, and significant computational resources. Today, thanks to the Hugging Face ecosystem, I went from idea to deployed model in about an hour of actual work.
-
-### The Model: Educational Story Outcome Prediction
-
-My model analyzes real educational scenarios and predicts intervention effectiveness:
-
-**What it does**: Takes two inputs (situation description + proposed solution) and predicts success/failure
-**Base model**: DistilBERT (67M parameters) - efficient yet powerful
-**Training data**: 1,492 real educational stories from teachers
-**Performance**: 74% accuracy, 82% F1 score - significantly better than baseline (62%)
-**Training time**: ~5 minutes on Apple Silicon
-
-Here's how easy it is to use:
-
-```python
-from transformers import pipeline
-
-# Load my fine-tuned model
-classifier = pipeline("text-classification", 
-                     model="polkas/educational-story-outcome-predictor")
-
-# Example: Analyze an educational intervention
-situation = "Student struggling with reading comprehension in grade 3"
-solution = "Teacher implements guided reading sessions with peer support"
-combined_text = f"Situation: {situation} Solution: {solution}"
-
-result = classifier(combined_text)
-print(f"Prediction: {result[0]['label']} (confidence: {result[0]['score']:.2f})")
-# Output: Prediction: Success (confidence: 0.85)
-```
-
-### The Bigger Picture: Democratization of AI
-
-This experience perfectly illustrates what the Hugging Face course teaches - we're witnessing the democratization of AI development. A few key insights:
-
-**Speed**: From concept to deployed model in under an hour
-**Accessibility**: No specialized hardware required (trained on a laptop)
-**Quality**: Achieved meaningful performance improvements over baseline
-**Sharing**: One-click deployment to the global model hub
-**Impact**: Real applications in educational research and decision support
-
-### Why This Matters for You
-
-This isn't just about my specific use case. The same approach works for:
-- **Business applications**: Customer sentiment, document classification
-- **Research projects**: Domain-specific text analysis
-- **Personal tools**: Custom classification for your unique needs
-- **Learning**: Hands-on experience with the complete ML pipeline
-
-The course doesn't just teach you to use existing models - it empowers you to create solutions for problems that matter to you.
-
 ## Learning Resources and Next Steps
 
 ### Key Resources in the Hugging Face Ecosystem
@@ -294,6 +237,65 @@ As the field evolves rapidly, having both conceptual foundations and practical s
 Large Language Models and Transformers represent one of the most significant advances in AI. Understanding encoders, decoders, attention mechanisms, and transfer learning opens doors to building powerful applications. The Hugging Face course provides the most comprehensive pathway from concepts to practice.
 
 If you want to truly understand modern AI—start with the foundations in this post, then dive deep with the [Hugging Face LLM Course](https://huggingface.co/learn/llm-course). The combination of conceptual clarity and hands-on experience will transform your understanding of what's possible with language AI.
+
+## BONUS: From Learning to Building: My First Fine-Tuned Model
+
+After completing the Hugging Face course, I decided to put my knowledge to the test by fine-tuning my own transformer model. The result? [**polkas/educational-story-outcome-predictor**](https://huggingface.co/polkas/educational-story-outcome-predictor) - a model that predicts whether educational interventions will succeed or fail based on the situation and proposed solution.
+
+### The Journey: Surprisingly Accessible
+
+What struck me most was how **accessible** the entire process has become. Just a few years ago, training custom language models required extensive infrastructure, deep technical expertise, and significant computational resources. Today, thanks to the Hugging Face ecosystem, I went from idea to deployed model in about an hour of actual work.
+
+### The Model: Educational Story Outcome Prediction
+
+My model analyzes real educational scenarios and predicts intervention effectiveness:
+
+**What it does**: Takes two inputs (situation description + proposed solution) and predicts success/failure
+**Base model**: DistilBERT (67M parameters) - efficient yet powerful
+**Training data**: 1,492 real educational stories from teachers
+**Performance**: 74% accuracy, 82% F1 score - significantly better than baseline (62%)
+**Training time**: ~5 minutes on Apple Silicon
+
+Here's how easy it is to use:
+
+```python
+from transformers import pipeline
+
+# Load my fine-tuned model
+classifier = pipeline("text-classification", 
+                     model="polkas/educational-story-outcome-predictor")
+
+# Example: Analyze an educational intervention
+situation = "Student struggling with reading comprehension in grade 3"
+solution = "Teacher implements guided reading sessions with peer support"
+combined_text = f"Situation: {situation} Solution: {solution}"
+
+result = classifier(combined_text)
+print(f"Prediction: {result[0]['label']} (confidence: {result[0]['score']:.2f})")
+# Output: Prediction: Success (confidence: 0.85)
+```
+
+### The Bigger Picture: Democratization of AI
+
+This experience perfectly illustrates what the Hugging Face course teaches - we're witnessing the democratization of AI development. A few key insights:
+
+**Speed**: From concept to deployed model in under an hour
+**Accessibility**: No specialized hardware required (trained on a laptop)
+**Quality**: Achieved meaningful performance improvements over baseline
+**Sharing**: One-click deployment to the global model hub
+**Impact**: Real applications in educational research and decision support
+
+### Why This Matters for You
+
+This isn't just about my specific use case. The same approach works for:
+
+- **Business applications**: Customer sentiment, document classification
+- **Research projects**: Domain-specific text analysis
+- **Personal tools**: Custom classification for your unique needs
+- **Learning**: Hands-on experience with the complete ML pipeline
+
+The course doesn't just teach you to use existing models - it empowers you to create solutions for problems that matter to you.
+
 
 ## References
 
