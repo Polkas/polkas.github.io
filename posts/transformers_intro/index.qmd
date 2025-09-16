@@ -11,7 +11,12 @@ image: main.png
 
 ## TL;DR
 
-Large Language Models (LLMs) and Transformers have revolutionized AI since 2017's "Attention Is All You Need" paper. Understanding the difference between encoders (BERT-style, for understanding), decoders (GPT-style, for generation), and encoder-decoders (T5-style, for transformation) is crucial for modern AI work. Key concepts include tokenization trade-offs, self-attention mechanisms, and transfer learning. For hands-on learning, the free [Hugging Face LLM Course](https://huggingface.co/learn/llm-course) offers the most comprehensive, practical introduction with 13 chapters covering everything from basic pipelines to advanced reasoning models.
+Transformers revolutionized AI in 2017 with the groundbreaking "Attention Is All You Need" paper, becoming the foundation for all modern language models. The key insight: three different architectures serve different purposes—encoders (like BERT) excel at understanding text, decoders (like GPT) generate new content, and encoder-decoders (like T5) transform text from one form to another. Understanding these fundamentals, plus concepts like tokenization and transfer learning, is essential for anyone working with AI today. Want hands-on experience? The free [Hugging Face LLM Course](https://huggingface.co/learn/llm-course) provides the most practical path forward, with 13 comprehensive chapters that take you from basic concepts to building and deploying your own models.
+
+<div style="display: flex; justify-content: center;">
+<a href="https://polkas.github.io/posts/transformers_intro/"><img src="main.png" alt="Hugging Face Logo" height="400px" width="auto"></a>
+</div>
+
 
 ## Understanding the Foundation: NLP, LLMs, and the Transformer Revolution
 
@@ -241,6 +246,8 @@ If you want to truly understand modern AI—start with the foundations in this p
 ## BONUS: From Learning to Building: My First Fine-Tuned Model
 
 After completing the Hugging Face course, I decided to put my knowledge to the test by fine-tuning my own transformer model. The result? [**polkas/educational-story-outcome-predictor**](https://huggingface.co/polkas/educational-story-outcome-predictor) - a model that predicts whether educational interventions will succeed or fail based on the situation and proposed solution.
+
+There is no mistery that I supported myself with Claude Agent:)
 
 ### The Journey: Surprisingly Accessible
 
