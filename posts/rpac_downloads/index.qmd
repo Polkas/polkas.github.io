@@ -4,7 +4,6 @@ author: "Maciej Nasinski"
 date: "2025-10-10"
 format: html
 engine: knitr
-draft: true
 categories: [rprogramming]
 image: main.png
 ---
