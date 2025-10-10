@@ -1,0 +1,123 @@
+---
+title: "R package downloads: reality, proxies, and better metrics"
+author: "Maciej Nasinski"
+date: "2025-10-10"
+format: html
+engine: knitr
+draft: true
+categories: [rprogramming]
+image: main.png
+---
+
+## TL;DR
+
+- There is no official, global count of CRAN package downloads.
+- Popular services (cranlogs, badges) measure only the RStudio/Posit CRAN mirror logs (http://cran.rstudio.com / http://cran-logs.rstudio.com).
+- If you install from other mirrors, corporate repos, or Posit Package Manager, those downloads aren’t counted.
+- Treat cranlogs numbers as a convenient proxy, not ground truth.
+- For organizations, use your own repository logs (Posit Package Manager metrics) for accurate internal usage.
+
+## The problem: “CRAN downloads” don’t exist (globally)
+
+CRAN is a network of mirrors. There’s no single authoritative counter across all mirrors, binary caches, containers, or corporate pipelines. What’s widely used instead:
+
+- RStudio/Posit CRAN mirror logs: http://cran-logs.rstudio.com
+- Aggregated API and badges: https://cranlogs.r-pkg.org
+- Badges rely on those same logs
+
+These are useful, but partial. If you’re not using http://cran.rstudio.com (e.g., other GUIs, corporate pipelines, or Posit Public/Private Package Manager), your downloads won’t be captured.
+
+Old packages like ThreeWiseMonkeys were created years ago and don’t solve this fundamental limitation.
+
+## What cranlogs measures (and what it misses)
+
+**Measures:**
+
+Downloads observed on the RStudio/Posit CRAN mirror, aggregated per day/package.
+
+**Misses:**
+
+  - Other CRAN mirrors (cloud.r-project.org and regional mirrors)
+  - Corporate repos (Posit Package Manager, Artifactory, Nexus)
+  - CI/CD caches, Docker layers, offline installs, shared binaries
+  - Reinstalls from local caches (pak, renv)
+
+**Interpretation:**
+
+- Use cranlogs as a trend indicator and rough popularity proxy.
+- Don’t equate cranlogs counts with “true installs” or “active users.”
+
+## Getting proxy counts with cranlogs (R)
+
+```r
+library(cranlogs)
+library(dplyr)
+library(ggplot2)
+
+pkg <- "yourpkg"   # change to your package name
+from <- "2024-01-01"
+to   <- "2025-10-01"
+
+dl <- cran_downloads(packages = pkg, from = from, to = to)
+
+# Quick summary
+dl %>% 
+  summarize(total = sum(count), days = n(), avg_per_day = mean(count))
+
+# Visualize trend
+ggplot(dl, aes(date, count)) +
+  geom_col(fill = "#2C7FB8") +
+  labs(
+    title = paste0("cranlogs downloads (", pkg, ")"),
+    subtitle = "Proxy counts from the RStudio/Posit CRAN mirror only",
+    x = NULL, y = "Downloads/day",
+    caption = "Source: cranlogs (cran.rstudio.com mirror)"
+  ) +
+  theme_minimal(base_size = 12)
+```
+
+You can also call the API directly:
+
+```r
+# API docs: https://cranlogs.r-pkg.org/
+# Example: total downloads over a date range
+library(httr2)
+pkg <- "yourpkg"
+resp <- request(
+  paste0("https://cranlogs.r-pkg.org/downloads/total/2024-01-01:2025-10-01/", pkg)
+) |>
+  req_user_agent("your-app/1.0") |>
+  req_perform() |>
+  resp_body_json()
+
+resp
+```
+
+## What to use for accurate organizational metrics
+
+If your team installs via Posit Package Manager (PPM), use PPM’s usage/metrics APIs or exported logs. That’s the only way to measure internal downloads reliably (across dev laptops, servers, and CI) for your org.
+
+Ask your admin to enable metrics and provide API access. Then query by repo, package, version, and time window.
+
+## Complementary signals beyond downloads
+
+- Reverse dependencies on CRAN/Bioconductor
+- GitHub stars, forks, issues, discussions
+- Citations (if you have a paper or JOSS entry)
+- Container pulls (if you publish images)
+- Internal telemetry (opt‑in), surveys, and support tickets
+
+These provide richer pictures of adoption and impact.
+
+## Recommendations
+
+- Use cranlogs for public, comparable proxy trends—with clear caveats.
+- For real adoption in your org, use your repository manager’s metrics.
+- Combine multiple signals (deps, GitHub, citations) for a fuller view.
+- Avoid treating any single metric as “true downloads.”
+
+## Links
+
+- cranlogs badges and API: https://cranlogs.r-pkg.org/
+- Daily mirror logs (RStudio/Posit CRAN mirror): http://cran-logs.rstudio.com/
+- CRAN mirrors overview: https://cran.r-project.org/mirrors.html
