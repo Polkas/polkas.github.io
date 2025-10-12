@@ -11,9 +11,10 @@ image: main.png
 ## TL;DR
 
 - There is no official, global count of CRAN package downloads.
-- Popular services (cranlogs, badges) measure only the RStudio/Posit CRAN mirror logs (http://cran.rstudio.com / http://cran-logs.rstudio.com).
+- Popular services (cranlogs, badges) measure only the RStudio/Posit CRAN mirror logs ([http://cran.rstudio.com](http://cran.rstudio.com) / [http://cran-logs.rstudio.com](http://cran-logs.rstudio.com)).
 - If you install from other mirrors, corporate repos, or Posit Package Manager, those downloads aren’t counted.
 - Treat cranlogs numbers as a convenient proxy, not ground truth.
+- There is most probably around 200-300 downloads a month on Posit CRAN mirror which comes from servers rather than users. Read more about in 'ThreeWiseMonkeys' R package README file.
 - For organizations, use your own repository logs (Posit Package Manager metrics) for accurate internal usage.
 
 ## The problem: “CRAN downloads” don’t exist (globally)
@@ -26,13 +27,13 @@ CRAN is a network of mirrors. There’s no single authoritative counter across a
 
 These are useful, but partial. If you’re not using http://cran.rstudio.com (e.g., other GUIs, corporate pipelines, or Posit Public/Private Package Manager), your downloads won’t be captured.
 
-Old packages like ThreeWiseMonkeys were created years ago and don’t solve this fundamental limitation.
-
 ## What cranlogs measures (and what it misses)
 
 **Measures:**
 
 Downloads observed on the RStudio/Posit CRAN mirror, aggregated per day/package.
+
+The is a problem of ghost downloads on Posit CRAN mirror which was recognized by 'ThreeWiseMonkeys' R package author. 'ThreeWiseMonkeys' was created to recogize the servers baseline downloads on Posit CRAN mirror. By using 'ThreeWiseMonkeys' as reference we can estimate that there is around 200-300 downloads a month which not comes from RStudio users but rather servers.
 
 **Misses:**
 
