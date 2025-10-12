@@ -11,21 +11,22 @@ image: main.png
 ## TL;DR
 
 - There is no official, global count of CRAN package downloads.
-- Popular services (cranlogs, badges) measure only the RStudio/Posit CRAN mirror logs ([http://cran.rstudio.com](http://cran.rstudio.com) / [http://cran-logs.rstudio.com](http://cran-logs.rstudio.com)).
+- Popular services (e.g. [cranlogs badges](https://cranlogs.r-pkg.org/)) measure only the RStudio/Posit CRAN mirror logs ([http://cran.rstudio.com](http://cran.rstudio.com) / [http://cran-logs.rstudio.com](http://cran-logs.rstudio.com)).
 - If you install from other mirrors, corporate repos, or Posit Package Manager, those downloads aren’t counted.
 - Treat cranlogs numbers as a convenient proxy, not ground truth.
-- There is most probably around 200-300 downloads a month on Posit CRAN mirror which comes from servers rather than users. Read more about in 'ThreeWiseMonkeys' R package README file.
+- There is most probably around 200-300 downloads a month on Posit/RStudio CRAN mirror which comes from servers rather than users. Read more about it the in ['ThreeWiseMonkeys'](https://github.com/gpilgrim2670/ThreeWiseMonkeys) R package README file.
 - For organizations, use your own repository logs (Posit Package Manager metrics) for accurate internal usage.
 
 ## The problem: “CRAN downloads” don’t exist (globally)
 
-CRAN is a network of mirrors. There’s no single authoritative counter across all mirrors, binary caches, containers, or corporate pipelines. What’s widely used instead:
+CRAN is a network of mirrors. There’s no single authoritative counter across all mirrors, binary caches, containers, or corporate pipelines. 
+What’s widely used instead:
 
-- RStudio/Posit CRAN mirror logs: http://cran-logs.rstudio.com
-- Aggregated API and badges: https://cranlogs.r-pkg.org
+- RStudio/Posit CRAN mirror logs: [http://cran-logs.rstudio.com](http://cran-logs.rstudio.com)
+- Aggregated API and badges: [https://cranlogs.r-pkg.org](https://cranlogs.r-pkg.org)
 - Badges rely on those same logs
 
-These are useful, but partial. If you’re not using http://cran.rstudio.com (e.g., other GUIs, corporate pipelines, or Posit Public/Private Package Manager), your downloads won’t be captured.
+These are useful, but partial. If you’re not using http://cran.rstudio.com mirror (e.g., other GUIs, corporate pipelines, or Posit Public/Private Package Manager), your downloads won’t be captured.
 
 ## What cranlogs measures (and what it misses)
 
@@ -33,7 +34,7 @@ These are useful, but partial. If you’re not using http://cran.rstudio.com (e.
 
 Downloads observed on the RStudio/Posit CRAN mirror, aggregated per day/package.
 
-The is a problem of ghost downloads on Posit CRAN mirror which was recognized by 'ThreeWiseMonkeys' R package author. 'ThreeWiseMonkeys' was created to recogize the servers baseline downloads on Posit CRAN mirror. By using 'ThreeWiseMonkeys' as reference we can estimate that there is around 200-300 downloads a month which not comes from RStudio users but rather servers.
+FYI. The is a problem of ghost downloads on Posit CRAN mirror which was recognized by 'ThreeWiseMonkeys' R package author. 'ThreeWiseMonkeys' was created to recogize the servers baseline downloads on Posit CRAN mirror. By using ['ThreeWiseMonkeys'](https://github.com/gpilgrim2670/ThreeWiseMonkeys) as reference we can estimate that there is around 200-300 downloads a month which not comes from RStudio users but rather servers.
 
 **Misses:**
 
@@ -56,7 +57,7 @@ library(ggplot2)
 
 pkg <- "yourpkg"   # change to your package name
 from <- "2024-01-01"
-to   <- "2025-10-01"
+to <- "2025-10-01"
 
 dl <- cran_downloads(packages = pkg, from = from, to = to)
 
@@ -118,6 +119,5 @@ These provide richer pictures of adoption and impact.
 
 ## Links
 
-- cranlogs badges and API: https://cranlogs.r-pkg.org/
-- Daily mirror logs (RStudio/Posit CRAN mirror): http://cran-logs.rstudio.com/
-- CRAN mirrors overview: https://cran.r-project.org/mirrors.html
+- cranlogs badges and API: [https://cranlogs.r-pkg.org/](https://cranlogs.r-pkg.org/)
+- Daily mirror logs (RStudio/Posit CRAN mirror): [http://cran-logs.rstudio.com/](http://cran-logs.rstudio.com/)
