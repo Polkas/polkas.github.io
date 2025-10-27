@@ -192,53 +192,37 @@ This seems to no be surprising when we know from what sequences the coupons come
 
 ### Theoretical Proof: Modular Arithmetic Analysis
 
-While the Knapsack algorithm provides computational evidence, I also used theoretical modular arithmetic to validate this result mathematically. 
+Proof of Impossibility
+ * The formula for any sum S is:
+   S = 13K + 165C
+   Where K \ge 0 (sum of coupon indices) and C \ge 0 (count from Set 2) are integers.
+ * We are testing if S can be a multiple of 100. Let S = 100n, where n is a positive integer (n \in \{1, 2, \ldots, 10\}).
+ * The equation becomes:
+   13K + 165C = 100n
+ * Let's analyze this equation modulo 13:
+   (13K + 165C) \equiv 100n \pmod{13}
+   *    * 165 = (13 \times 12) + 9, so 165C \equiv 9C \pmod{13}
+   * 100 = (13 \times 7) + 9, so 100n \equiv 9n \pmod{13}
+ * This simplifies our equation to:
+   9C \equiv 9n \pmod{13}
+ * Since 9 and 13 share no common factors, we can divide both sides by 9:
+   C \equiv n \pmod{13}
+   This means C must be of the form C = n + 13m for some integer m \ge 0.
+ * Now, substitute this expression for C back into the original equation (Step 3):
+   13K + 165(n + 13m) = 100n
+ * Expand and solve for K:
+   13K + 165n + (165 \times 13m) = 100n
+   13K = 100n - 165n - (165 \times 13m)
+   13K = -65n - (165 \times 13m)
+ * Divide the entire equation by 13:
+   K = -5n - 165m
+   K = -(5n + 165m)
+ * This is a contradiction.
+   * By definition, K must be positive or zero (K \ge 0).
+   * But since n \ge 1 (as S is a positive sum) and m \ge 0, the term (5n + 165m) must be \ge 5.
+   * Therefore, K must be strictly negative (K \le -5).
+Because K cannot be both non-negative (by definition) and negative (by derivation), no integer solution exists.
 
-#### Key Sequences
-
-The coupon values are derived from two modular arithmetic sequences:
-
-1. **Sequence 1**: Residues of $13k \mod 100$ for $k \in \mathbb{Z}$:
-  
-$$
-S_1 = \{13, 26, 39, 52, 65, 78, 91, 4, 17, 30, \dots\}.
-$$
-
-2. **Sequence 2**: Residues of $165 + 13b \mod 100$, rewritten as $65 + 13b \mod 100$ for $b \in \mathbb{Z}$:
-  
-$$
-S_2 = \{65, 78, 91, 4, 17, 30, 43, \dots\}.
-$$
-
-#### Sum of Coupons
-
-Any sum of coupons from $S_1 \cup S_2$ can be expressed as:
-
-$$
-\text{Sum} = 13 \left( \sum k_i + \sum b_j \right) + \sum c_j \mod 100,
-$$
-
-where:  
-- $\sum k_i$ comes from $S_1$,  
-- $\sum b_j$ comes from $S_2$,  
-- $\sum c_j$ represents offsets `0` for $S_1$, `65` for $S_2$.
-
-Factoring `13`:
-
-$$
-\text{Sum} = 13 \left( \sum k_i + \sum b_j \right) + \sum c_j \mod 100.
-$$
-
-#### Why No Sum Can Sum Up to Full Hundreds
-
-The number `13` is **coprime to 100**, meaning their greatest common divisor is `1`. 
-As a result Multiples of `13` mod `100` complete residue cycle:
-$\{13, 26, 39, 52, 65, 78, 91, 4, 17, 30, \dots\}$.
-This sequence never includes $0 \mod 100$ because multiples of `13` mod `100` has no integer solutions.
-Thus, $13 \left( \sum k_i + \sum b_j \right) \mod 100$ also cannot equal $0 \mod 100$ (sum to full hundreds).
-
-The term $\sum c_j$ introduces a shift, but it does not affect the impossibility of summing to $0 \mod 100$. **Offsets from $S_2$:** The offsets $(c_j = 65$ for $S_2$ shift the residue cycle of $13 \left( \sum k_i + \sum b_j \right)$, creating $13 \left( \sum k_i + \sum b_j \right) + 65 \mod 100.$
-This shifted cycle is still disjoint from $0 \mod 100$ because the original cycle of $13k \mod 100$ does not include `0`. For other shifts (e.g., `1`, `11`, or any value), the term $\sum c_j$ merely shifts the residue cycle, but since $13k \mod 100$ cannot align with $0$, no shift can create $0 \mod 100$.
 
 ## Conclusion
 
