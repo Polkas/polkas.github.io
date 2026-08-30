@@ -23,6 +23,8 @@ That claim always bothered me. The em dash is not new. It is part of English pro
 
 Project Gutenberg gives us a practical way to check, especially because its most-downloaded books include a mix of novels, poetry, plays, essays and older public-domain editions.
 
+This does not mean em dashes belong only to older literature. More modern and semi-modern fiction uses them too. Douglas Adams is a good everyday example: *The Hitchhiker's Guide to the Galaxy* and the wider Hitchhiker series use dash-driven timing, interruptions and comic asides in a way that feels completely natural on the page. Gutenberg is a useful baseline, not the boundary of the habit.
+
 ## The Method
 
 I wrote a small Python script, `em_dash_check.py`, to count em-dash-like punctuation in a 100-book sample based on top-downloaded Project Gutenberg books.
@@ -43,7 +45,7 @@ I used a manual seed list on purpose. The script does not scrape Gutenberg ranki
 The rate is:
 
 $$
-    ext{em-dash equivalents per 100 words} = \frac{\text{literal em dashes} + \text{double hyphens}}{\text{words}} \times 100
+	ext{em-dash equivalents per 100 words} = \frac{\text{literal em dashes} + \text{double hyphens}}{\text{words}} \times 100
 $$
 
 This is a small measurement, not a universal law of prose. "Top downloaded" also changes over time, and Gutenberg texts vary by edition, transcription and formatting. Still, the result is large enough to make the main point clear.

@@ -99,24 +99,26 @@ That last point covers most of it. The failure mode is not producing a rough pro
 
 Technically, gridify uses S4 classes, composition over inheritance, and a deliberately small dependency footprint. That matters because statistical-programming tools have to be extensible, reviewable and boring in the right places.
 
-The delivery process is the interesting part.
+The useful prototype sequence was not "ask the agent to build the feature". It looked more like this:
 
-```{mermaid}
-flowchart LR
-  A["1 Align<br/>requirements and<br/>stakeholder expectations"] --> B["2 Design<br/>UML, specification, UX"]
-  B --> C["3 Stress-test<br/>use AI to challenge<br/>the design"]
-  C --> D["4 Prototype<br/>AI-assisted draft<br/>from the design"]
-  D --> E["5 Refine<br/>collaborative review"]
-  E --> F["Production<br/>small PRs, 2 approvals,<br/>advanced CI"]
-  E -.-> B
-  F -.-> A
-```
+1. **Align.** Requirements and stakeholder expectations first.
+2. **Design.** UML, specifications and UX before code.
+3. **Challenge the design.** Use AI to question the design, expose weak assumptions and suggest alternatives.
+4. **Prototype.** Let the agent draft from the design and requirements, not from a vague feature wish.
+5. **Refine.** Review the result collaboratively and improve the parts that do not match the product, package or users.
 
-Step 3 is the one people skip and the one I would defend hardest. Before an agent writes anything, it is very good at challenging a design you hand it: finding the case you did not consider, the interface that will not extend, the assumption that only holds for your example. Using AI as a critic before using it as an author changed our output more than any prompt technique.
+That sequence made the prototype useful. It did not make it production-ready. The next step was slower and more social: review, inspect and adapt.
 
-Everything after step 5 is dull and mandatory: stakeholder engagement, small reviewable PRs, transparent tags on AI-assisted PRs, at least two approvals, and CI that blocks on coverage and code quality, not just "it runs".
+For us, moving toward production meant:
 
-Worth saying plainly: gridify is a team product. It exists because of its contributors, and none of the process above works with one person and an agent.
+- stakeholder engagement,
+- small, reviewable PRs,
+- proper AI setup in `.github`,
+- transparent AI PR tags,
+- at least two approvals per PR,
+- advanced CI checks, including test coverage and code quality.
+
+That is the part of AI-assisted development that is easy to skip in a demo and impossible to skip in a maintained product.
 
 ## One Feature, End To End
 
