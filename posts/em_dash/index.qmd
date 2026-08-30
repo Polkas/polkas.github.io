@@ -43,7 +43,7 @@ I used a manual seed list on purpose. The script does not scrape Gutenberg ranki
 The rate is:
 
 $$
-	ext{em-dash equivalents per 100 words} = \frac{\text{literal em dashes} + \text{double hyphens}}{\text{words}} \times 100
+    ext{em-dash equivalents per 100 words} = \frac{\text{literal em dashes} + \text{double hyphens}}{\text{words}} \times 100
 $$
 
 This is a small measurement, not a universal law of prose. "Top downloaded" also changes over time, and Gutenberg texts vary by edition, transcription and formatting. Still, the result is large enough to make the main point clear.

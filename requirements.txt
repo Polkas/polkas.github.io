@@ -1,1 +1,3 @@
 shinylive
+jupyter
+PyYAML
