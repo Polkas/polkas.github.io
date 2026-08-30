@@ -94,7 +94,7 @@ Every contribution, no matter how small, is valuable because it helps create a r
 
 Open source has proven itself across countless domains, helping to **accelerate innovation**, **foster inclusive communities**, and **support open science**. Whether you are a seasoned developer or new to coding, the open source world offers a place to learn, collaborate, and contribute to projects that matter to you, including those in the critical field of pharma.
 
-Open source is more than just freely available code, it's a **collaborative mindset** that has revolutionized how we create software. By embracing open source principles, industries ranging from technology giants to pharmaceuticals have **enhanced innovation** and **shared knowledge** on an unprecedented scale. However, open source is not without structure; maintainers, governance models, and licensing terms guide projects to ensure both sustainability and a clear sense of direction.
+Open source is more than freely available code. It is a way to collaborate in public, share knowledge, and let others inspect, improve and reuse work. It still needs structure: maintainers, governance models and licenses all shape how a project survives.
 
 For those looking to get started in open source:
 

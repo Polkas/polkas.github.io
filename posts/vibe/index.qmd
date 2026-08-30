@@ -20,7 +20,7 @@ Vibe coding, highlighted by Andrej Karpathy, means "fully giving in to the vibes
 
 ## The Dawn of Vibe Coding
 
-In the rapidly evolving landscape of software development, [Andrej Karpathy](https://karpathy.ai) popularises a new "vibe coding" paradigm. "Vibe coding" is a method where developers "fully give in to the vibes, embrace exponentials, and forget that the code even exists."
+[Andrej Karpathy](https://karpathy.ai) popularises the term "vibe coding" as a method where developers "fully give in to the vibes, embrace exponentials, and forget that the code even exists."
 
 This isn't about abandoning programming knowledge or becoming passive observers. Instead, it's about fundamentally reimagining the developer's role in the age of AI. When Karpathy built prototypes like MenuGen, he demonstrated this philosophy in action: letting LLMs generate all the code while he provided goals, examples, and feedback through natural language instructions. The programmer transforms from a manual coder into a guide, tester, and feedback provider for AI-generated source code.
 

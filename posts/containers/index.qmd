@@ -13,7 +13,7 @@ TL;DR: Containers provide reproducible, secure, and portable environments for da
 While tools like renv for R and requirements.txt for Python lock dependencies at the package level, containers go beyond this by bundling programming languages, system libraries, and operating system dependencies into a single, isolated runtime. 
 Tools like Docker and Podman streamline setup, ensuring consistent environments across local machines, cloud servers, and CI/CD pipelines. 
 Features like container layering and caching make builds efficient, while orchestration platforms like Kubernetes scale these environments for production. 
-Containers eliminate the "works on my machine" problem, empowering you to produce reliable, credible, and easily shared data science workflows.
+Containers help remove the "works on my machine" problem and make data science workflows easier to share and reproduce.
 
 ```{=html}
 <a href="#experimenting-in-github-codespaces">
@@ -278,7 +278,7 @@ Roles can be broadly categorized in the container ecosystem based on how individ
     </div>
     <div id="collapseConsumer" class="accordion-collapse collapse show" aria-labelledby="headingConsumer" data-bs-parent="#accordionUsers">
       <div class="accordion-body">
-        A <strong>consumer</strong> is an end user who interacts with a deployed containerized application but does not delve into its inner workings. For example, a data scientist launching a pre-configured JupyterLab container or a web developer accessing a containerized app focuses on:
+        A <strong>consumer</strong> is an end user who interacts with a deployed containerized application but does not need to inspect its internals. For example, a data scientist launching a pre-configured JupyterLab container or a web developer accessing a containerized app focuses on:
         <ul>
           <li>Running or using the application’s features</li>
           <li>Providing feedback or reporting issues to the team that created the container</li>
@@ -1825,7 +1825,7 @@ Containers offer a powerful way to ensure reproducibility, portability, security
 
 Whether using Docker or Podman for smaller setups or scaling to Kubernetes in production, containers integrate seamlessly with modern CI/CD pipelines and cloud-based development environments. You can maintain a safe and compliant containerized environment with proper security practices, such as choosing trusted images, scanning for vulnerabilities, enforcing least privilege, and monitoring activity.
 
-Adopting containers removes the "works on my machine" problem, streamlines collaboration, and empowers you to produce reliable, credible, and easily shared data science work well into the future.
+Adopting containers reduces the "works on my machine" problem, improves collaboration, and makes data science work easier to share and reproduce.
 
 ### References
 

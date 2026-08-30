@@ -12,7 +12,7 @@ filters:
   - shinylive
 ---
 
-TL;DR: WebAssembly (WASM) revolutionizes web development by enabling near-native performance for web applications written in languages like Rust, C++, R, and Python. With frameworks like Shiny Live, PyShiny, Quarto, and Trinket, developers can create interactive, server-free applications that are cost-effective and easy to deploy. WebAssembly bridges the gap between development and deployment, making high-performance web applications more accessible, efficient, and versatile.
+TL;DR: WebAssembly (WASM) lets code written in languages such as Rust, C++, R and Python run in the browser at near-native speed. With tools like shinylive, PyShiny, Quarto, Trinket, webr and Pyodide, developers can build interactive applications that do not always need a backend server.
 
 ## WebAssembly: A True Web Revolution
 
@@ -38,7 +38,7 @@ Below is Python code running through Pyodide:
 import this
 ```
 
-In short, the combination of WebAssembly, LLVM, and specialized toolchains (such as Pyodide and webr) transforms the browser into a powerful platform for high-performance, client-side computing while maintaining a seamless developer experience.
+In short, WebAssembly, LLVM and toolchains such as Pyodide and webr make the browser a practical place for client-side computing.
 
 ### shinylive
 
@@ -68,7 +68,7 @@ def histogram():
 
 ### Trinket
 
-**Trinket**, a platform dedicated to interactive coding, leverages WebAssembly to enable educators and learners to execute Python, HTML, and JavaScript snippets directly in their browsers. This eliminates the need for local installations, democratizing access to coding education. 
+**Trinket**, a platform for interactive coding, uses WebAssembly to let educators and learners run Python, HTML and JavaScript snippets directly in the browser. This removes the need for local installation. 
   
 For an example in action, visit the [Python for Everybody Book](https://books.trinket.io/pfe/index.html), where Trinket facilitates hands-on coding exercises right in the browser.
 
@@ -79,7 +79,7 @@ Please leave the ones you think should be discussed here as a comment.
 
 ## Bridging the Gap Between Development and Deployment
 
-The elegance of WebAssembly lies in its universality. Unlike traditional web applications that require complex server setups, WebAssembly applications can run seamlessly in the client’s browser. This not only speeds up the development cycle but also minimizes the operational overhead associated with server maintenance. Developers can focus entirely on writing code, knowing their applications can be easily deployed and accessed across various platforms without compatibility concerns.
+WebAssembly is useful because it can move work that normally needs a server into the user's browser. That can reduce hosting complexity and make small interactive tools easier to share.
 
 ## The Future of Web Development
 
@@ -87,7 +87,7 @@ WebAssembly is more than just a tool for optimization; it is the foundation for 
 
 ## Conclusion
 
-In conclusion, WebAssembly is not just a technological advancement; it is a revolution in web development. By combining high performance with simplicity and cost-effectiveness, WebAssembly is set to redefine what is possible on the web. Whether you are a seasoned developer or new to the field, embracing WebAssembly and frameworks like webr or pyodide will empower you to build better applications.
+WebAssembly is useful because it moves serious computation into the browser. For data science, education and lightweight applications, tools like webr, Pyodide and shinylive make it possible to share interactive work without running a dedicated server.
 
 ## References
 

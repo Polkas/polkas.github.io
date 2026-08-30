@@ -9,7 +9,7 @@ filters:
   - webr
 ---
  
-TL;DR: In the late 1940s, the U.S. Air Force faced a potentially life-threatening challenge. Despite state-of-the-art technology in their fighter planes, pilots were struggling with control and comfort issues, leading to accidents and reduced performance. The root cause? The assumption that designing cockpits based on the "average" pilot’s body measurements would create an optimal fit for everyone. What they discovered revolutionized our understanding of design and human variability.
+TL;DR: In the late 1940s, the U.S. Air Force faced a practical design problem. Pilots were struggling with control and comfort issues, leading to accidents and reduced performance. The root cause was the assumption that a cockpit designed for the "average" pilot would fit most pilots. The data showed the opposite: when many body measurements matter at once, almost nobody is average on all of them.
 
 ---
 
@@ -60,9 +60,7 @@ Armed with this knowledge, the Air Force adopted a new approach: **designing for
 - **Customizable controls** for varied arm lengths and reach.
 - **Flexible straps and harnesses** to accommodate different chest circumferences.
 
-These changes drastically improved safety, performance, and pilot satisfaction, reducing accidents and fatalities.
-
-Below is an example of an additional section you could add to your blog post to explicitly connect the cockpit design story to the **Curse of Dimensionality**:
+These changes improved safety, performance, and pilot comfort.
 
 ---
 

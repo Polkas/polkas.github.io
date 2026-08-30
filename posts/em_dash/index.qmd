@@ -1,0 +1,281 @@
+---
+title: "Are Em Dashes Really Suspicious? A Gutenberg Top-100 Check"
+author: "Maciej Nasinski"
+date: "2026-08-29"
+categories: [text-analysis, statistics, programming]
+draft: false
+---
+
+## TL;DR
+
+I checked em dash usage in a manually seeded sample of 100 top-downloaded Project Gutenberg books. The important detail is that Gutenberg plain text often writes an em dash as `--`, so I counted both literal `—` and double hyphen `--` as **em-dash equivalents**.
+
+After that correction, all 100 books contained em-dash-like punctuation. The corpus had **75,798 em-dash equivalents** across **13,149,480** words. So a benchmark that expects normal writing to contain **no** em dashes is not just too simple. For this corpus, it is wrong.
+
+---
+
+## Why I Checked This
+
+Em dashes have become a strange little signal in discussions about AI-generated text. People see `—` and sometimes treat it as evidence that a sentence was written by a model.
+
+That claim always bothered me. The em dash is not new. It is part of English prose, especially in fiction, dialogue and older literary styles. The better question is not whether em dashes appear in real writing. They do. The better question is: **how often do they appear in a real corpus?**
+
+Project Gutenberg gives us a practical way to check, especially because its most-downloaded books include a mix of novels, poetry, plays, essays and older public-domain editions.
+
+## The Method
+
+I wrote a small Python script, `em_dash_check.py`, to count em-dash-like punctuation in a 100-book sample based on top-downloaded Project Gutenberg books.
+
+The script does a few simple things:
+
+1. Uses a manually seeded list of 100 top-downloaded Gutenberg book IDs.
+2. Downloads or reuses local plain-text files.
+3. Removes Project Gutenberg header and footer text.
+4. Counts words with a regex tokenizer.
+5. Counts literal em dashes, `—`.
+6. Counts double hyphens, `--`, as Gutenberg-style em-dash equivalents.
+7. Reports em-dash equivalents per 100 words.
+8. Saves per-book JSON files and one combined ranked result file.
+
+I used a manual seed list on purpose. The script does not scrape Gutenberg ranking pages. It only downloads text files from book endpoints.
+
+The rate is:
+
+$$
+	ext{em-dash equivalents per 100 words} = \frac{\text{literal em dashes} + \text{double hyphens}}{\text{words}} \times 100
+$$
+
+This is a small measurement, not a universal law of prose. "Top downloaded" also changes over time, and Gutenberg texts vary by edition, transcription and formatting. Still, the result is large enough to make the main point clear.
+
+## What The Corpus Said
+
+Across 100 books:
+
+| Measure | Value |
+|---|---:|
+| Books analyzed | 100 |
+| Books skipped | 0 |
+| Total words | 13,149,480 |
+| Literal em dashes, `—` | 35,724 |
+| Double hyphen equivalents, `--` | 40,074 |
+| Total em-dash equivalents | 75,798 |
+| Corpus-wide rate | 0.5764 per 100 words |
+| Mean book-level rate | 0.6387 per 100 words |
+| Median book-level rate | 0.4741 per 100 words |
+| Books with zero em-dash equivalents | 0 |
+
+The old literal-only count said that 48 books had zero em dashes. That was not the whole story. Many Gutenberg files use `--` where a printed edition would use an em dash.
+
+Once `--` is counted, the zero count disappears. The key result becomes stronger: every book in this top-100 sample used em-dash-like punctuation, but not at the same rate. It is a style feature, and the distribution is wide.
+
+## The Books With The Most Em-Dash Equivalents
+
+Here are the highest-density books in the sample:
+
+| Book | Author | Literal `—` | `--` | Total | Words | Per 100 words |
+|---|---|---:|---:|---:|---:|---:|
+| *The Love Letters of Mary Wollstonecraft to Gilbert Imlay* | Mary Wollstonecraft | 0 | 1,043 | 1,043 | 33,832 | 3.0829 |
+| *Roméo et Juliette* | William Shakespeare | 0 | 1,107 | 1,107 | 39,482 | 2.8038 |
+| *El crimen y el castigo* | Fyodor Dostoyevsky | 0 | 4,802 | 4,802 | 192,189 | 2.4986 |
+| *The Blue Castle: a novel* | L. M. Montgomery | 1,300 | 0 | 1,300 | 71,513 | 1.8179 |
+| *That Which Hath Wings: A Novel of the Day* | Richard Dehan | 3,124 | 0 | 3,124 | 192,703 | 1.6211 |
+| *The Works of Edgar Allan Poe — Volume 2* | Edgar Allan Poe | 1,497 | 0 | 1,497 | 97,012 | 1.5431 |
+| *The murder of Roger Ackroyd* | Agatha Christie | 920 | 174 | 1,094 | 72,852 | 1.5017 |
+| *The Turn of the Screw* | Henry James | 639 | 0 | 639 | 43,449 | 1.4707 |
+| *The Cask of Amontillado* | Edgar Allan Poe | 0 | 34 | 34 | 2,361 | 1.4401 |
+
+That list is enough to kill the simple version of the claim. Mary Wollstonecraft, Shakespeare, Dostoyevsky, L. M. Montgomery, Poe, Agatha Christie and Henry James are not edge cases of machine-generated prose.
+
+They are also not using em dashes at the same rate. The mark is part of style, genre, period, dialogue and editorial convention.
+
+## The Encoding Trap
+
+The first version of this analysis counted only the literal Unicode em dash, `—`. Under that definition, 48 books had zero em dashes.
+
+That looked interesting, but it was partly an encoding artefact. Gutenberg plain text often uses `--` to represent a dash. *Pride and Prejudice* is a good example: it had zero literal `—` characters, but 498 double hyphens.
+
+So the benchmark is not:
+
+> Real writing has no em dashes.
+
+The better benchmark is:
+
+> Real writing has a distribution of dash-like punctuation, and the encoding matters.
+
+That is the important methodological lesson. Before making a claim about style, check whether the text format changed the punctuation.
+
+## Why This Matters For AI Text Detection
+
+A single punctuation mark is weak evidence. It can be a style habit, an editorial choice, or an artefact of text encoding.
+
+If a detector, reviewer or benchmark treats em dashes as suspicious by default, it will penalize some perfectly ordinary prose. In this sample, *The Turn of the Screw* has about **1.47 em-dash equivalents per 100 words**. *Pride and Prejudice* has **498** double-hyphen equivalents. *Moby Dick* has **1,728** literal em dashes.
+
+That does not prove anything about modern writing on its own. But it does show that “zero em-dash-like punctuation” is not a serious baseline for literature.
+
+## What I Would Do Next
+
+This check is intentionally simple. The next version should separate a few things that are mixed together here:
+
+- century and publication period,
+- author style,
+- genre,
+- dialogue-heavy versus narration-heavy prose,
+- edition and transcription differences,
+- literal em dash `—` versus double hyphen `--` or spaced dash forms.
+
+I would also compare Gutenberg with modern sources: essays, academic writing, blogs, news articles and model-generated samples. That would let us ask a better question: not “does this text contain an em dash?”, but “does this text fit the punctuation distribution of its claimed genre?”
+
+## Conclusion
+
+The em dash is not a machine fingerprint. It is a normal punctuation mark, and in plain-text corpora it may appear as either `—` or `--`.
+
+In this 100-book Gutenberg sample, zero literal em dashes was common, but zero em-dash equivalents was not. Once Gutenberg's `--` convention is counted, all 100 books contain dash-like punctuation.
+
+The simple rule “normal text should have no em dashes” does not survive contact with literature, or with the details of text encoding.
+
+## References
+
+- [Project Gutenberg](https://www.gutenberg.org/)
+- [Project Gutenberg robot access policy](https://www.gutenberg.org/policy/robot_access.html)
+- Source data: local `em_dash_results.json` generated from `em_dash_check.py`
+
+## Appendix: Python Code
+
+The full script used a manually seeded dictionary of 100 Gutenberg IDs. The core workflow is below. It keeps literal `—` and double hyphen `--` counts separate, then reports their combined total as em-dash equivalents.
+
+```python
+#!/usr/bin/env python3
+"""Measure em dash frequency per 100 words for a Gutenberg top-100 sample."""
+
+from __future__ import annotations
+
+import argparse
+import json
+import re
+from pathlib import Path
+from urllib.error import URLError
+from urllib.request import Request, urlopen
+
+WORD_RE = re.compile(r"[A-Za-z]+(?:'[A-Za-z]+)?")
+
+
+def clean_gutenberg_wrappers(text: str) -> str:
+	start = re.search(r"\*\*\*\s*START OF.*?\*\*\*", text, flags=re.IGNORECASE)
+	end = re.search(r"\*\*\*\s*END OF.*?\*\*\*", text, flags=re.IGNORECASE)
+	if start and end and end.start() > start.end():
+		return text[start.end() : end.start()].strip()
+	return text
+
+
+def count_em_dash_equivalents_per_100_words(text: str) -> tuple[int, int, int, float]:
+	body = clean_gutenberg_wrappers(text)
+	words = len(WORD_RE.findall(body))
+	literal_em_dashes = body.count("—")
+	double_hyphen_em_dashes = body.count("--")
+	em_dash_equivalents = literal_em_dashes + double_hyphen_em_dashes
+	per_100 = (em_dash_equivalents / words * 100.0) if words else 0.0
+	return literal_em_dashes, double_hyphen_em_dashes, words, per_100
+
+
+def download_txt(gutenberg_id: int, dest: Path) -> Path:
+	urls = [
+		f"https://www.gutenberg.org/files/{gutenberg_id}/{gutenberg_id}-0.txt",
+		f"https://www.gutenberg.org/files/{gutenberg_id}/{gutenberg_id}.txt",
+		f"https://www.gutenberg.org/cache/epub/{gutenberg_id}/pg{gutenberg_id}.txt",
+		f"https://www.gutenberg.org/cache/epub/{gutenberg_id}/pg{gutenberg_id}.txt.utf-8",
+	]
+	headers = {"User-Agent": "gutenberg-em-dash-check/0.1"}
+	dest.parent.mkdir(parents=True, exist_ok=True)
+
+	for url in urls:
+		try:
+			with urlopen(Request(url, headers=headers), timeout=20) as response:
+				data = response.read()
+			dest.write_bytes(data)
+			return dest
+		except URLError:
+			continue
+
+	raise RuntimeError(f"Could not download TXT for Gutenberg ID {gutenberg_id}")
+
+
+def main() -> None:
+	parser = argparse.ArgumentParser()
+	parser.add_argument("--index", default="index.json", help="JSON list with Gutenberg IDs")
+	parser.add_argument("--top", type=int, default=100, help="Analyze first N entries")
+	parser.add_argument("--cache-dir", default="books", help="Where TXT files are stored")
+	parser.add_argument("--json-dir", default="books_json", help="Where per-book JSON files are stored")
+	parser.add_argument("--results-json", default="em_dash_results.json", help="Combined JSON output")
+	args = parser.parse_args()
+
+	items = json.loads(Path(args.index).read_text(encoding="utf-8"))[: args.top]
+
+	results = []
+	total_words = 0
+	total_dashes = 0
+	skipped = 0
+
+	for i, item in enumerate(items, start=1):
+		gutenberg_id = int(item["gutenberg_id"])
+		path = Path(item.get("txt_path") or (Path(args.cache_dir) / f"{gutenberg_id}.txt"))
+
+		if not path.exists():
+			try:
+				download_txt(gutenberg_id, path)
+			except RuntimeError as error:
+				skipped += 1
+				print(f"skip: {error}")
+				continue
+
+		text = path.read_text(encoding="utf-8", errors="ignore")
+		body = clean_gutenberg_wrappers(text)
+		literal_em_dashes, double_hyphen_em_dashes, words, per_100 = count_em_dash_equivalents_per_100_words(text)
+		em_dash_equivalents = literal_em_dashes + double_hyphen_em_dashes
+
+		total_words += words
+		total_dashes += em_dash_equivalents
+
+		row = {
+			"rank": item.get("rank", i),
+			"gutenberg_id": item.get("gutenberg_id"),
+			"title": item.get("title", ""),
+			"author": item.get("author", ""),
+			"txt_path": str(path),
+			"literal_em_dashes": literal_em_dashes,
+			"double_hyphen_em_dashes": double_hyphen_em_dashes,
+			"em_dashes": em_dash_equivalents,
+			"words": words,
+			"em_dash_equivalents_per_100_words": round(per_100, 4),
+			"em_dashes_per_100_words": round(per_100, 4),
+		}
+		results.append(row)
+
+		json_dir = Path(args.json_dir)
+		json_dir.mkdir(parents=True, exist_ok=True)
+		(json_dir / f"{gutenberg_id}.json").write_text(
+			json.dumps({**row, "text": body}, ensure_ascii=False, indent=2),
+			encoding="utf-8",
+		)
+
+	results.sort(key=lambda row: row["em_dash_equivalents_per_100_words"], reverse=True)
+	corpus_per_100 = (total_dashes / total_words * 100.0) if total_words else 0.0
+
+	Path(args.results_json).write_text(
+		json.dumps(
+			{
+				"books_analyzed": len(results),
+				"books_skipped": skipped,
+				"corpus_em_dash_equivalents_per_100_words": round(corpus_per_100, 4),
+				"corpus_em_dashes_per_100_words": round(corpus_per_100, 4),
+				"books": results,
+			},
+			ensure_ascii=False,
+			indent=2,
+		),
+		encoding="utf-8",
+	)
+
+
+if __name__ == "__main__":
+	main()
+```

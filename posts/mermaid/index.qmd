@@ -1,5 +1,5 @@
 ---
-title: "Unlocking the Power of Mermaid Diagrams"
+title: "Mermaid Diagrams in Markdown"
 author: "Maciej Nasinski"
 date: "2025-01-11"
 categories: [programming]
@@ -23,17 +23,17 @@ journey
       Shares or Subscribes: 4
 ```
 
-## Why Mermaid Is a Game-Changer
+## Why Mermaid Is Useful
 
 Mermaid, a `JavaScript`-based diagramming and charting tool, is more than just a software. It's a community-driven project that transforms Markdown-inspired text definitions into dynamic, professional-quality diagrams. Its open-source nature invites everyone to use, contribute to, and enhance it, fostering a vibrant, collaborative community. Since its inception on `November 16, 2014` (version `0.1.0`), Mermaid has rapidly evolved, with its current version (`11.4.1` as of this writing) reflecting ongoing improvements and innovative features driven by its global user base. This continuous evolution ensures that Mermaid remains at the cutting edge of diagramming technology, making it a reliable and forward-looking choice for visualization needs.
 
-Mermaid is natively supported or easily integrated into many widely-used platforms, such as `GitHub`, `Quarto`, `static site generators` like Hugo and Jekyll, and `Jupyter Notebooks`. Its broad compatibility means users can seamlessly incorporate diagrams into their existing workflows with minimal effort, whether for project documentation, technical blogs, or interactive data presentations. Furthermore, Mermaid supports a wide range of diagram types, from flowcharts and Gantt charts to sequence diagrams and UML diagrams.
+Mermaid is supported, or easy to add, in many common tools: `GitHub`, `Quarto`, static site generators such as Hugo and Jekyll, and `Jupyter Notebooks`. It supports flowcharts, Gantt charts, sequence diagrams, UML diagrams and more.
 
 The tool’s text-based nature makes it ideal for version control systems like Git, allowing users to track changes and collaborate effectively. **Beginners** find Mermaid approachable due to its simple syntax and extensive documentation, while ** advanced users ** appreciate the ability to ** automate and dynamically generate diagrams ** using scripts. Tools like the **Mermaid Live Editor** and integration with **Large Language Models (LLMs)** such as ChatGPT further enhance its accessibility, enabling users to **describe diagrams in plain text** and receive instant, accurate Mermaid code.
 
 Another strength of Mermaid is customization, with options to style diagrams, adjust layouts, and apply themes, ensuring both functionality and visual appeal. Its ability to render diagrams directly in the browser using JavaScript makes it lightweight and easy to integrate into web applications and static sites without relying on heavy dependencies.
 
-Mermaid’s combination of **simplicity**, **versatility**, and **seamless integration** into modern development and documentation workflows has cemented its status as a **favourite tool for diagramming**. By **transforming plain text into powerful visualizations**, Mermaid continues to meet the evolving needs of developers, writers, and educators, making it a cornerstone of **technical communication and design**.
+Mermaid's main advantage is that diagrams can live next to the text or code they explain. That makes them easier to review, version and maintain.
 
 ## Tools for Interactive Mermaid Diagrams
 
@@ -195,7 +195,7 @@ While Mermaid is a powerful and flexible tool for creating diagrams using a text
 
 ## How LLMs Like ChatGPT Make Using Mermaid Easier
 
-Large Language Models (LLMs), such as ChatGPT, have revolutionized how users interact with tools like Mermaid by simplifying the process of creating and refining diagrams. These models bridge the gap between conceptual ideas and fully realized diagrams, transforming natural language descriptions into precise Mermaid syntax. This eliminates the need for deep technical expertise, saving time and reducing the learning curve for both beginners and experienced users.
+Large Language Models (LLMs), such as ChatGPT, can make Mermaid easier to use by turning a plain-language diagram description into Mermaid syntax. This is useful when you know the structure you want but do not remember the exact syntax.
 
 One of the most powerful features LLMs offer is **text-to-diagram conversion**, where a simple description of a desired diagram can be instantly translated into the corresponding Mermaid syntax. For instance, providing a prompt like “Create a flowchart where 'Start' leads to 'Decision', with 'Yes' going to 'Task' and 'No' going to 'End'” can generate the correct code in seconds. Additionally, LLMs provide **instant syntax assistance**, helping users navigate the sometimes-tricky process of writing or troubleshooting Mermaid code. They can identify errors, suggest corrections, and optimize diagrams for clarity and functionality.
 
@@ -203,7 +203,7 @@ Beyond assisting with technical details, LLMs also excel at offering **creative 
 
 LLMs are particularly valuable for **quick learning**, offering examples, explanations, and answers to user queries. Beginners can experiment and refine their understanding of Mermaid through interactive dialogues, while advanced users can streamline workflows by automating repetitive tasks or generating complex diagrams.
 
-By integrating LLMs like ChatGPT into the diagram creation process, users can describe their ideas in plain language and receive instantly usable Mermaid syntax. This democratizes access to powerful visualization tools, empowering users of all technical levels to create high-quality diagrams with ease. Whether for documentation, presentations, or collaborative projects, the combination of LLMs and Mermaid is transforming how visual content is created and shared.
+Used carefully, LLMs make Mermaid faster to draft. You still need to check the result, especially for larger diagrams where a small syntax mistake can break the whole block.
 
 ### vscode-mermAId: Copilot-Powered Diagram Generation
 

@@ -8,7 +8,7 @@ image: main.jpeg
 categories: [programming]
 ---
 
-TL;DR In the world of project management, Agile has become a guiding light for many organizations. Often, there's a misconception that Agile is synonymous with Scrum. However, Scrum is merely one of many frameworks under the vast umbrella of Agile. To truly harness the power of Agile, it's essential to understand its broader philosophy, which is founded on four main principles and further elaborated through twelve guiding principles.
+TL;DR Agile is not the same thing as Scrum. Scrum is one framework for applying Agile ideas. The broader point is the Agile philosophy: short feedback loops, working software, collaboration, and willingness to change direction when the evidence changes.
 
 **Updated 2025-01-05**
 
@@ -65,9 +65,9 @@ For those looking to dive deeper into specific Agile frameworks:
 - **Extreme Programming (XP):** [Extreme Programming - Wikipedia](https://en.wikipedia.org/wiki/Extreme_programming)
 - **SAFe (Scaled Agile Framework):** [Scaled Agile Framework - Wikipedia](https://en.wikipedia.org/wiki/Scaled_agile_framework)
 
-## In Conclusion
+## Conclusion
 
-While Scrum provides a structured approach to Agile, it's essential to recognize that Agile itself is a broader philosophy that can be implemented in various ways. Embrace the principles of Agile, and let them guide you in selecting and adapting the framework that best fits your team's unique needs and challenges.
+Scrum can be useful, but it is only one way to apply Agile. Start with the principles, then choose the framework that fits the team and the work.
 
 ## References
 

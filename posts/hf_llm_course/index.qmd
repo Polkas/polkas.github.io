@@ -91,7 +91,7 @@ This versatility is why understanding transformers is so valuable—the same cor
 
 ## Want to Learn More? The Hugging Face LLM Course
 
-Understanding these concepts is one thing—but building with them requires hands-on experience. If you want to dive deeper into LLMs and Transformers, the [Hugging Face LLM Course](https://huggingface.co/learn/llm-course) is the most comprehensive, practical, and up-to-date resource available.
+Understanding these concepts is one thing, but building with them requires hands-on practice. The [Hugging Face LLM Course](https://huggingface.co/learn/llm-course) is a good practical path through LLMs and Transformers.
 
 ### Why This Course Stands Out
 
@@ -294,7 +294,7 @@ This isn't just about my specific use case. The same approach works for:
 - **Personal tools**: Custom classification for your unique needs
 - **Learning**: Hands-on experience with the complete ML pipeline
 
-The course doesn't just teach you to use existing models - it empowers you to create solutions for problems that matter to you.
+The course goes beyond using existing models and shows how to adapt them to your own problems.
 
 
 ## References

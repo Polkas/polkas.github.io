@@ -14,15 +14,15 @@ TL;DR If you want to design the perfect lottery where participants believe they 
 
 ## Introduction
 
-**Kasa Romana** is a well-known lottery in Poland, organized by the Amino food company. Originating in the 1990s, this lottery gives participants the chance to win cash prizes by collecting coupons that sum up to round hundreds, up to 1000 PLN. In this blog post, we delve into the data from the last Kasa Romana event, held in 2016, and analyze it using the **Knapsack Algorithm** implemented in R.
+**Kasa Romana** was a well-known lottery in Poland, organized by the Amino food company. Participants collected coupons and tried to combine them into round hundreds, up to 1000 PLN, to win cash prizes. Here I use data from the last Kasa Romana event, held in 2016, and check it with the **Knapsack Algorithm** in R.
 
-The data for this analysis was meticulously gathered by [BezKanalu](https://www.facebook.com/BezKanalu/), a popular Polish YouTube channel known for testing promotional products. They collected an impressive 1002 coupons from the final event, providing a robust dataset to explore. The goal? To uncover patterns in the data and assess whether these coupons could realistically lead to a monetary win.
+The data was gathered by [BezKanalu](https://www.facebook.com/BezKanalu/), a Polish YouTube channel known for testing promotional products. They collected 1002 coupons from the final event. The question is simple: could these coupons realistically produce a winning combination?
 
 To tackle this challenge, I utilized the Knapsack Algorithm, a well-established optimization technique. The algorithm identifies the optimal way to select items (in this case, coupons) that meet specific constraints (summing to full hundreds) while maximizing value. Using R, I implemented this algorithm to determine if any subset of the collected coupons could satisfy the winning conditions of the lottery.
 
 Surprisingly, the analysis revealed that **no combination of coupons from the dataset allowed participants to win real money**. This finding was further reinforced through a theoretical proof using modular arithmetic.
 
-In conclusion, this blog post highlights the power of the Knapsack Algorithm as a tool for solving complex optimization problems like the Kasa Romana lottery. The analysis not only sheds light on the patterns and limitations of the lottery but also demonstrates how programming and mathematical approaches can provide valuable insights into real-world scenarios.
+The result is not encouraging for players: in this dataset, no combination of coupons produced a real cash win. The knapsack formulation makes that easy to check instead of guessing by hand.
 
 ## Apply Knapsack Algorithm on Lottery Coupons
 

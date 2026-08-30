@@ -96,7 +96,7 @@ The available R packages can be get with the `rownames(available.packages(repos 
 
 [Please read more about WebAssembly in my another blog post.](https://polkas.github.io/posts/webassembly/)
 
-In this blog post we will focus on building webR Console.
+Here we will focus on building a webR console.
 
 You can experiment with R code directly in your web browser, without the need for any installation or server setup.
 

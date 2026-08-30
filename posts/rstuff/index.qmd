@@ -8,13 +8,13 @@ image: rworld.png
 categories: [rprogramming]
 ---
 
-TL;DR The blog post ["How R Searches and Finds Stuff"](https://blog.thatbuthow.com/how-r-searches-and-finds-stuff/) by Suraj Gupta, is a comprehensive guide that delves into the internals of R's search mechanism. 
+TL;DR The blog post ["How R Searches and Finds Stuff"](https://blog.thatbuthow.com/how-r-searches-and-finds-stuff/) by Suraj Gupta explains how R's search mechanism works. 
 Despite being over 12 years old, this post is still one of the most important reads for anyone serious about mastering R programming.
 
 **Why This Post is a Must-Read**
 
 Suraj Gupta, along with a few seasoned R developers, crafted this post to help programmers understand the often complex and confusing world of R's environments, namespaces, and scoping rules. 
-Their collective expertise shines through, making this post an essential resource for both beginners and advanced users.
+The post is useful for both beginners and advanced R users.
 
 The blog post meticulously explains how R searches for objects, traversing through environments and namespaces. 
 It demystifies concepts like frames, enclosures, and the parent environments, which are crucial for debugging and writing efficient R code. 

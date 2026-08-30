@@ -19,9 +19,9 @@ Examples:
 [Simple Codespace for R](https://github.com/polkas/r_codespace)  
 [Simple Codespace for Python](https://github.com/Polkas/python_codespace)
 
-### Unlocking Development Efficiency with GitHub Codespaces
+### GitHub Codespaces in Practice
 
-In the rapidly evolving landscape of software development, staying ahead means leveraging the most effective tools and technologies. GitHub Codespaces stands out as a transformative tool, offering developers a seamless, cloud-based development environment. This innovative platform not only simplifies the project setup process but also enhances collaboration and ensures consistency across development teams. Let's dive deeper into how Codespaces is changing the game for developers and teams around the world.
+GitHub Codespaces gives a repository a ready-to-use development environment in the browser or VS Code. The main benefit is not novelty; it is removing setup friction. A new contributor can open the project and start from the same tools, dependencies and extensions as everyone else.
 
 #### The Genesis of GitHub Codespaces
 
@@ -33,7 +33,7 @@ Codespaces accelerates the development process from the get-go. Developers no lo
 
 #### Enhancing Collaboration Across Teams
 
-One of the standout features of Codespaces is its ability to enhance collaboration. Since the environment is cloud-based and accessible from anywhere, team members can work together in real-time, regardless of their physical location. This accessibility is crucial for teams spread across different geographies, making it easier to collaborate, review code, and share knowledge seamlessly.
+Codespaces also helps teams collaborate because the environment is shared and reproducible. It is easier to review code, reproduce bugs and onboard new contributors when everyone can start from the same setup.
 
 ### Run the codespace
 

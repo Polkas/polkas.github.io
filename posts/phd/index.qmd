@@ -1,0 +1,18 @@
+---
+title: "My PhD Journey"
+author: "Maciej Nasinski"
+date: "2026-12-31"
+categories: [career]
+draft: true
+# image: main.png
+---
+
+TL;DR
+
+---
+
+# My PhD Journey
+
+---
+
+## References

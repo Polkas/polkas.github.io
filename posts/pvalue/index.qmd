@@ -16,7 +16,7 @@ Frank Harrell's blog post, "The P-Value Litany," echoes the concerns raised by t
 
 In addition to supplementing or replacing p-values, the ASA statement and Harrell emphasize the importance of considering the clinical or practical significance of findings rather than relying solely on statistical significance. This involves evaluating effect sizes' magnitude and relevance to real-world settings.
 
-In conclusion, the ASA statement and Harrell's blog post offer essential insights into the limitations of p-values and the need for a more nuanced approach to statistical significance in scientific research. By embracing more comprehensive statistical methods and focusing on the clinical relevance of findings, researchers can improve the accuracy and reliability of their research and ultimately contribute to the advancement of scientific knowledge.
+The practical lesson is simple: p-values should not carry the whole argument. Report effect sizes, uncertainty intervals and subject-matter relevance so readers can judge both the statistical and practical meaning of the result.
 
 Reference:
 

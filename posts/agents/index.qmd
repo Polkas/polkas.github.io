@@ -1,0 +1,166 @@
+---
+title: "Agents Are Easy. Products Are Still Hard."
+author: "Maciej Nasinski"
+date: "2026-08-30"
+categories: [programming, ai, agile]
+# image: main.png
+---
+
+## TL;DR
+
+A year ago I wrote about vibe coding from the prototype side. This post is the continuation: what I learned while delivering AI-assisted statistical-programming products with a team.
+
+The public example is [gridify](https://pharmaverse.github.io/gridify/). There are also a few internal statistical-programming solutions I cannot discuss publicly. Both fed into my UseR! 2026 talk, [*Good Programming Practices, Design and Agile in the Era of AI-Generated Code*](https://events.digital-research.academy/event/109/contributions/399/).
+
+The short version is this: **AI made it easier to get working code. It did not make it easier to get the right code.** The distance between a prototype and production code is where the work now lives, and that distance is closed by setup, design and review discipline, not by picking a better model.
+
+If you take one practical thing from this post: the most useful file in my repositories is `.github/copilot-instructions.md`. Not the model I picked that week.
+
+---
+
+## From Prototype Speed To Product Delivery
+
+My earlier post, [*Vibe Coding: Adopting the Exponential Future of AI-Assisted Development*](../vibe/), is still up and I have not edited it. Most of the mechanics in it held: modular decomposition, tests for everything, a living design document, code review, and abandoning a bad thread instead of nursing it.
+
+I also already wrote that production delivery was a different story. The old post talks about review, modular delivery, testing, security, technical debt and the danger of uncontrolled agent work. So the correction is not "I forgot production". The correction is that I let the 10x prototype number become the headline.
+
+The 8-hour artefact and the 100-hour artefact were not the same kind of thing. One was a prototype. The other was something you could hand to a stakeholder and maintain for three years.
+
+The honest version of the claim is: **roughly 10x to a prototype, ~1x to production.** Product delivery is the subject of this post.
+
+## Context
+
+This is the spine of my UseR! 2026 presentation:
+
+**1. What AI changed.** AI made it easier to get working code. The blank page is gone, boilerplate is gone, and unfamiliar APIs are much cheaper to approach.
+
+**2. What did not change.** To get the *right* code, developers and AI still need domain knowledge, delivery discipline and stakeholder alignment.
+
+**3. Core risk.** The hardest gap remains the distance between a prototype or MVP and a production-quality solution. AI makes that gap easier to underestimate because the prototype side is now so cheap.
+
+## The gap in one small project
+
+I have watched this go wrong up close. I introduced a friend — a lawyer, not a developer — to agent mode for a side project. The first days looked great: rapid progress, polished-looking code, features appearing on request. Then it collapsed. He kept asking for more features without modular boundaries, tests or an architectural plan, and the agent kept obliging. Within about a week the project was an unmaintainable tangle. We abandoned it and restarted with structure.
+
+The lesson goes beyond beginners: **an agent gives you more of whatever practices you already have.** With discipline, weeks of work turn into days. Without it, you get technical debt faster than any human could write it — and the speed hides the problem until it is expensive.
+
+## Setup is the product
+
+Good AI outcomes require good setup: instructions, context, tools and MCP. That setup has to cover two things people routinely leave out — stakeholder needs, and the domain and technical knowledge specific to the codebase.
+
+In R work, I would go further: **spec-driven development is now the core professional skill.** The valuable artefact is no longer the code you typed; it is the specification precise enough that a capable agent and a capable colleague both produce the right thing from it.
+
+Concretely, this lives in the repository:
+
+```text
+a-package/                        # repo root
+  .github/
+    copilot-instructions.md       # persistent context
+    instructions/                 # scoped, path-specific rules
+    prompts/                      # reusable task prompts
+    agents/                       # specialised agent definitions
+    skills/                       # skill definitions for agents
+  ...
+```
+
+`copilot-instructions.md` is the file that pays for itself. Everything else is refinement.
+
+## Do we still need all of this?
+
+Here is the part I have not settled.
+
+On one side, the community has gone very far in the direction of structure. [Superpowers](https://github.com/obra/superpowers) — a skills framework that makes agents brainstorm a spec, write a plan, then execute it under test-driven development with review gates — has around 280k GitHub stars. More than the Linux kernel repository. Many people clearly feel their agents need more scaffolding.
+
+On the other side, the people who build the models say the opposite is now true. Anthropic reports removing [over 80% of Claude Code's system prompt](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models) for its newest models with no measurable loss on coding evaluations. Their advice is to keep persistent context lightweight, spend tokens on real gotchas rather than restating the obvious, and load the rest progressively.
+
+My reading, from running Copilot daily and testing each new model as it lands:
+
+- **Context still wins.** The gap between a repository with a good `copilot-instructions.md` and one without is larger than the gap between two frontier models.
+- **But context is not a dumping ground.** The instructions that earn their place describe things an agent cannot work out from the file system: why the architecture is the way it is, which constraints cannot be broken, what "done" means here.
+- **Heavy skill frameworks look transitional.** Much of what Superpowers enforces externally — ask before coding, write the plan, test first, review between tasks — is behaviour newer models increasingly do unprompted. I expect the frameworks to thin out rather than disappear.
+
+Both things can be true: heavy frameworks may be temporary, but the discipline behind them is not.
+
+## Where agents are clearly good: exploring before building
+
+The one claim from my 2025 post that I would make more strongly today is that agents are excellent for prototyping — provided you are honest that a prototype is what you are producing.
+
+Anthropic's product designer describes [using Claude Design to explore ideas before building them](https://claude.com/blog/how-the-product-designer-who-built-claude-design-uses-it-to-explore-ideas-before-building-them), and his working habits transfer directly to engineering:
+
+- **Do the thinking before you prompt.** Decide what you want away from the keyboard; the prompt is the execution, not the exploration.
+- **Ask for ten options, then remix.** Most will be poor. One or two will not be. "I like option B and a bit of D — give me five that combine them" is a better move than iterating on a single draft.
+- **Wireframe first when fidelity does not matter.** Low-fidelity keeps attention on structure instead of polish.
+
+That last point covers most of it. The failure mode is not producing a rough prototype — it is producing a rough prototype that *looks* finished, and then treating it as finished.
+
+## Case Study: gridify
+
+[gridify](https://cran.r-project.org/package=gridify) builds on base R `grid` and adds flexible, customisable information around figures and tables using predefined or custom layouts. It is on CRAN, it lives in [pharmaverse](https://github.com/pharmaverse/gridify), it has full test coverage, and it gets around a thousand downloads a month. It also picked up a Best Pharma Table award in 2025.
+
+Technically, gridify uses S4 classes, composition over inheritance, and a deliberately small dependency footprint. That matters because statistical-programming tools have to be extensible, reviewable and boring in the right places.
+
+The delivery process is the interesting part.
+
+```{mermaid}
+flowchart LR
+  A["1 Align<br/>requirements and<br/>stakeholder expectations"] --> B["2 Design<br/>UML, specification, UX"]
+  B --> C["3 Stress-test<br/>use AI to challenge<br/>the design"]
+  C --> D["4 Prototype<br/>AI-assisted draft<br/>from the design"]
+  D --> E["5 Refine<br/>collaborative review"]
+  E --> F["Production<br/>small PRs, 2 approvals,<br/>advanced CI"]
+  E -.-> B
+  F -.-> A
+```
+
+Step 3 is the one people skip and the one I would defend hardest. Before an agent writes anything, it is very good at challenging a design you hand it: finding the case you did not consider, the interface that will not extend, the assumption that only holds for your example. Using AI as a critic before using it as an author changed our output more than any prompt technique.
+
+Everything after step 5 is dull and mandatory: stakeholder engagement, small reviewable PRs, transparent tags on AI-assisted PRs, at least two approvals, and CI that blocks on coverage and code quality, not just "it runs".
+
+Worth saying plainly: gridify is a team product. It exists because of its contributors, and none of the process above works with one person and an agent.
+
+## One Feature, End To End
+
+A concrete example rather than a vibe: [PR #18](https://github.com/pharmaverse/gridify/pull/18) added a feature to gridify. The first draft was produced with a well-configured Copilot setup: detailed context and instructions in `.github`. It was ready for review. That is a real result and I do not want to undersell it.
+
+Then production happened: dozens of commits after that first draft, updating it for the package's architecture and internal consistency, plus review feedback and stakeholder-driven adjustments.
+
+So the draft was worth having, and the draft was not the feature. One number from our experience is worth remembering: **AI-assisted PRs trigger more change requests on average.** That is not an argument against using AI. It is an argument for budgeting the review time that AI requires.
+
+This is not only a problem with small models or weak prompting. We have had PRs generated by Opus 4.8 that still needed dozens of review comments because the code quality was not good enough.
+
+The hard part was not syntax. It was the interdisciplinary nature of statistical programming: statistical meaning, R package design, regulatory expectations, domain conventions and maintainability all meeting in the same few lines of code. Current agents do not handle that mix reliably without strong human review.
+
+## When to stop and hand it to humans
+
+Switch to human-led team delivery when:
+
+- stakeholder needs are complex or still evolving,
+- there are external users, critical outcomes or compliance constraints,
+- long-term ownership, auditability and trust are required.
+
+Agile Scrum was designed for complex products and still requires human interaction. AI is valuable inside that process, not as a substitute for it. It accelerates drafts; architecture, risk ownership and stakeholder alignment stay human responsibilities.
+
+## Takeaways
+
+AI alone cannot be relied on to produce an entire complex solution. What works:
+
+- **Design-first.** Requirements and architecture before generation. Then use AI to challenge your own design.
+- **Review-first delivery.** Inspect, adapt, test and iterate with stakeholders. Budget more review, not less.
+- **Human ownership.** Final quality, risk and production decisions stay with developers.
+- **Developer as workflow architect.** The role that matters owns the communication loop from stakeholder need to resilient specification.
+
+The 2025 post was about how fast an agent can help you reach a prototype. This one is about what happens after that. The work that matters most is not code generation. It is turning stakeholder needs into a resilient specification, then reviewing the output until it is fit to own.
+
+---
+
+*How is your team handling the prototype-to-production gap? And has your persistent context file been getting longer or shorter this year? I am curious whether others are seeing the same pull towards simpler setups.*
+
+## References
+
+- Anthropic. (2026). [*The new rules of context engineering for Claude 5 generation models*](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models).
+- Parrott, N. (2026). [*How the product designer who built Claude Design uses it to explore ideas before building them*](https://claude.com/blog/how-the-product-designer-who-built-claude-design-uses-it-to-explore-ideas-before-building-them).
+- Vincent, J. et al. [*Superpowers*](https://github.com/obra/superpowers) — an agentic skills framework and development methodology.
+- Nasinski, M. (2026). [*Good Programming Practices, Design and Agile in the Era of AI-Generated Code*](https://events.digital-research.academy/event/109/contributions/399/). UseR! 2026.
+- [gridify](https://pharmaverse.github.io/gridify/) — CRAN: <https://cran.r-project.org/package=gridify>, source: <https://github.com/pharmaverse/gridify>.
+- GitHub. [*Copilot documentation: custom instructions*](https://docs.github.com/copilot).
+- My earlier post: [*Vibe Coding: Adopting the Exponential Future of AI-Assisted Development*](../vibe/) (September 2025).
