@@ -4,6 +4,7 @@ author: "Maciej Nasinski"
 date: "2026-08-29"
 categories: [text-analysis, statistics, programming]
 draft: false
+image: main.png
 ---
 
 ## TL;DR
@@ -145,7 +146,25 @@ The full script used a manually seeded dictionary of 100 Gutenberg IDs. The core
 
 ```python
 #!/usr/bin/env python3
-"""Measure em dash frequency per 100 words for a Gutenberg top-100 sample."""
+"""Measure em-dash-equivalent frequency per 100 words for a Gutenberg top-100 set.
+
+Policy:
+- https://www.gutenberg.org/policy/robot_access.html
+- This script follows the recommendations by using a manual seed list of IDs
+    and downloading only ebook text files from file endpoints. It does not
+    automate crawling of ranking HTML pages.
+
+Expected input:
+- index.json: list of objects with at least `gutenberg_id`
+    Optional: `txt_path`, `title`, `rank`
+
+Usage:
+    python em_dash_check.py --index index.json
+    python em_dash_check.py --index index.json --top 20
+    python em_dash_check.py --index index.json --cache-dir books
+    python em_dash_check.py --json-dir books_json --results-json results.json
+    python em_dash_check.py  # uses built-in top_books if index.json is missing
+"""
 
 from __future__ import annotations
 
@@ -158,124 +177,294 @@ from urllib.request import Request, urlopen
 
 WORD_RE = re.compile(r"[A-Za-z]+(?:'[A-Za-z]+)?")
 
+# Manual seed snapshot to avoid automated scraping of ranking pages.
+# Format: "Author | Title | Year": "gutenberg_id"
+# Missing year defaults to "Unknown".
+top_books = {
+    'Herman Melville | Moby Dick; Or, The Whale | 1851': '2701',
+    'Jane Austen | Pride and Prejudice [1342] | 1813': '1342',
+    'Homer | The Odyssey | Unknown': '1727',
+    'E. M. Forster | A Room with a View | 1908': '2641',
+    'Fyodor Dostoyevsky | Crime and Punishment | 1866': '2554',
+    'Agatha Christie | The Secret of Chimneys | 1925': '65238',
+    'Ann Ward Radcliffe | The Mysteries of Udolpho | 1794': '3268',
+    'William Shakespeare | Romeo and Juliet | 1597': '1513',
+    'Prosper Mérimée | Carmen | 1847': '2465',
+    'Fergus Hume | The Green Mummy | 1908': '2868',
+    'Arthur Conan Doyle | The Adventures of Sherlock Holmes | 1891': '1661',
+    'L. M. Montgomery | The Blue Castle: a novel | 1926': '67979',
+    'Charlotte Brontë | Jane Eyre: An Autobiography | 1847': '1260',
+    'Mary Wollstonecraft | The Love Letters of Mary Wollstonecraft to Gilbert Imlay | 1908': '34413',
+    'Prest and Rymer | The String of Pearls; Or, The Barber of Fleet Street. A Domestic Romance. | 1847': '59828',
+    "Gaston Leroux | Le Fantôme de l'Opéra | 1909": '62215',
+    'G. K. Chesterton | The Man Who Was Thursday: A Nightmare | 1908': '1695',
+    'Bram Stoker | Dracula [345] | 1897': '345',
+    "Lewis Carroll | Alice's Adventures in Wonderland | 1865": '11',
+    'Richard Wagner | My Life — Volume 1 | 2004': '5197',
+    'Jane Austen | Sense and Sensibility | 1811': '21839',
+    'M. G. Lewis | The Monk: A Romance | 1796': '601',
+    'Robert Louis Stevenson | The strange case of Dr. Jekyll and Mr. Hyde [43] | 1886': '43',
+    'Maurice Leblanc | The Extraordinary Adventures of Arsène Lupin, Gentleman-Burglar | 1971': '6133',
+    'active 12th century de Troyes Chrétien | Four Arthurian Romances | 1160': '831',
+    'Robert Louis Stevenson | The strange case of Dr. Jekyll and Mr. Hyde | 1886': '42',
+    'Emperor of Rome Marcus Aurelius | Meditations | 2001': '2680',
+    'Walter Scott | The Lady of the Lake | 1810': '3011',
+    'abbé Prévost | Manon Lescaut | 1731': '468',
+    'Burton | The Book of the Thousand Nights and a Night — Volume 01 (of 10) | 2016': '51252',
+    'Jean-Jacques Rousseau | Eloisa :  or, A series of original letters | 2025': '76639',
+    'Charles Dickens | The Mystery of Edwin Drood | 1850': '564',
+    'Charles Dickens | Oliver Twist, Vol. 2 (of 3) | 2016': '47530',
+    'Edgar Rice Burroughs | Thuvia, maid of Mars | 1916': '72',
+    'Harry Harrison | The Misplaced Battleship | 2015': '22541',
+    'Ernest Hemingway | A farewell to arms | 1929': '75201',
+    'Bram Stoker | Dracula | 1897': '45839',
+    'Saint of Hippo Augustine | The Confessions of St. Augustine | 1843': '3296',
+    'George W. Gough | The Yeoman Adventurer | 1916': '7326',
+    'Jane Austen | Pride and Prejudice | 1813': '42671',
+    'George Eliot | Middlemarch | 1871': '145',
+    'George Chetwynd Griffith | A Honeymoon in Space | 1975': '19476',
+    'Frederic Boase | Modern English biography, volume 2 (of 4), I-Q | 2023': '71046',
+    "Austin Bidwell | Bidwell's Travels, from Wall Street to London Prison: Fifteen Years in Solitude | 2013": '24739',
+    'Robert W. Chambers | The King in Yellow | 1895': '8492',
+    'William Shakespeare | The Complete Works of William Shakespeare | 1858': '100',
+    'H. De Vere Stacpoole | The Blue Lagoon: A Romance | 1908': '393',
+    'Robert Louis Stevenson | Catriona | 1893': '589',
+    'Jane Austen | The Complete Project Gutenberg Works of Jane Austen | 2010': '31100',
+    'Sir Thomas Malory | King Arthur and the Knights of the Round Table | 1862': '36462',
+    'Arthur Conan Doyle | A Study in Scarlet | 1887': '244',
+    'James Grant | Under the Red Dragon: A Novel | 2017': '53874',
+    'Jules Verne | Around the World in Eighty Days | 1872': '103',
+    'Louisa May Alcott | Little Women; Or, Meg, Jo, Beth, and Amy | 1869': '37106',
+    "Philip Sidney | The Countess of Pembroke's Arcadia | 1655": '70854',
+    'Alexandre Dumas and Auguste Maquet | The Count of Monte Cristo | 1998': '1184',
+    'M. E. Knerr | The Sex Life of the Gods | 2017': '40284',
+    'Holman Day | Blow The Man Down: A Romance Of The Coast | 2012': '24793',
+    'Arthur Conan Doyle | The Hound of the Baskervilles | 1900': '2852',
+    'William Shakespeare | Roméo et Juliette | 1844': '18143',
+    'Alexandre Dumas and Auguste Maquet | Twenty years after | 1845': '1259',
+    'Jane Austen | Love and Freindship [sic] | 1978': '1212',
+    'Alexandre Dumas | Camille (La Dame aux Camilias) | 1848': '1608',
+    'Mark Twain | Life on the Mississippi | 1883': '245',
+    'Edgar Allan Poe | The Works of Edgar Allan Poe — Volume 2 | 1845': '2148',
+    'William Shakespeare | As You Like It | 1734': '1523',
+    'Ann Bannon | I am a woman | 2025': '76178',
+    'G. K. Chesterton | The innocence of Father Brown | 1911': '204',
+    'Jane Austen | Sense and Sensibility [161] | 1811': '161',
+    'Elizabeth Barrett Browning | Sonnets from the Portuguese | 1850': '2002',
+    'Edgar Allan Poe | The Works of Edgar Allan Poe — Volume 1 | 1842': '2147',
+    'G. K. Chesterton | The wisdom of Father Brown | 1915': '223',
+    'Henry James | The Turn of the Screw | 1898': '209',
+    'Thomas Hardy | A pair of blue eyes | 1873': '224',
+    'Arthur Conan Doyle | The Return of Sherlock Holmes | 1904': '108',
+    'Vatsyayana | The Kama Sutra of Vatsyayana | 1883': '27827',
+    'Arthur Conan Doyle | The Memoirs of Sherlock Holmes | 1894': '834',
+    'Freiherr de Friedrich Heinrich Karl La Motte-Fouqué | Undine | 2001': '2825',
+    'Grant Allen | Linnet: A Romance | 2015': '48296',
+    'Frederick Douglass | Narrative of the Life of Frederick Douglass, an American Slave | 1845': '23',
+    'George Meredith | Complete Short Works of George Meredith | 2006': '4499',
+    'Burton Egbert Stevenson | The Home Book of Verse — Volume 2 | 2009': '2620',
+    "Louis Tracy | Cynthia's Chauffeur | 1910": '31472',
+    'Anatole France | The Red Lily — Complete | 1894': '3922',
+    'Edgar Allan Poe | The Cask of Amontillado | 1846': '1063',
+    'Agatha Christie | The murder of Roger Ackroyd | 1926': '69087',
+    'James Grant | One of the Six Hundred: A Novel | 2017': '55179',
+    'Agatha Christie | The Mysterious Affair at Styles | 1920': '863',
+    'Fyodor Dostoyevsky | El crimen y el castigo | 1866': '61851',
+    'Gaston Leroux | The Phantom of the Opera | 1910': '175',
+    'H. P. Lovecraft | The call of Cthulhu | 1928': '68283',
+    'Rupert Hughes | What Will People Say? A Novel | 2016': '38311',
+    'Compton MacKenzie | The Passionate Elopement | 1910': '38177',
+    'Arthur Conan Doyle | The Sign of the Four | 1890': '2097',
+    'Oscar Wilde | De Profundis | 1905': '921',
+    'Sewell Peaslee Wright | Trial by water | 2025': '76668',
+    'Benjamin Franklin | Autobiography of Benjamin Franklin | 1791': '20203',
+    'Arthur Conan Doyle | The Return of Sherlock Holmes | 1905': '221',
+    'Richard Dehan | That Which Hath Wings: A Novel of the Day | 2016': '51428',
+    'Johann Wolfgang von Goethe | Erotica Romana | 1832': '7889',
+}
+
 
 def clean_gutenberg_wrappers(text: str) -> str:
-	start = re.search(r"\*\*\*\s*START OF.*?\*\*\*", text, flags=re.IGNORECASE)
-	end = re.search(r"\*\*\*\s*END OF.*?\*\*\*", text, flags=re.IGNORECASE)
-	if start and end and end.start() > start.end():
-		return text[start.end() : end.start()].strip()
-	return text
+    start = re.search(r"\*\*\*\s*START OF.*?\*\*\*", text, flags=re.IGNORECASE)
+    end = re.search(r"\*\*\*\s*END OF.*?\*\*\*", text, flags=re.IGNORECASE)
+    if start and end and end.start() > start.end():
+        return text[start.end() : end.start()].strip()
+    return text
 
 
-def count_em_dash_equivalents_per_100_words(text: str) -> tuple[int, int, int, float]:
-	body = clean_gutenberg_wrappers(text)
-	words = len(WORD_RE.findall(body))
-	literal_em_dashes = body.count("—")
-	double_hyphen_em_dashes = body.count("--")
-	em_dash_equivalents = literal_em_dashes + double_hyphen_em_dashes
-	per_100 = (em_dash_equivalents / words * 100.0) if words else 0.0
-	return literal_em_dashes, double_hyphen_em_dashes, words, per_100
+def split_top_book_key(key: str) -> tuple[str, str, str]:
+    parts = [p.strip() for p in key.split("|")]
+    if len(parts) >= 3:
+        author, title, year = parts[0], parts[1], parts[2]
+    elif len(parts) == 2:
+        author, title = parts
+        year = "Unknown"
+    else:
+        author = "Unknown"
+        title = key
+        year = "Unknown"
+
+    if not re.fullmatch(r"(?:\d{4}|Unknown)", year):
+        year = "Unknown"
+
+    clean_title = re.sub(r"\s*\[\d+\]\s*$", "", title).strip()
+    return author.strip(), clean_title, year.strip()
+
+
+def count_em_dash_per_100_words(text: str) -> tuple[int, int, int, int, float]:
+    body = clean_gutenberg_wrappers(text)
+    words = len(WORD_RE.findall(body))
+    literal_em_dashes = body.count("—")
+    double_hyphen_em_dashes = body.count("--")
+    em_dash_equivalents = literal_em_dashes + double_hyphen_em_dashes
+    per_100 = (em_dash_equivalents / words * 100.0) if words else 0.0
+    return literal_em_dashes, double_hyphen_em_dashes, em_dash_equivalents, words, per_100
 
 
 def download_txt(gutenberg_id: int, dest: Path) -> Path:
-	urls = [
-		f"https://www.gutenberg.org/files/{gutenberg_id}/{gutenberg_id}-0.txt",
-		f"https://www.gutenberg.org/files/{gutenberg_id}/{gutenberg_id}.txt",
-		f"https://www.gutenberg.org/cache/epub/{gutenberg_id}/pg{gutenberg_id}.txt",
-		f"https://www.gutenberg.org/cache/epub/{gutenberg_id}/pg{gutenberg_id}.txt.utf-8",
-	]
-	headers = {"User-Agent": "gutenberg-em-dash-check/0.1"}
-	dest.parent.mkdir(parents=True, exist_ok=True)
+    urls = [
+        f"https://www.gutenberg.org/files/{gutenberg_id}/{gutenberg_id}-0.txt",
+        f"https://www.gutenberg.org/files/{gutenberg_id}/{gutenberg_id}.txt",
+        f"https://www.gutenberg.org/cache/epub/{gutenberg_id}/pg{gutenberg_id}.txt",
+        f"https://www.gutenberg.org/cache/epub/{gutenberg_id}/pg{gutenberg_id}.txt.utf-8",
+    ]
+    headers = {"User-Agent": "gutenberg-em-dash-check/0.1"}
+    dest.parent.mkdir(parents=True, exist_ok=True)
 
-	for url in urls:
-		try:
-			with urlopen(Request(url, headers=headers), timeout=20) as response:
-				data = response.read()
-			dest.write_bytes(data)
-			return dest
-		except URLError:
-			continue
+    for url in urls:
+        try:
+            with urlopen(Request(url, headers=headers), timeout=20) as r:
+                data = r.read()
+            dest.write_bytes(data)
+            return dest
+        except URLError:
+            continue
 
-	raise RuntimeError(f"Could not download TXT for Gutenberg ID {gutenberg_id}")
+    raise RuntimeError(f"Could not download TXT for Gutenberg ID {gutenberg_id}")
 
 
 def main() -> None:
-	parser = argparse.ArgumentParser()
-	parser.add_argument("--index", default="index.json", help="JSON list with Gutenberg IDs")
-	parser.add_argument("--top", type=int, default=100, help="Analyze first N entries")
-	parser.add_argument("--cache-dir", default="books", help="Where TXT files are stored")
-	parser.add_argument("--json-dir", default="books_json", help="Where per-book JSON files are stored")
-	parser.add_argument("--results-json", default="em_dash_results.json", help="Combined JSON output")
-	args = parser.parse_args()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--index", default="index.json", help="Path to index JSON")
+    parser.add_argument("--top", type=int, default=100, help="Analyze first N entries")
+    parser.add_argument("--cache-dir", default="books", help="Where downloaded TXT files are stored")
+    parser.add_argument("--json-dir", default="books_json", help="Where per-book JSON files are stored")
+    parser.add_argument("--results-json", default="em_dash_results.json", help="Combined JSON output file")
+    args = parser.parse_args()
 
-	items = json.loads(Path(args.index).read_text(encoding="utf-8"))[: args.top]
+    index_path = Path(args.index)
+    seed_meta_by_id = {}
+    for book_key, gid in top_books.items():
+        s_author, s_title, s_year = split_top_book_key(book_key)
+        seed_meta_by_id[str(gid)] = {"author": s_author, "title": s_title, "year": s_year}
 
-	results = []
-	total_words = 0
-	total_dashes = 0
-	skipped = 0
+    if index_path.exists():
+        items = json.loads(index_path.read_text(encoding="utf-8"))
+    else:
+        # Fallback for a gist-only workflow: IDs + metadata live in this file.
+        items = []
+        for i, (book_key, gid) in enumerate(top_books.items(), start=1):
+            author, title, year = split_top_book_key(book_key)
+            items.append(
+                {
+                    "rank": i,
+                    "gutenberg_id": gid,
+                    "title": title,
+                    "author": author,
+                    "year": year,
+                }
+            )
 
-	for i, item in enumerate(items, start=1):
-		gutenberg_id = int(item["gutenberg_id"])
-		path = Path(item.get("txt_path") or (Path(args.cache_dir) / f"{gutenberg_id}.txt"))
+    items = items[: args.top]
 
-		if not path.exists():
-			try:
-				download_txt(gutenberg_id, path)
-			except RuntimeError as error:
-				skipped += 1
-				print(f"skip: {error}")
-				continue
+    results = []
+    total_words = 0
+    total_dashes = 0
+    skipped = 0
 
-		text = path.read_text(encoding="utf-8", errors="ignore")
-		body = clean_gutenberg_wrappers(text)
-		literal_em_dashes, double_hyphen_em_dashes, words, per_100 = count_em_dash_equivalents_per_100_words(text)
-		em_dash_equivalents = literal_em_dashes + double_hyphen_em_dashes
+    for i, item in enumerate(items, start=1):
+        gutenberg_id = int(item["gutenberg_id"])
+        seed_meta = seed_meta_by_id.get(str(gutenberg_id), {})
+        path = Path(item.get("txt_path") or (Path(args.cache_dir) / f"{gutenberg_id}.txt"))
+        if not path.exists():
+            try:
+                download_txt(gutenberg_id, path)
+            except RuntimeError as e:
+                skipped += 1
+                print(f"skip: {e}")
+                continue
 
-		total_words += words
-		total_dashes += em_dash_equivalents
+        text = path.read_text(encoding="utf-8", errors="ignore")
+        body = clean_gutenberg_wrappers(text)
+        literal_em_dashes, double_hyphen_em_dashes, em_dashes, words, per_100 = count_em_dash_per_100_words(text)
 
-		row = {
-			"rank": item.get("rank", i),
-			"gutenberg_id": item.get("gutenberg_id"),
-			"title": item.get("title", ""),
-			"author": item.get("author", ""),
-			"txt_path": str(path),
-			"literal_em_dashes": literal_em_dashes,
-			"double_hyphen_em_dashes": double_hyphen_em_dashes,
-			"em_dashes": em_dash_equivalents,
-			"words": words,
-			"em_dash_equivalents_per_100_words": round(per_100, 4),
-			"em_dashes_per_100_words": round(per_100, 4),
-		}
-		results.append(row)
+        total_words += words
+        total_dashes += em_dashes
 
-		json_dir = Path(args.json_dir)
-		json_dir.mkdir(parents=True, exist_ok=True)
-		(json_dir / f"{gutenberg_id}.json").write_text(
-			json.dumps({**row, "text": body}, ensure_ascii=False, indent=2),
-			encoding="utf-8",
-		)
+        row = {
+            "rank": item.get("rank", i),
+            "gutenberg_id": item.get("gutenberg_id"),
+            "title": item.get("title") or seed_meta.get("title", ""),
+            "author": item.get("author") or seed_meta.get("author", ""),
+            "year": seed_meta.get("year") or item.get("year") or "Unknown",
+            "language": item.get("language", ""),
+            "release_date": item.get("release_date", ""),
+            "txt_path": str(path),
+            "literal_em_dashes": literal_em_dashes,
+            "double_hyphen_em_dashes": double_hyphen_em_dashes,
+            "em_dashes": em_dashes,
+            "words": words,
+            "em_dash_equivalents_per_100_words": round(per_100, 4),
+            "em_dashes_per_100_words": round(per_100, 4),
+        }
+        results.append(row)
 
-	results.sort(key=lambda row: row["em_dash_equivalents_per_100_words"], reverse=True)
-	corpus_per_100 = (total_dashes / total_words * 100.0) if total_words else 0.0
+        # Save each book as JSON so text and metadata live together.
+        json_dir = Path(args.json_dir)
+        json_dir.mkdir(parents=True, exist_ok=True)
+        book_json_path = json_dir / f"{gutenberg_id}.json"
+        book_json_path.write_text(
+            json.dumps(
+                {
+                    **row,
+                    "text": body,
+                },
+                ensure_ascii=False,
+                indent=2,
+            ),
+            encoding="utf-8",
+        )
 
-	Path(args.results_json).write_text(
-		json.dumps(
-			{
-				"books_analyzed": len(results),
-				"books_skipped": skipped,
-				"corpus_em_dash_equivalents_per_100_words": round(corpus_per_100, 4),
-				"corpus_em_dashes_per_100_words": round(corpus_per_100, 4),
-				"books": results,
-			},
-			ensure_ascii=False,
-			indent=2,
-		),
-		encoding="utf-8",
-	)
+    results.sort(key=lambda r: r["em_dashes_per_100_words"], reverse=True)
+
+    corpus_per_100 = (total_dashes / total_words * 100.0) if total_words else 0.0
+    print(f"Books analyzed: {len(results)}")
+    print(f"Books skipped: {skipped}")
+    print(f"Corpus em-dash equivalents per 100 words: {corpus_per_100:.4f}\n")
+    print("Top 15 by em-dash-equivalent density:")
+
+    for row in results[:15]:
+        print(
+            f"#{row['rank']:>3} | {row['gutenberg_id']:>6} | "
+            f"{row['em_dashes_per_100_words']:>7.4f} per 100 | {row['title']}"
+        )
+
+    Path(args.results_json).write_text(
+        json.dumps(
+            {
+                "books_analyzed": len(results),
+                "books_skipped": skipped,
+                "corpus_em_dash_equivalents_per_100_words": round(corpus_per_100, 4),
+                "corpus_em_dashes_per_100_words": round(corpus_per_100, 4),
+                "books": results,
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
 
 
 if __name__ == "__main__":
-	main()
+    main()
 ```

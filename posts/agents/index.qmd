@@ -3,7 +3,7 @@ title: "Agents Are Easy. Products Are Still Hard."
 author: "Maciej Nasinski"
 date: "2026-08-30"
 categories: [programming, ai, agile]
-# image: main.png
+image: main.webp
 ---
 
 ## TL;DR
