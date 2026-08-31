@@ -14,8 +14,6 @@ The public example is [gridify](https://pharmaverse.github.io/gridify/). There a
 
 The short version is this: **AI made it easier to get working code. It did not make it easier to get the right code.** The distance between a prototype and production code is where the work now lives, and that distance is closed by setup, design and review discipline, not by picking a better model.
 
-If you take one practical thing from this post: the most useful file in my repositories is `.github/copilot-instructions.md`. Not the model I picked that week.
-
 ---
 
 ## From Prototype Speed To Product Delivery
