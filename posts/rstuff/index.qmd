@@ -1,5 +1,6 @@
 ---
 title: "Celebrating a Classic: \"How R Searches and Finds Stuff\" by Suraj Gupta"
+description: "Why Suraj Gupta's How R Searches and Finds Stuff is still essential reading for understanding R environments, namespaces and scoping rules."
 format: html
 author: "Maciej Nasinski"
 date: "2024-08-01"
@@ -36,3 +37,9 @@ For anyone serious about R programming, I highly recommend reading Suraj Gupta's
 It’s a classic that continues to educate and inspire programmers around the world. 
 
 You can find the full post [here](https://blog.thatbuthow.com/how-r-searches-and-finds-stuff/).
+
+## Related posts
+
+- [ggcall: Transparent R Packages with ggplot2](../ggcall/index.qmd)
+- [Exploring the Tinyverse: A New Standard in R Package Development](../tinyverse/index.qmd)
+- [Object-Oriented Programming for Data Science Developers](../oop/index.qmd)

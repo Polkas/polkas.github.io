@@ -1,5 +1,6 @@
 ---
 title: 'Moving Beyond P-Values in Scientific Research: Insights from the ASA Statement and Frank Harrell'
+description: "Why the ASA statement and Frank Harrell call for moving beyond p-values, and why effect sizes and confidence intervals should be reported alongside them."
 author: "Maciej Nasinski"
 date: "2023-04-07"
 categories: [p-value, statistics]
@@ -22,3 +23,9 @@ Reference:
 
 - [ASA p-value statement](https://www.amstat.org/asa/files/pdfs/p-valuestatement.pdf)
 - [Harrell's pval-litany](https://www.fharrell.com/post/pval-litany/)
+
+## Related posts
+
+- [Bernstein–von Mises: Bridging Bayesian and Frequentist Worlds](../BvStheorem/index.qmd)
+- [GLM Residuals in R: Pearson, Deviance and Quantile Residual Diagnostics](../glm_residuals/index.qmd)
+- [Conjugate Priors: Harnessing Closed-Form Solutions in Bayesian Inference](../conjugate/index.qmd)

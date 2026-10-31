@@ -1,5 +1,6 @@
 ---
 title: 'Stack Overflow Developer Survey Insights for Strategic Tech Planning'
+description: "How to use the annual Stack Overflow Developer Survey for strategic tech planning: reading the demographics, following trends and spotting rising technologies."
 author: "Maciej Nasinski"
 date: "2024-04-24"
 categories: [programming]
@@ -44,3 +45,9 @@ Taken together, the surveys show how tools and practices change over time.
 ### Conclusion
 
 The survey is most useful as one input among many. Use it to spot broad trends, then compare those trends with your own context, users and constraints.
+
+## Related posts
+
+- [Visual Studio Code: Toolkit for Data Scientists](../vscode/index.qmd)
+- [Why Git is Here to Stay](../git_intro/index.qmd)
+- [Vibe Coding: Adopting the Exponential Future of AI-Assisted Development](../vibe/index.qmd)

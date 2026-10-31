@@ -1,5 +1,6 @@
 ---
 title: "Vibe Coding: Adopting the Exponential Future of AI-Assisted Development"
+description: "A practical approach to vibe coding with AI assistants: modular design, test-driven validation, recommended tools and models, and what to do when it goes wrong."
 format: html
 author: "Maciej Nasinski"
 date: "2025-09-10"
@@ -275,3 +276,9 @@ As we continue exploring this frontier, remember: the future of programming isn'
 7. Udemy Blog. (2025). "What is vibe coding." Available at: https://blog.udemy.com/what-is-vibe-coding/
 8. Various contributors. (2024). "Vibe Coding." Wikipedia. Available at: https://en.wikipedia.org/wiki/Vibe_coding
 9. ASHISH, Vaswani. Attention is all you need. Advances in neural information processing systems, 2017, 30: I. https://research.google/pubs/attention-is-all-you-need/
+
+## Related posts
+
+- [Agents Are Easy. Products Are Still Hard.](../agents/index.qmd)
+- [GitHub Copilot Beyond Autocomplete: A Practical Team Playbook](../copilot/index.qmd)
+- [Visual Studio Code: Toolkit for Data Scientists](../vscode/index.qmd)

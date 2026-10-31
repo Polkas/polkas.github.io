@@ -1,5 +1,6 @@
 ---
 title: 'Conjugate Priors: Harnessing Closed-Form Solutions in Bayesian Inference'  
+description: "Conjugate priors give closed-form Bayesian posteriors. Beta–Binomial, Gamma–Poisson and Normal–Normal examples in R show how beliefs update with data."
 author: "Maciej Nasinski"  
 date: "2024-12-09"  
 categories: [statistics]  
@@ -179,3 +180,9 @@ The above three examples Beta–Binomial, Gamma–Poisson, and Normal–Normal a
 ## Conclusion
 
 Conjugate priors offer a clean, closed-form pathway to Bayesian updating. They blend prior and data into a neat posterior distribution without needing numerical methods. For classic scenarios, this results in quick, exact inference and deep insights into how parameters shift after seeing new data. Even as Bayesian analysis grows more complex, these conjugate pairs remain foundational examples of Bayesian elegance and efficiency.
+
+## Related posts
+
+- [Bernstein–von Mises: Bridging Bayesian and Frequentist Worlds](../BvStheorem/index.qmd)
+- [Moving Beyond P-Values in Scientific Research: Insights from the ASA Statement and Frank Harrell](../pvalue/index.qmd)
+- [GLM Residuals in R: Pearson, Deviance and Quantile Residual Diagnostics](../glm_residuals/index.qmd)

@@ -1,5 +1,6 @@
 ---
-title: "R package downloads: reality, proxies, and better metrics"
+title: "R Package Downloads: Why CRAN Counts Are Proxies and What to Measure Instead"
+description: "There is no global CRAN download count. What cranlogs measures and misses, how to get proxy counts in R, and better metrics for R package usage."
 author: "Maciej Nasinski"
 date: "2025-10-10"
 format: html
@@ -121,3 +122,9 @@ These provide richer pictures of adoption and impact.
 
 - cranlogs badges and API: [https://cranlogs.r-pkg.org/](https://cranlogs.r-pkg.org/)
 - Daily mirror logs (RStudio/Posit CRAN mirror): [http://cran-logs.rstudio.com/](http://cran-logs.rstudio.com/)
+
+## Related posts
+
+- [Exploring the Tinyverse: A New Standard in R Package Development](../tinyverse/index.qmd)
+- [ggcall: Transparent R Packages with ggplot2](../ggcall/index.qmd)
+- [Open Source: Given enough eyeballs, all bugs are shallow](../opensource/index.qmd)

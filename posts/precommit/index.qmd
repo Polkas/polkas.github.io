@@ -1,5 +1,6 @@
 ---
-title: 'Pre-commit: A framework for managing and maintaining multi-language pre-commit hooks'
+title: "Pre-commit Hooks for R and Python Projects"
+description: "How to set up pre-commit hooks for R and Python projects to run linters and checks before every Git commit, including automated fixes with pre-commit.ci."
 author: "Maciej Nasinski"
 date: "2024-04-01"
 categories: [programming]
@@ -53,3 +54,9 @@ Pre-commit hooks are a small setup cost that pays back quickly. They keep basic 
 ### References
 
 - [Pre-commit Website](https://pre-commit.com/)
+
+## Related posts
+
+- [Why Git is Here to Stay](../git_intro/index.qmd)
+- [Containers for Data Scientists](../containers/index.qmd)
+- [Python Enhancement Proposals (PEPs)](../PEP/index.qmd)

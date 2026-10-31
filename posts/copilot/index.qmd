@@ -1,0 +1,567 @@
+---
+title: "GitHub Copilot Beyond Autocomplete: A Practical Team Playbook [In-Depth]"
+description: "A practical guide to Copilot in VS Code: repository context, safe data handling, model selection, Scrum teamwork, and bounded multi-agent workflows."
+author: "Maciej Nasinski"
+date: "2026-10-10"
+categories: [programming, ai, agile, in-depth]
+image: main.png
+image-alt: "GitHub Copilot Beyond Autocomplete: a practical team playbook"
+draft: true
+---
+
+## TL;DR
+
+**Use GitHub Copilot to produce small, verified changes—not just more code.** Start with direct suggestions or read-only investigation. Give it concise repository guidance, relevant files, and explicit acceptance criteria. Agree on the design before delegating implementation, inspect the diff, and check actual test results before handing the work to a teammate.
+
+- **Context:** keep shared conventions in the repository. Start with repository-wide instructions and add scoped rules or reusable skills when there is a recurring need.
+- **Safety:** “do not read this folder” is not access control. Keep sensitive data out of the agent-accessible environment and review tools, credentials, and network access.
+- **Models:** Auto is a useful starting point. Use a more capable approved reasoning model when design ambiguity or technical complexity justifies it—not as a substitute for clear requirements.
+- **Teamwork:** one developer owns each change. AI assistance does not replace stakeholder decisions, Scrum collaboration, code review, or the Definition of Done.
+- **Multiple agents:** start with read-only delegation. Parallel implementation needs agreed interfaces, separate working copies, clear ownership, and integration tests.
+
+The workflow is simple: **understand → specify → plan → implement → verify → review**.
+
+## What “using Copilot properly” means
+
+In [Agents Are Easy. Products Are Still Hard.](../agents/), I argued that generating working code is easier than delivering the right product. This post is the practical companion: what to do when you open VS Code and start working with an assistant.
+
+The useful unit of AI-assisted development is **a change that a teammate can understand, review, and maintain**. A persuasive explanation, an impressive demo, and a large diff are not that unit.
+
+That distinction changes how we use the tool. Rather than asking Copilot to “build the feature,” we give it a bounded job, enough context to do that job, and a way to demonstrate whether the result is correct. We retain the decisions that require product understanding, domain expertise, and accountability.
+
+You do not need a collection of custom agents to begin. You need an approved environment, a clear task, and the habit of checking what changed.
+
+## First, separate the product from the model
+
+“Copilot or Claude?” is often the wrong comparison. GitHub Copilot is a product and development workflow; Claude is also the name of a model family. **Claude Code** is a coding-agent product. A Claude model used through Copilot is not automatically a Claude Code session.
+
+Similarly, selecting an OpenAI model in Copilot does not switch the session to Codex. The **harness**—the software that manages context, tools, permissions, and execution—still matters.
+
+| Tool | What you are choosing | What to evaluate for your team |
+|---|---|---|
+| **GitHub Copilot** | Assistance in VS Code and other supported interfaces, including agent and GitHub workflows. | Repository guidance, available models, administrative policies, and review integration. |
+| **OpenAI Codex** | OpenAI's coding workflow, with CLI, IDE, and cloud interfaces. | Execution environment, approvals, project guidance, and handover between interfaces. |
+| **Claude Code** | Anthropic's coding-agent workflow across terminal, IDE, desktop, and web surfaces. | Project instructions, tool permissions, integrations, and delegation. |
+| **Cursor** | An AI-oriented editor and coding-agent workflow. | Editor adoption, context/rules, models, integrations, and review experience. |
+
+These are not four equivalent wrappers around the same experience. A product can make one workflow easier and another harder, even when the underlying model is similar. See the [Codex documentation](https://learn.chatgpt.com/docs), [Claude Code overview](https://code.claude.com/docs/en/overview), and [Cursor documentation](https://cursor.com/docs) for their current interfaces.
+
+For company adoption, compare approved tools on the **same representative task**. Include setup effort, data handling, review time, rework, and cost.
+From my point of view all of these tools have their strengths and weaknesses, and the best choice depends on the specific workflow and requirements of your team.
+
+## safe
+
+Before attaching company material, confirm the approved account, products, models, extensions, and integrations. Understand the applicable contract and administrator settings for retention, training use, and data residency. A personal subscription is not a workaround for a company restriction.
+
+
+::: {.callout-important}
+## autocomplete instructions
+
+
+
+The current [VS Code custom-instructions documentation](https://code.visualstudio.com/docs/agent-customization/custom-instructions) states that custom instructions are **not taken into account for inline suggestions as you type**. Do not assume that repository chat rules also control autocomplete. Check both the suggestion and the feature you are using.
+:::
+
+When debugging, provide the actual error, relevant source, environment information, and a sanitized minimal reproducer. “It still doesn't work, try again” encourages another speculative patch. “Here is the failing assertion and the actual value” gives the assistant something to investigate.
+
+Use the smallest assistance level that solves the problem:
+
+| Need | Good starting point |
+|---|---|
+| A few predictable lines | Inline suggestions while programming directly. |
+| An explanation or local edit | Focused chat with selected code. |
+| Understanding unfamiliar code | Read-only investigation. |
+| Design with competing constraints | Planning and comparison before edits. |
+| An agreed, testable change | Bounded agent implementation. |
+| Several genuinely independent tasks | Delegation with explicit coordination. |
+
+Typing the code yourself is sometimes the quickest option. Using AI properly includes knowing when not to delegate.
+
+## Repository context: give Copilot a map
+
+A good context file explains things the assistant cannot reliably infer: why an interface must remain stable, which domain rules matter, how validation works, and where to find the design.
+
+A bad context file repeats the entire handbook, contains contradictory preferences, or tells the model to “write clean code” twenty different ways.
+
+### What belongs in the .github directory?
+
+This is an illustrative repository layout, not a requirement to create every file:
+
+```text
+analysis-package/
+  .github/
+    copilot-instructions.md
+    instructions/
+      r-tests.instructions.md
+    skills/
+      plan-change/
+        SKILL.md
+    agents/
+      reviewer.agent.md
+    prompts/                       # legacy Local-agent workflows
+      plan-change.prompt.md
+    workflows/                     # CI, not LLM instructions
+  R/
+  tests/
+  docs/
+```
+
+| Mechanism | Use it for |
+|---|---|
+| Repository-wide instructions | Stable project facts, constraints, and pointers. |
+| Scoped instructions | Rules relevant to a language, subsystem, or file pattern. |
+| Skills | Repeatable tasks with procedures and, when needed, supporting resources. |
+| Custom agents | Roles with their own instructions and tool selection. |
+| CI workflows and PR templates | Checks and collaboration conventions that exist independently of the assistant. |
+
+Start with repository-wide instructions. Add other mechanisms only when they remove a recurring problem.
+
+### A minimal repository instruction
+
+For the fictional package, the repository-wide guidance could be:
+
+```markdown
+# Project context
+
+This R package validates analysis inputs and produces aggregate summaries.
+Public defaults and output fields are backward-compatible contracts.
+
+# Working rules
+
+- Read the relevant implementation and tests before editing.
+- Confirm missing-value and denominator semantics before changing summaries.
+- Use synthetic fixtures; never include input records in diagnostic messages.
+- Do not add dependencies or modify unrelated modules without approval.
+- Use the repository's documented validation workflow.
+- Report checks as passed, failed, or not run, with actual results.
+- Record durable design decisions in project documentation, not only chat.
+```
+
+Keep commands accurate. If a generated instruction names a test command your repository does not use, correct it. The assistant should not be encouraged to confidently execute a fictional workflow.
+
+### Scoped guidance
+
+An instruction under the scoped-instructions directory can narrow test guidance:
+
+```markdown
+---
+description: "Use when adding or changing R package tests."
+applyTo: "tests/**/*.R"
+---
+
+- Follow the existing testthat conventions.
+- Test empty, all-missing, mixed, and complete inputs explicitly.
+- Establish expected summary values independently of the implementation.
+- Add regression tests for defaults as well as the new option.
+- Check that error messages do not expose input records.
+```
+
+The `applyTo` pattern is relative to the workspace root. A useful `description` also helps task-based discovery. Use narrow patterns rather than attaching every convention to every request.
+
+### Skills, prompts, and the current migration
+
+For a recurring planning task, use a skill in the project skills directory. Its folder name and `name` must match:
+
+```markdown
+---
+name: plan-change
+description: "Plan a bounded repository change before implementation. Use when a story needs affected files, risks, and validation steps."
+---
+
+# Plan a change
+
+1. Read the supplied story and relevant implementation and tests.
+2. Separate verified current behavior from assumptions.
+3. Identify compatibility, domain, and data-handling risks.
+4. Propose the smallest change and its affected files.
+5. List validation steps and unresolved questions.
+6. Return the plan without editing files; wait for approval.
+```
+
+In supported VS Code sessions, type `/` and select the skill, or request it explicitly. Inspect its behavior; discovery makes a skill available, not guaranteed to run on every relevant request. See [Agent Skills](https://code.visualstudio.com/docs/agent-customization/agent-skills).
+
+Older setups often use reusable prompt files invoked as slash commands. **The current documentation says prompt files are deprecated for Agent Host sessions and are not loaded there.** They continue to work with the legacy Local agent for now. For a new shared workflow, prefer skills; use the [migration guide](https://code.visualstudio.com/docs/agent-customization/migrate-customizations) for existing prompts. This is why blindly copying an older setup can produce files that look correct but do nothing in your selected session.
+
+### Check discovery instead of guessing
+
+Select the intended session target, then run **Chat: Open Customizations** from the Command Palette. Confirm the expected instructions, skills, and agents appear. In a fresh representative chat, inspect **References** where available and compare tool activity and output with the rules.
+
+If guidance is missing, check its location, frontmatter, scope, and selected harness. **Developer: Open Agent Debug Logs** can help diagnose loading problems. Treat logs as potentially sensitive before sharing them.
+
+The distinction is important: **listed, included, and followed are three different checks**.
+
+Keep shared repository guidance separate from personal preferences and temporary task context. If several tools support a shared project-instruction format such as `AGENTS.md`, reuse it where practical—but verify each tool's discovery and nested-scope behavior. Remove contradictions rather than relying on an assumed universal precedence order.
+
+Review changes to instructions and skills through PRs. They affect how future code is generated and deserve the same care as other shared developer tooling.
+
+## Protect data with boundaries, not promises
+
+You can tell an assistant not to read a directory. That is useful guidance. It is **not proof that the directory is inaccessible**.
+
+Likewise, Git ignore rules, editor search exclusions, and hidden folders are not interchangeable with Copilot content exclusions or operating-system access controls.
+
+| Layer | What it does | What it does not establish |
+|---|---|---|
+| Instructions | Tell the assistant what behavior is intended. | Guaranteed compliance or denied access. |
+| Content exclusions | Exclude supported content in supported Copilot experiences. | Protection across every mode and tool. |
+| Tool permissions | Control available operations and approval requirements. | A complete filesystem or network boundary. |
+| Environment restrictions | Limit accessible paths, credentials, processes, or networks when configured and enforced. | Protection for resources explicitly permitted or exposed elsewhere. |
+
+::: {.callout-warning}
+## Content exclusions have mode-specific limits
+
+At the verification date, GitHub's [content-exclusion documentation](https://docs.github.com/en/copilot/concepts/context/content-exclusion) explicitly states that exclusions are **not supported in Edit and Agent modes of Copilot Chat in VS Code and other editors**. It also documents indirect semantic-information, symlink, and remote-filesystem limitations. Check the current support table for your exact client; do not generalize one experience's protection to another.
+:::
+
+For our package, a safe debugging setup contains synthetic fixtures and sanitized errors, not production datasets. Production secrets and data must be outside **all enabled access paths**, not merely outside the folder visible in Explorer.
+
+VS Code documents workspace limits for built-in file tools, but shell commands, child processes, MCP tools, and external services need their own controls. Restrict tools, prefer limited-duration approvals, and examine commands before approving them. An edit approval for a sensitive file does not imply a read restriction.
+
+[Agent sandboxing](https://code.visualstudio.com/docs/agents/run/security#_agent-sandboxing) is an additional layer, not a standalone guarantee. Configure network restrictions separately; do not assume a sandbox is offline. A container or remote environment also needs deliberate mounts, credential handling, and network policy.
+
+MCP—Model Context Protocol—connects assistants to tools and services. It is useful for approved documentation, issue systems, and development utilities. It is not a trust certificate. Review the server, its permissions, returned data, and side effects before enabling it.
+
+Repository text, fetched pages, and tool output can contain **prompt injection**: instructions that try to redirect the assistant away from your task. Treat them as untrusted input. Narrow tools and permissions reduce the possible impact; a sentence saying “ignore malicious instructions” is not sufficient protection.
+
+Test restrictions only with harmless fixtures and approved procedures. If a prohibited resource is reachable, stop and fix the enforced boundary. If sensitive material has been exposed, follow the company's incident process rather than continuing with a stronger warning in the prompt.
+
+## Models and Auto: spend capability where it matters
+
+Model families such as GPT, Claude, and Gemini contain different variants. Family names are not a reliable quality ranking. Reasoning ability, coding performance, latency, context limits, tool support, and cost vary by the specific model and deployment.
+
+Open the **language-model picker** in the chat input to see the choices available for your session. **Chat: Manage Language Models** shows capabilities and billing information. Available options depend on your subscription, administrator policies, and harness.
+
+Changing the chat model does not automatically change autocomplete or background utility models. Those are separate features with separate controls. See [AI language models in VS Code](https://code.visualstudio.com/docs/agent-customization/language-models).
+
+### What Auto does
+
+According to the current [Copilot Auto documentation](https://docs.github.com/en/copilot/concepts/auto-model-selection), routing considers task complexity and model health/availability, subject to plan and policy restrictions. In VS Code, **Optimize for** provides three preferences:
+
+| Auto preference | Intended emphasis | Practical starting point |
+|---|---|---|
+| **Efficiency** | Cost | Straightforward explanations and routine changes. |
+| **Balance** | Cost, quality, and latency | Everyday development. |
+| **Intelligence** | Quality | More complex design and implementation tasks. |
+
+Intelligence does not mean every request uses the largest model. A simple request can still route to a smaller capable option. Hover over a response to see which model was used where the interface exposes it. Prices and routing pools change, so consult current billing information rather than treating this table as a cost promise.
+
+### When to choose manually
+
+Use manual selection when you need a particular approved model, want to compare approaches, or are investigating a model-specific failure. For supported reasoning models, the picker also offers thinking-effort controls. Increasing effort can increase consumption; use it for genuine complexity, not every edit.
+
+| Phase | Model approach | What must still be checked |
+|---|---|---|
+| Exploration | Auto or a fast approved model for bounded questions. | Source references and actual behavior. |
+| Design | Intelligence or a deliberately selected capable reasoning model. | Assumptions, alternatives, domain meaning, and compatibility. |
+| Implementation | The economical approved option that handles the task reliably. | Diff, tests, interfaces, and scope. |
+| Review | A fresh critique; optionally a different approved model. | Independent evidence and human judgment. |
+
+For design, ask something like:
+
+> Compare adding `na_rm` with adding a missing-value policy enum. Consider backward compatibility, user expectations, extension cost, and empty-input behavior. Identify assumptions that require a domain decision. Recommend the smallest adequate design. Do not edit code.
+
+Before switching models, identify the problem. Is the specification unclear? Is relevant context missing? Did a tool fail? Is the task genuinely beyond the model's capability? A better model cannot retrieve data it was never given or settle stakeholder needs no one has agreed on.
+
+Do not ask the assistant to “use a better model” and assume a switch occurred. Change the picker or configure a supported model override, then verify the selection. Switching to an unapproved provider or personal API key is not an acceptable quota workaround.
+
+## One complete VS Code workflow
+
+The current VS Code session controls separate **Session Target**, **Agent**, **Language model**, and **Permissions**. The target selects the harness; the role determines behavior; the model handles reasoning; permissions govern approvals. These are different decisions. See [Choose and use an agent harness](https://code.visualstudio.com/docs/agents/run/agent-harnesses).
+
+For a first supervised change, work in a prepared folder with the approved permission configuration. Select **Plan** for planning, **Agent** for implementation, or **Ask** for questions when your target provides it. Do not assume a planning request alone removes editing or execution capabilities; inspect the role and enabled tools.
+
+### 1. Understand the current behavior
+
+Start a focused chat. Attach the implementation, relevant tests, and story using the context picker or `#` file/symbol mentions. Attaching the entire workspace is not a replacement for identifying the relevant code.
+
+> Read `summarize_values()` and the relevant tests. Explain current missing-value behavior, public output fields, and compatibility constraints. Cite the definitions you used. Do not edit files or install anything. List unanswered questions.
+
+Check the response against the source. If it claims that missing values are already omitted, correct the misunderstanding before it becomes a patch.
+
+### 2. Agree on the behavior
+
+Use the input/output table above. Keep it in the issue or project documentation so the decision survives a chat reset.
+
+Suppose the assistant proposes dropping missing values everywhere. The correct intervention is not “make it better”:
+
+> Stop. Silent omission changes the existing default. Preserve propagation unless `na_rm = TRUE` is explicitly supplied. The observed-value count must remain visible in both modes. Return the revised plan before making changes.
+
+This is the value of a plan: it makes a wrong assumption cheaper to detect.
+
+### 3. Implement one slice
+
+Once the plan is approved, request the narrow change:
+
+> Implement the approved missing-value behavior and regression tests. Preserve existing output fields and defaults. Do not add dependencies, alter unrelated modules, commit, or publish. Stop if the implementation conflicts with existing contracts. Run the documented checks that are available and report their actual results.
+
+An illustrative core implementation might be:
+
+```r
+summarize_values <- function(x, na_rm = FALSE) {
+  if (!(typeof(x) %in% c("integer", "double")) ||
+      is.object(x) || !is.null(dim(x))) {
+    stop("x must be an ordinary integer or double vector.", call. = FALSE)
+  }
+  if (!is.logical(na_rm) || length(na_rm) != 1L || is.na(na_rm)) {
+    stop("na_rm must be TRUE or FALSE.", call. = FALSE)
+  }
+  if (any(is.infinite(x))) {
+    stop("Observed values must be finite.", call. = FALSE)
+  }
+
+  n <- sum(!is.na(x))
+  value <- if (n == 0L || (!na_rm && anyNA(x))) {
+    NA_real_
+  } else {
+    mean(x, na.rm = na_rm)
+  }
+
+  list(mean = value, n = n)
+}
+```
+
+This is not a prescription for an existing package. Real implementation must fit its contracts and conventions. The point is that a short function already contains several decisions that “calculate a mean” does not communicate.
+
+### 4. Verify with independent expectations
+
+For `c(2, NA, 6)` under explicit omission, the observed values sum to 8 and their count is 2. The mean is therefore 4. That expectation comes from the specification, not from running the generated implementation and copying its answer into a test.
+
+Example regression assertions are:
+
+```r
+testthat::test_that("missingness is propagated by default", {
+  result <- summarize_values(c(2, NA, 6))
+  testthat::expect_identical(result$mean, NA_real_)
+  testthat::expect_equal(result$n, 2)
+})
+
+testthat::test_that("explicit omission uses observed values", {
+  result <- summarize_values(c(2, NA, 6), na_rm = TRUE)
+  testthat::expect_equal(result$mean, 4)
+  testthat::expect_equal(result$n, 2)
+})
+
+testthat::test_that("no observations has a defined result", {
+  for (x in list(numeric(0), c(NA_real_, NA_real_))) {
+    for (na_rm in c(FALSE, TRUE)) {
+      result <- summarize_values(x, na_rm = na_rm)
+      testthat::expect_identical(result$mean, NA_real_)
+      testthat::expect_equal(result$n, 0)
+    }
+  }
+})
+```
+
+Also test complete inputs, `NaN`, invalid inputs/options, infinite values, output compatibility, and safe diagnostics. These excerpts are not a complete package test suite.
+
+Tests written by the same assistant can repeat its misunderstanding. Combine them with existing regression tests, hand-calculated cases, domain review, and checks appropriate to the repository. Coverage helps locate untested code; it does not establish statistical validity.
+
+Require three distinct statuses: **passed, failed, not run**. A tool invocation that never executed is not a passing test. A targeted test run is not a full package check. A summary should name what ran, the outcome, and what remains unverified.
+
+### 5. Review and hand over
+
+Open the changed-file diffs from the Chat view or Changes panel. Look for unrelated edits, invented APIs, changed defaults, new dependencies, fragile tests, and domain mistakes.
+
+A second AI review can help:
+
+> Review this diff against the approved missing-value table. Focus on default behavior, zero observations, denominator meaning, and accidental data exposure. Report findings with code references. Do not edit files. Identify missing validation evidence.
+
+That is a critique, not an approval. A developer remains responsible for the PR and a human reviewer remains responsible for review decisions.
+
+### If the session goes wrong
+
+Stop or steer the request as soon as the direction is wrong. Stopping does not undo completed edits or external actions. Inspect the diff before restoring a checkpoint or reverting a change; protect unrelated work. Checkpoints do not reverse side effects in external services.
+
+For a drifting conversation, keep a short summary of verified state, approved decisions, outstanding questions, and checks already run. Start a fresh chat with that summary and the relevant files. A long conversation is not a reliable project specification.
+
+## Scrum: organize delivery, not prompt competitions
+
+AI belongs inside the team's delivery process. It does not introduce a new Scrum accountability or turn an agent into a teammate who owns risk.
+
+| Activity | Useful assistance | Human responsibility |
+|---|---|---|
+| Backlog refinement | Draft examples, surface ambiguity, identify dependencies. | Product intent, priorities, and domain decisions. |
+| Sprint Planning | Explore options and technical risks. | Sprint Goal, capacity, and a realistic forecast. |
+| Development / Daily Scrum | Support bounded coding and summarize verified progress. | Coordinate work, blockers, integration, and adaptation. |
+| Code review / CI | Prepare summaries and identify concerns. | Inspect evidence, approve code, and address failures. |
+| Sprint Review | Help prepare an accurate account of outcomes. | Inspect outcomes with stakeholders and adapt the backlog. |
+| Sprint Retrospective | Organize agreed observations from approved material. | Decide improvements and protect confidential discussion. |
+
+Code review is not the Sprint Review. The Sprint Review is also not a release gate: value can be delivered earlier when it meets the Definition of Done. These distinctions follow the [Scrum Guide](https://scrumguides.org/scrum-guide.html).
+
+The most useful local working agreements are straightforward:
+
+1. **One developer owns each AI-assisted change.** “The agent wrote it” is not an explanation of accountability.
+2. **Shared context is reviewed.** Keep conventions in the repository, not private “magic prompts.”
+3. **PRs include evidence.** Explain material AI assistance according to team policy, validation results, unresolved assumptions, and limitations.
+4. **Quality does not decrease at sprint end.** Generation speed does not justify skipping review or weakening the Definition of Done.
+5. **Review capacity limits work in progress.** Ten simultaneous agents are unhelpful if they produce ten oversized PRs nobody can inspect.
+
+Measure delivery lead time, review effort, rework, and escaped defects—not generated lines or how often a developer uses AI. The goal is to improve the workflow, not create individual surveillance metrics.
+
+The same principles work in Kanban and research delivery. Scrum is the collaboration example here, not a prerequisite for using Copilot.
+
+### A task brief that survives the chat
+
+Reuse this in the backlog item, agent request, and PR:
+
+```markdown
+## Objective
+What user or product outcome should change?
+
+## Current behavior and context
+Relevant source, tests, approved design, and verified observations.
+
+## Acceptance criteria
+Concrete expected behavior, including boundary cases.
+
+## Constraints and non-goals
+Compatibility, domain rules, data handling, dependencies, excluded scope.
+
+## Permitted actions
+Allowed edits and checks; actions requiring approval; no implicit publication.
+
+## Validation and handover
+Checks to run, independent expected values, evidence to report.
+
+## Stop conditions
+Conflicting requirements, unexpected access, scope expansion, or unavailable checks.
+```
+
+For the PR, replace intentions with results: what changed, what the reviewer should inspect, which checks passed or failed, which were not run, and which risks remain. Do not paste a confidential transcript when a short factual summary is enough.
+
+## Multi-agent work: earn the parallelism
+
+There are three different workflows people call “multi-agent”:
+
+- **Subagent investigation:** the main agent delegates a bounded question and receives a focused result.
+- **Sequential specialist work:** planning, implementation, and critique use different roles or sessions.
+- **Parallel implementation:** separate agents edit independently, followed by deliberate integration.
+
+Start with the first. It is often useful to delegate “find relevant tests” and “inspect compatibility constraints” without giving either investigator editing tools.
+
+### A read-only reviewer
+
+A custom-agent definition under the project agents directory can look like this:
+
+```markdown
+---
+name: reviewer
+description: "Review a bounded change against approved requirements without editing files."
+tools: ['read', 'search']
+---
+
+Inspect the supplied diff, relevant source, tests, and acceptance criteria.
+Report correctness, compatibility, and data-exposure findings with references.
+Separate confirmed defects from questions and missing evidence.
+Do not modify files, run shell commands, or approve a merge.
+```
+
+Tool identifiers and availability depend on the harness and extensions. Use the customizations editor's tool selection and verify the effective tool list. Do not add terminal execution to a read-only reviewer merely because it makes investigation convenient. See [custom agents](https://code.visualstudio.com/docs/agent-customization/custom-agents).
+
+In a session with supported subagent delegation, request:
+
+> Delegate a read-only review to the reviewer agent. Give it the approved task brief and integrated diff. It should return findings and missing evidence, not patches. Do not start implementation tasks or publish anything.
+
+Inspect the delegation and returned result. The [subagent interface](https://code.visualstudio.com/docs/agents/run/subagents) varies by harness; it is not enough to assume the request launched an agent. A subagent has separate conversational context, but **separate context does not imply a separate working directory or security boundary**.
+
+### Parallel implementation in VS Code
+
+Only split our missing-value story once the interface and semantics are agreed. A possible division is:
+
+The short function above should normally stay a single task. The split below assumes a larger existing package already separates input validation from aggregation into different modules. Do not introduce that separation merely to give two agents something to do.
+
+| Role | Owns | Must not change |
+|---|---|---|
+| Validator implementer | Input/option validation and its tests. | Aggregation implementation and public contract. |
+| Summary implementer | Mean/count behavior and its tests. | Validator implementation and public contract. |
+| Human integrator | Shared interface, conflict resolution, combined checks. | Nothing is merged without review. |
+| Read-only reviewer | Critique of the integrated change. | Source files or external systems. |
+
+In a supported **Agents window**, create independent sessions using **New Worktree** from the same reviewed, committed base. Give each session the same approved brief and disjoint file ownership. Worktrees start from committed state; they do not automatically include your uncommitted changes, untracked files, or ignored dependencies.
+
+::: {.callout-warning}
+## A worktree isolates edits, not permissions
+
+The current [VS Code harness guide](https://code.visualstudio.com/docs/agents/run/agent-harnesses#_choose-code-isolation) states that its New Worktree sessions use **Allow all**. Do not assume your supervised folder-session approval prompts carry over. If company policy requires approvals that this workflow cannot provide, use separately prepared working folders with supported permission controls—or stay sequential. Configure environment restrictions independently.
+:::
+
+Multiple chats in one session can share the same working directory or worktree. Forking a conversation can also retain the same worktree. Neither action establishes isolated implementation. Verify the relationship using [session-management documentation](https://code.visualstudio.com/docs/agents/run/sessions/manage-sessions).
+
+The delivery sequence should be visible:
+
+```{mermaid}
+flowchart TD
+    A[Human-approved behavior and interface] --> B[Read-only investigation]
+    B --> C[Agree scope and ownership]
+    C --> D[Validator task in separate working copy]
+    C --> E[Summary task in separate working copy]
+    D --> F[Human-led integration]
+    E --> F
+    F --> G[Combined checks and independent expected values]
+    G --> H[Read-only critique and human review]
+    H --> I[Review-ready pull request]
+```
+
+Here is an easy integration failure: the validator removes missing values before passing data to the summary function. The summary agent correctly implements default propagation, but never sees those missing values. Each agent's local tests can pass while the integrated pipeline violates the default contract.
+
+The fix is not a third implementation agent. It is a clarified interface, a regression test through the combined path, and a reviewed integration change.
+
+Give every task a time/usage budget, expected output, and stop conditions. Stop for conflicting assumptions, overlapping edits, unexpected permissions, unverifiable test claims, or uncontrolled recursive delegation. Worktrees do not isolate shared credentials, caches, networks, databases, or external side effects.
+
+Do not parallelize work when the design is unsettled, tasks are tightly coupled, or the team cannot review the output. **Parallelism is an optimization after coordination—not a substitute for it.**
+
+## Troubleshooting quick reference
+
+| Symptom | Corrective action |
+|---|---|
+| Instructions seem ignored | Check selected harness, supported location, frontmatter, scope, References, and debug logs. |
+| A reusable prompt disappeared | Check whether the session moved to Agent Host; migrate legacy prompt workflows to supported skills. |
+| APIs are invented or unrelated files change | Stop, inspect real definitions, narrow the task, and review the diff. |
+| A session loses the original requirements | Save verified state and reopen a focused chat with the approved brief. |
+| Tests pass but results are wrong | Check independent expected values and test the product requirement, not the implementation's answer. |
+| A restricted resource is reachable | Stop, correct the actual boundary, and follow the incident process if needed. |
+| Parallel changes conflict | Reconcile interfaces and ownership; reduce parallelism and test the combined result. |
+| Quota or service access fails | Preserve work and continue manually or with an approved alternative. |
+
+## The team checklist
+
+### Before asking
+
+- [ ] Approved account, model/provider, extensions, and integrations.
+- [ ] Safe inputs and understood filesystem/network/credential access.
+- [ ] Relevant source, tests, and current working-tree state identified.
+- [ ] Clear objective, acceptance criteria, constraints, and non-goals.
+- [ ] Assistance level and permissions appropriate to the risk.
+
+### While working
+
+- [ ] Verify source understanding before accepting a design.
+- [ ] Approve domain and compatibility decisions before edits.
+- [ ] Inspect tool actions and keep changes bounded.
+- [ ] Stop early for incorrect assumptions or scope expansion.
+- [ ] Record durable decisions outside the chat.
+
+### Before handing over
+
+- [ ] Review the complete diff, including tests and dependencies.
+- [ ] Check independent expected values and existing behavior.
+- [ ] Report actual checks as passed, failed, or not run.
+- [ ] Document unresolved limitations and material AI assistance per policy.
+- [ ] Keep a named developer responsible and obtain required human review.
+
+Adopt this incrementally: complete one safe story, review what helped and what failed, then improve shared context. Add reusable skills when repetition justifies them. Add multiple agents only when the boundaries and review capacity are real.
+
+**The goal is not to make every developer an agent orchestrator. It is to make AI-assisted work as understandable and trustworthy as any other team contribution.**
+
+## References
+
+Official product documentation consulted on 10 October 2026:
+
+- VS Code: [Custom instructions](https://code.visualstudio.com/docs/agent-customization/custom-instructions), [Agent Skills](https://code.visualstudio.com/docs/agent-customization/agent-skills), [prompt files](https://code.visualstudio.com/docs/agent-customization/prompt-files), and [customization migration](https://code.visualstudio.com/docs/agent-customization/migrate-customizations).
+- VS Code: [Language models and Auto](https://code.visualstudio.com/docs/agent-customization/language-models), [harnesses and session controls](https://code.visualstudio.com/docs/agents/run/agent-harnesses), and [chat interactions](https://code.visualstudio.com/docs/chat/chat-overview).
+- VS Code: [Security](https://code.visualstudio.com/docs/agents/run/security), [custom agents](https://code.visualstudio.com/docs/agent-customization/custom-agents), [subagents](https://code.visualstudio.com/docs/agents/run/subagents), and [session management](https://code.visualstudio.com/docs/agents/run/sessions/manage-sessions).
+- GitHub: [Copilot content exclusions](https://docs.github.com/en/copilot/concepts/context/content-exclusion), [Auto model selection](https://docs.github.com/en/copilot/concepts/auto-model-selection), and [Copilot Trust Center](https://resources.github.com/copilot-trust-center/).
+- Other tools: [Codex CLI](https://learn.chatgpt.com/docs/codex/cli), [Codex IDE extension](https://learn.chatgpt.com/docs/codex/ide), [Claude Code](https://code.claude.com/docs/en/overview), and [Cursor](https://cursor.com/docs).
+- Schwaber, K. and Sutherland, J. (2020). [The Scrum Guide](https://scrumguides.org/scrum-guide.html).
+- Related posts: [Agents Are Easy. Products Are Still Hard.](../agents/) and [Vibe Coding](../vibe/).

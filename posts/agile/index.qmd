@@ -1,5 +1,6 @@
 ---
 title: "Scrum: Just a Framework, Agile: A General Philosophy"
+description: "Agile is a philosophy and Scrum is one framework for it. A guide to the Agile Manifesto, its twelve principles, and applying Agile beyond Scrum."
 format: html
 author: "Maciej Nasinski"
 date: "2024-07-18"
@@ -80,3 +81,8 @@ Scrum can be useful, but it is only one way to apply Agile. Start with the princ
 - [Extreme Programming - Wikipedia](https://en.wikipedia.org/wiki/Extreme_programming)
 - [Scaled Agile Framework - Wikipedia](https://en.wikipedia.org/wiki/Scaled_agile_framework)
 
+## Related posts
+
+- [Agents Are Easy. Products Are Still Hard.](../agents/index.qmd)
+- [Why Git is Here to Stay](../git_intro/index.qmd)
+- [Open Source: Given enough eyeballs, all bugs are shallow](../opensource/index.qmd)

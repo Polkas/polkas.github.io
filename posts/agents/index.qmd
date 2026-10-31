@@ -1,5 +1,6 @@
 ---
 title: "Agents Are Easy. Products Are Still Hard."
+description: "Lessons from delivering AI-assisted statistical-programming products: why AI agents make working code easy but the right product is still hard, with a gridify case study."
 author: "Maciej Nasinski"
 date: "2026-08-30"
 categories: [programming, ai, agile]
@@ -164,3 +165,9 @@ The 2025 post was about how fast an agent can help you reach a prototype. This o
 - [gridify](https://pharmaverse.github.io/gridify/) — CRAN: <https://cran.r-project.org/package=gridify>, source: <https://github.com/pharmaverse/gridify>.
 - GitHub. [*Copilot documentation: custom instructions*](https://docs.github.com/copilot).
 - My earlier post: [*Vibe Coding: Adopting the Exponential Future of AI-Assisted Development*](../vibe/) (September 2025).
+
+## Related posts
+
+- [Vibe Coding: Adopting the Exponential Future of AI-Assisted Development](../vibe/index.qmd)
+- [GitHub Copilot Beyond Autocomplete: A Practical Team Playbook](../copilot/index.qmd)
+- [Scrum: Just a Framework, Agile: A General Philosophy](../agile/index.qmd)

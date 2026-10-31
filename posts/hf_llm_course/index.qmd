@@ -1,5 +1,6 @@
 ---
 title: "Understanding LLMs and Transformers: A Deep Dive into Modern AI"
+description: "How Transformers and large language models work, encoders versus decoders, and what you learn in the free Hugging Face LLM course, with pipeline examples."
 format: html
 author: "Maciej Nasinski"
 date: "2025-09-13"
@@ -303,6 +304,8 @@ The course goes beyond using existing models and shows how to adapt them to your
 2. Hugging Face Transformers Documentation (Notebooks). https://huggingface.co/docs/transformers/main/en/notebooks  
 3. Attention Is All You Need (Vaswani et al., 2017). https://research.google/pubs/attention-is-all-you-need/
 
+## Related posts
 
-
-
+- [Kumo-Tabular vs XGBoost, CatBoost and LDA: Does Feature Engineering Still Matter?](../kumo_tabular/index.qmd)
+- [Vibe Coding: Adopting the Exponential Future of AI-Assisted Development](../vibe/index.qmd)
+- [Are Em Dashes Really Suspicious? A Gutenberg Top-100 Check](../em_dash/index.qmd)

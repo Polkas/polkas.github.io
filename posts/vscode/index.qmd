@@ -1,5 +1,6 @@
 ---
 title: "Visual Studio Code: Toolkit for Data Scientists"
+description: "Why Visual Studio Code is a complete toolkit for data scientists: Python and R extensions, GitHub Copilot, settings as code and reproducible devcontainers."
 format: html
 author: "Maciej Nasinski"
 date: "2025-04-21"
@@ -173,3 +174,9 @@ While specialized IDEs still have their place, VS Code's flexibility and extensi
 
 The vsctuto tutorial demonstrates this potential through practical application, helping data scientists transition to this powerful platform. As analytical work becomes increasingly collaborative and complex, VS Code's emphasis on reproducibility and standardization represents the future of data science tooling.
 *Visit the [vsctuto GitHub repository](https://github.com/Polkas/vsctuto) for a hands-on experience with VS Code for data science*
+
+## Related posts
+
+- [GitHub Codespaces: Cloud Development Environments for R and Python](../codespaces/index.qmd)
+- [Containers for Data Scientists](../containers/index.qmd)
+- [GitHub Copilot Beyond Autocomplete: A Practical Team Playbook](../copilot/index.qmd)

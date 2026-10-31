@@ -1,14 +1,20 @@
 ---
 title: "Analyzing the Kasa Romana Lottery with Knapsack Algorithm [Updated]"
+description: "An R knapsack analysis and a modular arithmetic proof show that no subset of 1,002 sampled Kasa Romana coupons reaches the tested targets of 100 to 1,000."
 author: "Maciej Nasinski"
 date: "2023-04-08"
 categories: [knapsack, rprogramming]
 image: main.png
+# main.png is not PNG-encoded; an absolute URL avoids Quarto's PNG size check.
+open-graph:
+  image: https://polkas.github.io/posts/aminos/main.png
+twitter-card:
+  image: https://polkas.github.io/posts/aminos/main.png
 filters:
   - webr
 ---
 
-TL;DR If you want to design the perfect lottery where participants believe they have a chance to win but can never actually do so, you'll need the expertise of a skilled mathematician. However, with enough data, a capable statistical programmer can unravel the mechanism and expose the illusion.
+**TL;DR:** The 1,002 sampled coupons follow two arithmetic patterns. No subset sums to any of the tested targets, 100, 200, ..., 1,000. This result concerns the sample and does not establish that the entire lottery was unwinnable.
 
 **Updated 2025-01-05**
 
@@ -20,9 +26,7 @@ The data was gathered by [BezKanalu](https://www.facebook.com/BezKanalu/), a Pol
 
 To tackle this challenge, I utilized the Knapsack Algorithm, a well-established optimization technique. The algorithm identifies the optimal way to select items (in this case, coupons) that meet specific constraints (summing to full hundreds) while maximizing value. Using R, I implemented this algorithm to determine if any subset of the collected coupons could satisfy the winning conditions of the lottery.
 
-Surprisingly, the analysis revealed that **no combination of coupons from the dataset allowed participants to win real money**. This finding was further reinforced through a theoretical proof using modular arithmetic.
-
-The result is not encouraging for players: in this dataset, no combination of coupons produced a real cash win. The knapsack formulation makes that easy to check instead of guessing by hand.
+The analysis found that **no subset of the sampled coupons reaches any of the tested targets**. A modular arithmetic proof explains why, conditional on the observed value patterns. The sample alone does not establish the odds of winning across the full lottery.
 
 ## Apply Knapsack Algorithm on Lottery Coupons
 
@@ -145,12 +149,12 @@ Histrogram might be helpful to find certain patterns:
 hist(coupons, breaks = 100)
 ```
 
-**Numbers seems to be generated from 2 specific patterns:**
+**The observed values fit two arithmetic patterns:**
 
-- multiplication of 13 starting from 26
-- multiplication of 13 plus 165
+- multiples of 13;
+- 165 plus a multiple of 13.
 
-We can easily confirm that all of the coupons comes from this 2 sequences.
+The following check confirms that every sampled value belongs to the specified finite portions of these sequences. It does not establish how the values were generated.
 
 ```{webr-r}
 rep13 <- 13 * 1:52
@@ -187,43 +191,49 @@ for (i in amount_we_want) {
 }
 ```
 
-Taking into account only coupons provided there is NO chance to win anything.  
-This seems to no be surprising when we know from what sequences the coupons come from.  
+For these coupon values, none of the tested target sums is attainable. The following proof explains why independently of the knapsack calculation.
 
 ### Theoretical Proof: Modular Arithmetic Analysis
 
-Proof of Impossibility
- * The formula for any sum S is:
-   S = 13K + 165C
-   Where K \ge 0 (sum of coupon indices) and C \ge 0 (count from Set 2) are integers.
- * We are testing if S can be a multiple of 100. Let S = 100n, where n is a positive integer (n \in \{1, 2, \ldots, 10\}).
- * The equation becomes:
-   13K + 165C = 100n
- * Let's analyze this equation modulo 13:
-   (13K + 165C) \equiv 100n \pmod{13}
-   *    * 165 = (13 \times 12) + 9, so 165C \equiv 9C \pmod{13}
-   * 100 = (13 \times 7) + 9, so 100n \equiv 9n \pmod{13}
- * This simplifies our equation to:
-   9C \equiv 9n \pmod{13}
- * Since 9 and 13 share no common factors, we can divide both sides by 9:
-   C \equiv n \pmod{13}
-   This means C must be of the form C = n + 13m for some integer m \ge 0.
- * Now, substitute this expression for C back into the original equation (Step 3):
-   13K + 165(n + 13m) = 100n
- * Expand and solve for K:
-   13K + 165n + (165 \times 13m) = 100n
-   13K = 100n - 165n - (165 \times 13m)
-   13K = -65n - (165 \times 13m)
- * Divide the entire equation by 13:
-   K = -5n - 165m
-   K = -(5n + 165m)
- * This is a contradiction.
-   * By definition, K must be positive or zero (K \ge 0).
-   * But since n \ge 1 (as S is a positive sum) and m \ge 0, the term (5n + 165m) must be \ge 5.
-   * Therefore, K must be strictly negative (K \le -5).
-Because K cannot be both non-negative (by definition) and negative (by derivation), no integer solution exists.
+The check above shows that each sampled coupon value belongs to one of these two families:
 
+$$
+A = \{13k : k \in \mathbb{Z}_{\geq 0}\}, \qquad
+B = \{165 + 13k : k \in \mathbb{Z}_{\geq 0}\}.
+$$
+
+These families include all values tested above and may include other values. Proving the result for these larger families therefore also proves it for the sample.
+
+**Proposition.** If every coupon in a selection has a value in $A \cup B$, the selection's total cannot equal $100n$ for any integer $n \in \{1,\ldots,12\}$. In particular, none of the tested targets from 100 through 1,000 is attainable.
+
+**Proof.** Let $C$ be the number of selected coupons from $B$, and let $K$ be the sum of the corresponding indices $k$ for all selected coupons, from both $A$ and $B$. Both $C$ and $K$ are non-negative integers, and the total is
+
+$$
+S = 13K + 165C.
+$$
+
+Suppose, for a contradiction, that $S = 100n$ for some $1 \leq n \leq 12$. Reducing the equation modulo 13 and using $165 \equiv 100 \equiv 9 \pmod{13}$ gives
+
+$$
+9C \equiv 9n \pmod{13}.
+$$
+
+Because $\gcd(9,13)=1$, 9 is invertible modulo 13, so $C \equiv n \pmod{13}$. Since $C \geq 0$ and $1 \leq n < 13$, it follows that $C = n + 13t$ for some non-negative integer $t$. Hence $C \geq n$, and
+
+$$
+100n = 13K + 165C \geq 165C \geq 165n > 100n,
+$$
+
+a contradiction. Therefore no such selection exists. $\square$
+
+The restriction on $n$ matters: the proof does not rule out larger multiples of 100. For example, the sample contains more than one 650 coupon, and $650 + 650 = 1{,}300$. The argument applies to any number of coupons from the two families, but the sample does not show that every coupon issued in the lottery belonged to those families.
 
 ## Conclusion
 
-The Knapsack Algorithm computationally confirms that no combination of Kasa Romana lottery coupons can sum up to full hundreds, making it impossible to meet the winning criteria. This conclusion is further validated by a theoretical proof using modular arithmetic, adding credibility and mathematical rigor to the findings.
+The knapsack analysis and the modular arithmetic proof both rule out the tested targets of 100 through 1,000 for the sampled coupons. The proof is stronger in one respect: it does not depend on the number of coupons selected, provided their values follow the two stated patterns. Neither result establishes that the same patterns held for every coupon in the lottery.
+
+## Related posts
+
+- [Curse of Dimensionality: Lessons from the U.S. Air Force Cockpit Design](../cursedim/index.qmd)
+- [England and Her Soldiers (1859): The Book That Made Statistics Visual](../nightingale/index.qmd)
+- [WebAssembly for Data Science: webR, Pyodide and Shinylive in the Browser](../webassembly/index.qmd)

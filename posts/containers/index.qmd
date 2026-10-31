@@ -1,9 +1,15 @@
 ---
 title: "Containers for Data Scientists [In-Depth]"
+description: "An in-depth guide to Docker, Podman and Apptainer containers for data scientists: Dockerfiles, images, CLI commands and reproducible R and Python environments."
 author: "Maciej Nasinski"
 date: "2024-12-23"
 categories: [programming, in-depth]
 image: main.png
+# main.png is not PNG-encoded; an absolute URL avoids Quarto's PNG size check.
+open-graph:
+  image: https://polkas.github.io/posts/containers/main.png
+twitter-card:
+  image: https://polkas.github.io/posts/containers/main.png
 format:
   html:
     toc: true
@@ -1876,3 +1882,9 @@ Adopting containers reduces the "works on my machine" problem, improves collabor
 - Docker Swarm: [https://docs.docker.com/engine/swarm/](https://docs.docker.com/engine/swarm/)
 - OpenShift: [https://www.openshift.com/](https://www.openshift.com/)
 - Jupyter Docker Stacks: [https://hub.docker.com/u/jupyter](https://hub.docker.com/u/jupyter)
+
+## Related posts
+
+- [GitHub Codespaces: Cloud Development Environments for R and Python](../codespaces/index.qmd)
+- [Visual Studio Code: Toolkit for Data Scientists](../vscode/index.qmd)
+- [Pre-commit Hooks for R and Python Projects](../precommit/index.qmd)

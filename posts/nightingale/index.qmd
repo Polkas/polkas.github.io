@@ -1,5 +1,6 @@
 ---
 title: "England and Her Soldiers (1859): The Book That Made Statistics Visual"
+description: "Florence Nightingale's rose diagram in an 1859 copy of England and Her Soldiers: what it shows, what it cannot prove, and how to recreate it in R."
 author: "Maciej Nasinski"
 date: "2026-08-31"
 categories: [statistics, dataviz, history]
@@ -369,3 +370,9 @@ The detail I keep coming back to is the ban. The book was pulled from barrack li
 - Gill, C. J. & Gill, G. C. (2005). "Nightingale in Scutari: Her Legacy Reexamined". *Clinical Infectious Diseases*, 40(12), 1799–1805.
 - Cleveland, W. S. (1985). *The Elements of Graphing Data* — on why length beats area for accurate comparison.
 - Friendly, M. `HistData` R package — the `Nightingale` dataset used above: <https://cran.r-project.org/package=HistData>
+
+## Related posts
+
+- [Curse of Dimensionality: Lessons from the U.S. Air Force Cockpit Design](../cursedim/index.qmd)
+- [Moving Beyond P-Values in Scientific Research: Insights from the ASA Statement and Frank Harrell](../pvalue/index.qmd)
+- [Are Em Dashes Really Suspicious? A Gutenberg Top-100 Check](../em_dash/index.qmd)

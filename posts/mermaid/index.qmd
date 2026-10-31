@@ -1,5 +1,6 @@
 ---
-title: "Mermaid Diagrams in Markdown"
+title: "Mermaid Diagrams in Markdown: Flowcharts, Sequence Diagrams and Gantt Charts"
+description: "How to create flowcharts, sequence diagrams, Gantt charts and Sankey diagrams with Mermaid in Markdown, plus tools, alternatives and help from LLMs."
 author: "Maciej Nasinski"
 date: "2025-01-11"
 categories: [programming]
@@ -247,3 +248,9 @@ Effective diagrams do more than just display information; they help readers quic
 Whether you’re creating software documentation, educational content, or project planning materials, Mermaid offers a powerful and accessible way to add visualizations. With the ability to integrate into platforms like GitHub, along with interactive tools like the Live Editor and Mermaid AI, Mermaid is poised to remain a cornerstone of modern diagramming and visualization.
 
 Incorporating Mermaid into your workflow not only saves time but also elevates the quality of your content. With its growing ecosystem and widespread adoption, there’s never been a better time to explore the capabilities of Mermaid. From OOP designs to project timelines, Mermaid’s versatility ensures it can meet your unique visualization needs.
+
+## Related posts
+
+- [Object-Oriented Programming for Data Science Developers](../oop/index.qmd)
+- [Visual Studio Code: Toolkit for Data Scientists](../vscode/index.qmd)
+- [WebAssembly for Data Science: webR, Pyodide and Shinylive in the Browser](../webassembly/index.qmd)

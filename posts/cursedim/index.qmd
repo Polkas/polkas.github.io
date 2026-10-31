@@ -1,10 +1,16 @@
 ---
 title: "Curse of Dimensionality: Lessons from the U.S. Air Force Cockpit Design"
+description: "Why no U.S. Air Force pilot was average: the 1950s cockpit study as a lesson in the curse of dimensionality, with a multivariate normal simulation in R."
 author: "Maciej Nasinski"
 date: "2025-01-19"
 categories: [statistics]
 draft: false
 image: main.png
+# main.png is not PNG-encoded; an absolute URL avoids Quarto's PNG size check.
+open-graph:
+  image: https://polkas.github.io/posts/cursedim/main.png
+twitter-card:
+  image: https://polkas.github.io/posts/cursedim/main.png
 filters:
   - webr
 ---
@@ -162,3 +168,9 @@ The U.S. Air Force’s experience with cockpit design reveals a fundamental trut
 
 - [Unclassfied - An "Average" Man? Gilbert S. Daniels 1952](https://apps.dtic.mil/sti/tr/pdf/AD0010203.pdf)
 - [Wiki - Curse of Dimensionality](https://en.wikipedia.org/wiki/Curse_of_dimensionality)
+
+## Related posts
+
+- [Analyzing the Kasa Romana Lottery with Knapsack Algorithm](../aminos/index.qmd)
+- [England and Her Soldiers (1859): The Book That Made Statistics Visual](../nightingale/index.qmd)
+- [GLM Residuals in R: Pearson, Deviance and Quantile Residual Diagnostics](../glm_residuals/index.qmd)

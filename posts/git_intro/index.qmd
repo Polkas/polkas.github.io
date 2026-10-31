@@ -1,5 +1,6 @@
 ---
 title: "Why Git is Here to Stay"
+description: "Why Git remains the standard for version control, the fewer than 20 commands you need, CLI versus GUI tools, and how Git differs from GitHub."
 author: "Maciej Nasinski"
 date: "2023-04-06"
 categories: [git]
@@ -84,3 +85,9 @@ It’s important to note that Git is not the same as platforms like GitHub. GitH
 ### Conclusion
 
 Git has transformed the way developers collaborate and manage their code. Its widespread adoption, versatility, and the ability to master it with a handful of commands make it a critical tool in the modern developer’s toolkit. For anyone looking to advance their software development career, learning Git is a must, and with the abundance of resources available, there’s no better time to get started.
+
+## Related posts
+
+- [Pre-commit Hooks for R and Python Projects](../precommit/index.qmd)
+- [GitHub Student Developer Pack: Learn to ship software like a pro](../github_pack/index.qmd)
+- [Open Source: Given enough eyeballs, all bugs are shallow](../opensource/index.qmd)

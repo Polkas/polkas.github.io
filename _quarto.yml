@@ -7,6 +7,10 @@ project:
 
 website:
   title: "Agile Data Science"
+  site-url: https://polkas.github.io
+  description: "Practical data science, statistics, and machine learning experiments in R and Python."
+  open-graph: true
+  twitter-card: true
   google-analytics: "G-M97VH8JRQ0"
   favicon: logo.svg
   navbar:
@@ -60,4 +64,3 @@ format:
         language: en
         loading: lazy
         mapping: pathname
-

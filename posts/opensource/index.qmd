@@ -1,5 +1,6 @@
 ---
 title: "Open Source: Given enough eyeballs, all bugs are shallow"
+description: "What open source means, how projects like Linux work, common open source licenses, governance models, and the different ways you can contribute."
 author: "Maciej Nasinski"
 date: "2025-01-12"
 categories: [programming]
@@ -107,3 +108,9 @@ For those looking to get started in open source:
 - Raymond, E. S. (2001). *The Cathedral & The Bazaar.* O’Reilly Media.  
 - [Open Source Licenses and the Creative Commons Framework: License Selection and Comparison.  (2006)](https://www.researchgate.net/publication/220587883_Open_Source_Licenses_and_the_Creative_Commons_Framework_License_Selection_and_Comparison). 
 - Corbet, J., Kroah-Hartman, G., & McPherson, A. (2015). “Linux Kernel Development.” *The Linux Foundation.*
+
+## Related posts
+
+- [Why Git is Here to Stay](../git_intro/index.qmd)
+- [Exploring the Tinyverse: A New Standard in R Package Development](../tinyverse/index.qmd)
+- [Scrum: Just a Framework, Agile: A General Philosophy](../agile/index.qmd)

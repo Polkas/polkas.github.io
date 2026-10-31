@@ -1,5 +1,6 @@
 ---
 title: "Are Em Dashes Really Suspicious? A Gutenberg Top-100 Check"
+description: "Are em dashes a sign of AI-generated text? A Python analysis of 100 top Project Gutenberg books finds em dashes in every book once double hyphens are counted."
 author: "Maciej Nasinski"
 date: "2026-08-29"
 categories: [text-analysis, statistics, programming]
@@ -470,3 +471,9 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 ```
+
+## Related posts
+
+- [Understanding LLMs and Transformers: A Deep Dive into Modern AI](../hf_llm_course/index.qmd)
+- [England and Her Soldiers (1859): The Book That Made Statistics Visual](../nightingale/index.qmd)
+- [Vibe Coding: Adopting the Exponential Future of AI-Assisted Development](../vibe/index.qmd)

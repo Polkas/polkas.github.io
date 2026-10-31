@@ -1,5 +1,6 @@
 ---
 title: 'Exploring the Tinyverse: A New Standard in R Package Development'
+description: "The tinyverse approach to R package development: why minimal dependencies improve stability, how it compares with the tidyverse, and how to reduce dependencies."
 author: "Maciej Nasinski"
 date: "2024-05-19"
 categories: [rprogramming]
@@ -66,3 +67,9 @@ Please read in the order all of the 3 sources to become a R packages developer g
 - https://r-pkgs.org/
 - https://blog.thatbuthow.com/how-r-searches-and-finds-stuff/
 - https://cran.r-project.org/doc/manuals/r-release/R-exts.html
+
+## Related posts
+
+- [ggcall: Transparent R Packages with ggplot2](../ggcall/index.qmd)
+- [Celebrating a Classic: "How R Searches and Finds Stuff" by Suraj Gupta](../rstuff/index.qmd)
+- [R Package Downloads: Why CRAN Counts Are Proxies and What to Measure Instead](../rpac_downloads/index.qmd)

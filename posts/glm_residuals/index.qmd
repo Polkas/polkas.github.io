@@ -1,5 +1,6 @@
 ---
-title: "GLM Residuals Distributions"  
+title: "GLM Residuals in R: Pearson, Deviance and Quantile Residual Diagnostics"
+description: "A practical guide to residual diagnostics for logistic and Poisson GLMs in R: raw, Pearson, deviance and quantile residuals, and how to spot misspecification."
 author: "Maciej Nasinski"  
 date: "2025-03-23"  
 categories: [statistics]  
@@ -226,3 +227,9 @@ Residual diagnostics are essential for correctly interpreting and validating GLM
 - Agresti (2015). *Foundations of Linear and Generalized Linear Models*.
 - Dunn & Smyth (2018). *Generalized Linear Models with Examples in R*.
 - R documentation (`?glm`, `?residuals.glm`).
+
+## Related posts
+
+- [Conjugate Priors: Harnessing Closed-Form Solutions in Bayesian Inference](../conjugate/index.qmd)
+- [Bernstein–von Mises: Bridging Bayesian and Frequentist Worlds](../BvStheorem/index.qmd)
+- [Moving Beyond P-Values in Scientific Research: Insights from the ASA Statement and Frank Harrell](../pvalue/index.qmd)

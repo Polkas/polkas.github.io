@@ -1,5 +1,6 @@
 ---
-title: "Graph Database and GQL"
+title: "Graph Databases and GQL: An Introduction to the ISO Graph Query Language"
+description: "An introduction to graph databases, property graphs versus RDF, common use cases and tools, and GQL, the new ISO standard query language for graphs."
 author: "Maciej Nasinski"
 date: "2024-07-19"
 engine: knitr
@@ -97,3 +98,8 @@ Graph databases have emerged as a crucial technology for managing and analyzing 
 - [GraphQL Foundation: Evolution of GQL](https://www.graphql.org)
 - [The GQL Standard Proposal](https://arxiv.org/abs/2009.03000)
 
+## Related posts
+
+- [Object-Oriented Programming for Data Science Developers](../oop/index.qmd)
+- [Mermaid Diagrams in Markdown: Flowcharts, Sequence Diagrams and Gantt Charts](../mermaid/index.qmd)
+- [Kumo-Tabular vs XGBoost, CatBoost and LDA: Does Feature Engineering Still Matter?](../kumo_tabular/index.qmd)

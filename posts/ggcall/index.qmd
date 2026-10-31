@@ -1,5 +1,6 @@
 ---
 title: "ggcall: Transparent R Packages with ggplot2"
+description: "ggcall makes ggplot2 code reproducible inside R packages by recording the plot-building call, using metaprogramming to override ggplot() and the + operator."
 format: html
 author: "Maciej Nasinski"
 date: "2024-04-13"
@@ -147,3 +148,9 @@ For developers who build R packages that include functions generating `ggplot2` 
 Visit the [GitHub repository](https://github.com/Polkas/ggcall) to download `ggcall`, view detailed documentation, and start making your ggplot2 visualizations more transparent and reproducible today!
 
 Your feedback and contributions are highly appreciated as they help to refine `ggcall` to better serve the R community.
+
+## Related posts
+
+- [Exploring the Tinyverse: A New Standard in R Package Development](../tinyverse/index.qmd)
+- [Celebrating a Classic: "How R Searches and Finds Stuff" by Suraj Gupta](../rstuff/index.qmd)
+- [R Package Downloads: Why CRAN Counts Are Proxies and What to Measure Instead](../rpac_downloads/index.qmd)

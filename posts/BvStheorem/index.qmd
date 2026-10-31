@@ -1,5 +1,6 @@
 ---
 title: 'Bernstein–von Mises: Bridging Bayesian and Frequentist Worlds'
+description: "How the Bernstein–von Mises theorem links Bayesian posteriors and frequentist confidence intervals in large samples, with a worked Normal–Normal example in R."
 author: "Maciej Nasinski"
 date: "2024-12-08"
 categories: [statistics]
@@ -158,3 +159,9 @@ These texts detail the conditions, proofs, and implications of the Bernstein–v
 ## Conclusion
 
 The Bernstein–von Mises theorem shows that, as sample size grows large, Bayesian posterior distributions with mild prior conditions approximate the same normal distributions used in frequentist asymptotic theory. The match occurs only if Bayesian and frequentist approaches share the same likelihood model. This theoretical bridge provides a comforting reassurance: in large samples, "Bayesian credible sets” effectively become "frequentist confidence sets,” harmonizing the two seemingly different statistical philosophies.
+
+## Related posts
+
+- [Conjugate Priors: Harnessing Closed-Form Solutions in Bayesian Inference](../conjugate/index.qmd)
+- [Moving Beyond P-Values in Scientific Research: Insights from the ASA Statement and Frank Harrell](../pvalue/index.qmd)
+- [GLM Residuals in R: Pearson, Deviance and Quantile Residual Diagnostics](../glm_residuals/index.qmd)

@@ -1,5 +1,6 @@
 ---
-title: "WebAssembly: A True Web Revolution"
+title: "WebAssembly for Data Science: webR, Pyodide and Shinylive in the Browser"
+description: "How WebAssembly runs R and Python in the browser at near-native speed, and how webR, Pyodide, Shinylive and Quarto use it for interactive data science."
 format: html
 author: "Maciej Nasinski"
 date: "2025-01-07"
@@ -108,3 +109,9 @@ WebAssembly is useful because it moves serious computation into the browser. For
 4. **Shiny Live**  
    - Official Documentation: [https://shiny.rstudio.com/articles/shinylive.html](https://shiny.rstudio.com/articles/shinylive.html)  
    - GitHub Repository: [https://github.com/rstudio/shinylive](https://github.com/rstudio/shinylive)
+
+## Related posts
+
+- [Containers for Data Scientists](../containers/index.qmd)
+- [Mermaid Diagrams in Markdown: Flowcharts, Sequence Diagrams and Gantt Charts](../mermaid/index.qmd)
+- [Analyzing the Kasa Romana Lottery with Knapsack Algorithm](../aminos/index.qmd)

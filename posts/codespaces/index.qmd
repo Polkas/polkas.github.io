@@ -1,5 +1,6 @@
 ---
-title: 'GitHub Codespaces'
+title: "GitHub Codespaces: Cloud Development Environments for R and Python"
+description: "How GitHub Codespaces provides ready-to-use cloud development environments, how .devcontainer files keep setups consistent, and example R and Python codespaces."
 author: "Maciej Nasinski"
 date: "2024-04-02"
 categories: [programming]
@@ -67,3 +68,9 @@ GitHub Codespaces is revolutionizing the way developers and teams work on softwa
 - [codespaces features](https://github.com/features/codespaces)
 - [simple Codespace for R](https://github.com/polkas/r_codespace)
 - [simple Codespace for Python](https://github.com/Polkas/python_codespace)
+
+## Related posts
+
+- [Containers for Data Scientists](../containers/index.qmd)
+- [Visual Studio Code: Toolkit for Data Scientists](../vscode/index.qmd)
+- [GitHub Student Developer Pack: Learn to ship software like a pro](../github_pack/index.qmd)

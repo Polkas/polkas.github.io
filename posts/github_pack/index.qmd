@@ -1,9 +1,15 @@
 ---
 title: 'GitHub Student Developer Pack: Learn to ship software like a pro'
+description: "What the free GitHub Student Developer Pack and Teacher Pack include, such as Copilot, Codespaces and GitKraken, and how students and educators can get them."
 author: "Maciej Nasinski"
 date: "2024-04-01"
 categories: [programming]
 image: main.png
+# main.png is not PNG-encoded; an absolute URL avoids Quarto's PNG size check.
+open-graph:
+  image: https://polkas.github.io/posts/github_pack/main.png
+twitter-card:
+  image: https://polkas.github.io/posts/github_pack/main.png
 ---
 
 TL;DR The GitHub Student Pack gives students free access to useful development tools, including Codespaces, GitHub Copilot, GitLens Pro, GitKraken and more. 
@@ -52,3 +58,9 @@ The GitHub Student and Teacher Packs are worth checking if you study or teach IT
 
 - [GitHub Student Developer Pack](https://education.github.com/pack)
 - [GitHub Teacher Developer Pack](https://education.github.com/teachers)
+
+## Related posts
+
+- [GitHub Codespaces: Cloud Development Environments for R and Python](../codespaces/index.qmd)
+- [GitHub Copilot Beyond Autocomplete: A Practical Team Playbook](../copilot/index.qmd)
+- [Why Git is Here to Stay](../git_intro/index.qmd)

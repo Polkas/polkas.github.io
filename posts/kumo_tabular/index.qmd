@@ -1,5 +1,5 @@
 ---
-title: "Kumo-Tabular vs. Classical Models: Does Feature Engineering Still Matter?"
+title: "Kumo-Tabular vs XGBoost, CatBoost and LDA: Does Feature Engineering Still Matter?"
 description: "A small benchmark compares pretrained Kumo-Tabular with tuned boosting and standardized LDA, with and without domain-inspired features."
 author: "Maciej Nasinski"
 date: "2026-10-31"
@@ -152,3 +152,9 @@ Log loss for classification and RMSE for regression; lower is better. `FE change
 - [Kumo-Tabular API documentation](https://nvidia.github.io/structured-data-models/api/generated/sdm.models.KumoTabular.html)
 - [NVIDIA's Kumo-Relational overview](https://huggingface.co/blog/nvidia/kumo-relational)
 - [Kumo-Relational API documentation](https://nvidia.github.io/structured-data-models/api/generated/sdm.models.KumoRelational.html)
+
+## Related posts
+
+- [Understanding LLMs and Transformers: A Deep Dive into Modern AI](../hf_llm_course/index.qmd)
+- [GLM Residuals in R: Pearson, Deviance and Quantile Residual Diagnostics](../glm_residuals/index.qmd)
+- [Curse of Dimensionality: Lessons from the U.S. Air Force Cockpit Design](../cursedim/index.qmd)

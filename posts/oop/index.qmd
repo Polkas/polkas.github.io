@@ -1,5 +1,6 @@
 ---
 title: "Object-Oriented Programming for Data Science Developers [In-Depth]"
+description: "An in-depth guide to object-oriented programming for data science developers, with classes and design patterns from scikit-learn and pandas in Python."
 author: "Maciej Nasinski"
 date: "2025-01-01"
 categories: [programming, in-depth]
@@ -525,3 +526,9 @@ It is important to recognize that an AI assistant cannot help to provide a quali
 - **Mermaid** 
   - [Mermaid Docs](https://mermaid.js.org/intro/)
   - [Mermaid Live Editor](https://mermaid.live/)
+
+## Related posts
+
+- [Python Enhancement Proposals (PEPs)](../PEP/index.qmd)
+- [Mermaid Diagrams in Markdown: Flowcharts, Sequence Diagrams and Gantt Charts](../mermaid/index.qmd)
+- [Exploring the Tinyverse: A New Standard in R Package Development](../tinyverse/index.qmd)
