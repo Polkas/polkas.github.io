@@ -30,7 +30,7 @@
   background: #f3f6f9;
 }
 
-.quarto-listing-container-grid .thumbnail-image {
+.quarto-listing-container-grid .quarto-grid-item p.card-img-top > .thumbnail-image {
   width: 100%;
   padding: 1rem;
   object-fit: contain;
@@ -54,6 +54,12 @@
 
 .quarto-listing-container-grid .listing-description p:last-child {
   margin-bottom: 0;
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .quarto-listing-container-grid .quarto-listing-cols-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
