@@ -1,7 +1,10 @@
 ---
 title: "pacs & rdevdash"
+description: "R tools for exploring package dependencies, release history and CRAN checks, with an interactive dashboard."
 author: "Maciej Nasinski"
+order: 50
 image: "main.png"
+image-alt: "pacs hexagonal logo"
 ---
 
 **pacs** is a versatile toolkit designed to simplify life for developers and maintainers of R packages. 

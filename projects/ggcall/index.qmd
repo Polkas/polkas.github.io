@@ -1,7 +1,10 @@
 ---
 title: "ggcall: Transparent R Packages with ggplot2"
+description: "An R package that records ggplot2 calls inside functions for transparent, reproducible visualisations."
 author: "Maciej Nasinski"
+order: 20
 image: main.png
+image-alt: "ggcall hexagonal logo"
 ---
 
 TL;DR Two functions in ggplot2 are overwritten (ggplot and +) to achieve code transparency and reproducibility when ggplot2 is used inside a function.  

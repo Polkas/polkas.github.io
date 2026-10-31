@@ -1,7 +1,10 @@
 ---
 title: 'miceFast'
+description: "An R and C++ package for efficient multiple imputation and predictive mean matching."
 author: "Maciej Nasinski"
+order: 40
 image: main.png
+image-alt: "miceFast hexagonal logo"
 ---
 
 Originally developed as a study project for the [Andrzej Nagorko](https://www.mimuw.edu.pl/en/employees/1860/) advanced C++ class, **miceFast** combines low-level optimizations and an object-oriented design to streamline multiple imputation workflows. 

@@ -2,6 +2,7 @@
 title: "Educational Story Outcome Predictor: Fine-Tuned DistilBERT"
 description: "A fine-tuned DistilBERT encoder for classifying educational story annotations from situation and solution text, with code and a published Hugging Face model."
 author: "Maciej Nasiński"
+order: 2
 categories: [machine-learning, nlp, transformers]
 image: /posts/hf_llm_course/main.png
 image-alt: "Hugging Face logo."

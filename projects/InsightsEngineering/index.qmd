@@ -1,7 +1,10 @@
 ---
 title: 'InsightsEngineering'
+description: "Contributions to Roche's open-source InsightsEngineering ecosystem, including teal for interactive data exploration."
 author: "Maciej Nasinski"
+order: 30
 image: main.png
+image-alt: "InsightsEngineering logo"
 ---
 
 For three remarkable years, I had the privilege of serving as a core developer at **InsightsEngineering**, a project closely tied to **Pharmaverse** and part of **Roche**, one of the world’s leading healthcare companies. 

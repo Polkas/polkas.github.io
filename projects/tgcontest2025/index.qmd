@@ -2,6 +2,7 @@
 title: "Posit Table Contest 2025: Best Pharma Table"
 description: "A 2025 Posit Table Contest entry recognised as The Best Pharma Table, combining gt styling with gridify layouts and synthetic data."
 author: "Maciej Nasiński"
+order: 1
 categories: [rprogramming, dataviz]
 image: main.png
 image-alt: "Synthetic baseline characteristics table with gt styling and gridify headers and footnotes."

@@ -1,7 +1,10 @@
 ---
 title: "cat2cat"
+description: "R and Python tools for harmonising changing categorical classifications in longitudinal and panel data."
 author: "Maciej Nasinski"
+order: 10
 image: main.png
+image-alt: "cat2cat hexagonal logo"
 ---
 
 **cat2cat** is a data harmonization procedure designed to unify inconsistently coded categorical variables in longitudinal or panel datasets. 
