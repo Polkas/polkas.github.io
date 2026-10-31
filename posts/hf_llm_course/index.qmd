@@ -241,50 +241,56 @@ If you want to truly understand modern AI—start with the foundations in this p
 
 ## BONUS: From Learning to Building: My First Fine-Tuned Model
 
-After completing the Hugging Face course, I decided to put my knowledge to the test by fine-tuning my own transformer model. The result? [**polkas/educational-story-outcome-predictor**](https://huggingface.co/polkas/educational-story-outcome-predictor) - a model that predicts whether educational interventions will succeed or fail based on the situation and proposed solution.
+After completing the Hugging Face course, I fine-tuned a pretrained DistilBERT encoder and published [**polkas/educational-story-outcome-predictor**](https://huggingface.co/polkas/educational-story-outcome-predictor). It classifies educational stories into Success and Failure labels derived from their outcome annotations, using the situation and proposed solution as inputs.
+
+See the [project overview](../../projects/educational_story_encoder/index.qmd) for the model, data and evaluation details.
 
 ### The Journey: Surprisingly Accessible
 
-What struck me most was how **accessible** the entire process has become. Just a few years ago, training custom language models required extensive infrastructure, deep technical expertise, and significant computational resources. Today, thanks to the Hugging Face ecosystem, I went from idea to deployed model in about an hour of actual work.
+For this small experiment, the pretrained encoder and Hugging Face tooling made the workflow accessible: prepare paired text inputs, map the annotations to binary labels, fine-tune the classifier and publish the model. I spent about an hour of hands-on work on the project; that is a personal experience, not a general estimate for building or validating a production model.
 
 ### The Model: Educational Story Outcome Prediction
 
-My model analyzes real educational scenarios and predicts intervention effectiveness:
+The model predicts a simplified annotation label, not the causal effectiveness of an intervention:
 
-**What it does**: Takes two inputs (situation description + proposed solution) and predicts success/failure
-**Base model**: DistilBERT (67M parameters) - efficient yet powerful
-**Training data**: 1,492 real educational stories from teachers
-**Performance**: 74% accuracy, 82% F1 score - significantly better than baseline (62%)
-**Training time**: ~5 minutes on Apple Silicon
+- **Inputs:** situation text and solution text, passed as a pair.
+- **Base model:** `distilbert-base-uncased`, approximately 67 million parameters.
+- **Data:** 1,492 annotated Edustories entries; the reported run retained 1,471 after filtering, including 882 training, 221 validation and 368 test entries.
+- **Reported performance:** 74.18% accuracy and 82.18% F1 for the Success class, compared with 61.96% accuracy for a majority-class baseline.
+- **Reported training time:** approximately five minutes on Apple Silicon.
 
-Here's how easy it is to use:
+These figures come from one stratified row-level split. The dataset permits multiple annotations of the same story, so a story-grouped evaluation is needed before treating the results as performance on independent stories. They do not establish that the model can reliably recommend interventions or predict outcomes for individual students.
+
+Here is an inference example using the model's paired-input format:
 
 ```python
 from transformers import pipeline
 
-# Load my fine-tuned model
-classifier = pipeline("text-classification", 
-                     model="polkas/educational-story-outcome-predictor")
+classifier = pipeline(
+    "text-classification",
+    model="polkas/educational-story-outcome-predictor",
+)
 
-# Example: Analyze an educational intervention
 situation = "Student struggling with reading comprehension in grade 3"
 solution = "Teacher implements guided reading sessions with peer support"
-combined_text = f"Situation: {situation} Solution: {solution}"
 
-result = classifier(combined_text)
-print(f"Prediction: {result[0]['label']} (confidence: {result[0]['score']:.2f})")
-# Output: Prediction: Success (confidence: 0.85)
+result = classifier(
+    {"text": situation, "text_pair": solution},
+    truncation=True,
+    max_length=512,
+)[0]
+print(f"Predicted label: {result['label']} (model score: {result['score']:.2f})")
 ```
 
 ### The Bigger Picture: Democratization of AI
 
-This experience perfectly illustrates what the Hugging Face course teaches - we're witnessing the democratization of AI development. A few key insights:
+This experiment illustrates how pretrained models lower the barrier to learning a complete classification workflow:
 
-**Speed**: From concept to deployed model in under an hour
-**Accessibility**: No specialized hardware required (trained on a laptop)
-**Quality**: Achieved meaningful performance improvements over baseline
-**Sharing**: One-click deployment to the global model hub
-**Impact**: Real applications in educational research and decision support
+- **Accessibility:** a small model can be fine-tuned on a laptop.
+- **Evaluation:** compare against a simple baseline and make the split and limitations explicit.
+- **Sharing:** publish a model card and the training code alongside the model.
+
+Fine-tuning a classifier is only one part of building a reliable application. Representative evaluation, uncertainty assessment and domain review remain necessary, especially for high-stakes uses.
 
 ### Why This Matters for You
 

@@ -1,0 +1,48 @@
+---
+title: "Educational Story Outcome Predictor: Fine-Tuned DistilBERT"
+description: "A fine-tuned DistilBERT encoder for classifying educational story annotations from situation and solution text, with code and a published Hugging Face model."
+author: "Maciej Nasiński"
+categories: [machine-learning, nlp, transformers]
+image: /posts/hf_llm_course/main.png
+image-alt: "Hugging Face logo."
+---
+
+After working through the Hugging Face course, I fine-tuned a **DistilBERT encoder** for binary text classification and published it as [polkas/educational-story-outcome-predictor](https://huggingface.co/polkas/educational-story-outcome-predictor).
+
+The model takes two text inputs: an educational situation and the proposed solution. It predicts a **Success** or **Failure** label derived from the story's outcome annotations. This is supervised classification, not a demonstration that the model can establish an intervention's effectiveness.
+
+## Model and data
+
+- **Architecture:** pretrained `distilbert-base-uncased`, fine-tuned with a classification head; approximately 67 million parameters.
+- **Inputs:** situation text, combining the description and background, paired with the solution text.
+- **Dataset:** [Edustories-en](https://huggingface.co/datasets/MU-NLPC/Edustories-en), containing 1,492 annotated entries. The reported run retained 1,471 after filtering.
+- **Training:** the model card reports approximately five minutes on Apple Silicon.
+
+The binary label mapping groups partial, short-term and long-term success annotations into **Success** and maps the remaining categories to **Failure**. It simplifies the original annotations rather than measuring an outcome directly.
+
+## Reported evaluation
+
+The [model card](https://huggingface.co/polkas/educational-story-outcome-predictor) reports a stratified split with 882 training, 221 validation and 368 test entries.
+
+| Metric | Reported result |
+|---|---:|
+| Model accuracy | 74.18% |
+| F1 for the Success class | 82.18% |
+| Precision for the Success class | 71.80% |
+| Recall for the Success class | 96.05% |
+| Majority-class baseline accuracy | 61.96% |
+
+These are results from one split, not evidence of general educational decision-making performance. The dataset can contain multiple annotations of the same story, while the training script splits rows rather than grouping by story identifier. A story-grouped evaluation would be needed to assess generalisation to independent stories.
+
+## Community recognition
+
+[Jan Nehyba](https://www.linkedin.com/in/jan-nehyba-55a38341/), one of the dataset's curators at Masaryk University, highlighted the project on LinkedIn as an example of open educational data being used to build an NLP application.
+
+## Explore the project
+
+- [Published model and model card](https://huggingface.co/polkas/educational-story-outcome-predictor)
+- [Training and evaluation code](https://github.com/Polkas/educational-story-outcome-predictor)
+- [Project announcement on LinkedIn](https://www.linkedin.com/feed/update/urn:li:share:7374026709651591168/)
+- [Related blog post](../../posts/hf_llm_course/index.qmd#bonus-from-learning-to-building-my-first-fine-tuned-model), including an inference example.
+
+This is a learning and research project, not a tool for making high-stakes decisions about students or teachers.

@@ -1,4 +1,6 @@
 ---
+title: "Projects"
+description: "Selected projects in statistics, open-source software, data visualisation and machine learning."
 listing:
   contents: projects
   type: grid
