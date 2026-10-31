@@ -1,0 +1,183 @@
+.quarto-listing-container-default {
+  --post-image-width: clamp(240px, 30vw, 340px);
+}
+
+.quarto-listing-container-default .listing-actions-group {
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.quarto-listing-container-default .quarto-listing-filter,
+.quarto-listing-container-default .quarto-listing-sort {
+  min-width: 0;
+  flex: 1 1 220px;
+}
+
+.quarto-listing-container-default .quarto-listing-filter input,
+.quarto-listing-container-default .quarto-listing-sort select {
+  border-radius: 0.55rem;
+}
+
+.quarto-listing-container-default .quarto-post {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--post-image-width);
+  grid-template-areas:
+    "body thumbnail"
+    "metadata thumbnail";
+  gap: 0.4rem 1.5rem;
+  align-items: center;
+  margin: 0 0 1rem;
+  padding: 1.25rem;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 1rem;
+  background-color: var(--bs-body-bg);
+  box-shadow: 0 4px 16px rgb(20 35 55 / 5%);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.quarto-listing-container-default .quarto-post:hover {
+  border-color: var(--bs-primary);
+  box-shadow: 0 8px 24px rgb(20 35 55 / 10%);
+}
+
+.quarto-listing-container-default .quarto-post > .thumbnail {
+  grid-area: thumbnail;
+  width: 100%;
+  margin: 0;
+  align-self: center;
+}
+
+.quarto-listing-container-default .quarto-post .thumbnail a {
+  display: block;
+  height: 100%;
+}
+
+.quarto-listing-container-default .quarto-post .thumbnail-image {
+  display: block;
+  width: 100%;
+  height: 240px;
+  max-height: none;
+  border-radius: 0.65rem;
+  background: #f3f6f9;
+  object-fit: contain;
+}
+
+.quarto-listing-container-default .quarto-post > .body {
+  grid-area: body;
+  min-width: 0;
+}
+
+.quarto-listing-container-default .listing-title {
+  margin: 0.1rem 0 0.6rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.quarto-listing-container-default .listing-title a {
+  color: var(--bs-body-color);
+  text-decoration: none;
+}
+
+.quarto-listing-container-default .listing-title a:hover {
+  color: var(--bs-primary);
+}
+
+.quarto-listing-container-default .listing-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.65rem;
+}
+
+.quarto-listing-container-default .listing-category {
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 999px;
+  background: var(--bs-tertiary-bg);
+  color: var(--bs-secondary-color);
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.quarto-listing-container-default .listing-description {
+  color: var(--bs-secondary-color);
+  font-size: 0.94rem;
+  line-height: 1.55;
+}
+
+.quarto-listing-container-default .listing-description p:last-child {
+  margin-bottom: 0;
+}
+
+.quarto-listing-container-default .quarto-post > .metadata {
+  grid-area: metadata;
+  align-self: start;
+  margin: 0;
+  color: var(--bs-secondary-color);
+  font-size: 0.82rem;
+}
+
+.quarto-listing-container-default .quarto-post > .metadata a {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.quarto-listing-container-default .quarto-post:focus-within {
+  outline: 3px solid var(--bs-primary);
+  outline-offset: 3px;
+}
+
+.quarto-listing-category .category {
+  margin: 0.25rem 0;
+  padding: 0.4rem 0.65rem;
+  border-radius: 0.55rem;
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+.quarto-listing-category .category:hover,
+.quarto-listing-category .category.active {
+  background: var(--bs-tertiary-bg);
+  color: var(--bs-primary);
+}
+
+@media (max-width: 767.98px) {
+  .quarto-listing-container-default .quarto-post {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "thumbnail"
+      "body"
+      "metadata";
+    gap: 0.5rem 1rem;
+    padding: 1rem;
+  }
+
+  .quarto-listing-container-default .quarto-post .thumbnail-image {
+    height: 260px;
+  }
+
+  .quarto-listing-container-default .listing-title {
+    font-size: 1.08rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .quarto-listing-container-default .quarto-listing-filter,
+  .quarto-listing-container-default .quarto-listing-sort {
+    flex-basis: 100%;
+  }
+
+  .quarto-listing-container-default .quarto-post .thumbnail-image {
+    height: 240px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quarto-listing-container-default .quarto-post,
+  .quarto-listing-category .category {
+    transition: none;
+  }
+}

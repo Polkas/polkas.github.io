@@ -1,47 +1,83 @@
 ---
+title: "Agile Data Science"
+description: "Practical writing on statistics, data science, machine learning and reliable software, by Maciej Nasiński."
+listing:
+  id: latest-writing-listing
+  contents: posts
+  sort: "date desc"
+  type: grid
+  page-size: 3
+  fields: [image, title, description]
+  image-height: 240px
+  grid-columns: 3
 format:
   html:
+    css: home.css
     toc: false
 page-layout: full
 comments: false
 ---
 
-```{=html}
-<div class="main-cotainer">
-  <div style="
-    margin: 0 0 0.5em 0;
-    font-size: 2.2em;
-    font-weight: 600;
-    color: #333;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
-  ">
-    Welcome to 
-    <em style="color: #375a7f; font-style: normal;">
-      Agile Data Science
-    </em>!
-  </div>
-  
-  <img src="hands.png" height="auto" width="250">
-  
-  <p style="
-    font-size: 1.15em;
-    max-width: 600px;
-    margin: 0.5em auto 2em;
-    line-height: 1.5;
-  ">
-    Your blog for practical insights into modern programming, 
-    data science, and cutting-edge technology topics.
-  </p>
-  
-  <a href="posts.html" title="View Posts" aria-label="View Posts" class="btn btn-lg btn-primary">Blog Posts</a>
+:::: {.home-shell}
 
-  <p style="
-    font-size: 1.15em;
-    margin-top: 1.5em;
-    margin-bottom: 2em;
-    color: #555;
-  ">
-    Explore, learn, and share your thoughts!
-  </p>
+::: {.home-hero}
+
+::: {.home-intro}
+
+<p class="home-eyebrow">Statistics · Software · Open source</p>
+
+# Practical data science, thoughtfully built
+
+I’m Maciej Nasiński. I write about statistics, machine learning, AI, and building reliable software with R and Python.
+
+<div class="home-actions">
+<a class="btn btn-primary btn-lg" href="posts.html">Browse the posts</a>
+<a class="btn btn-outline-primary btn-lg" href="projects.html">Explore projects</a>
 </div>
-```
+
+:::
+
+::: {.home-portrait-wrap}
+<img src="myphoto.jpg" class="home-portrait" alt="Portrait of Maciej Nasiński">
+:::
+
+:::
+
+::: {.home-section}
+
+## Latest writing
+
+Recent articles on machine learning, statistical graphics and building AI-assisted software.
+
+::: {#latest-writing-listing}
+:::
+
+<p class="home-section-link"><a href="posts.html">Browse all posts <span aria-hidden="true">→</span></a></p>
+
+:::
+
+::: {.home-section}
+
+## Selected projects
+
+:::: {.home-card-grid .home-project-grid}
+
+::: {.home-card}
+### [The Best Pharma Table](projects/tgcontest2025/)
+
+My winning 2025 Posit Table Contest entry, recognised as The Best Pharma Table.
+:::
+
+::: {.home-card}
+### [Educational Story Outcome Predictor](projects/educational_story_encoder/)
+
+A fine-tuned DistilBERT model for classifying educational story annotations.
+:::
+
+::::
+
+<p class="home-section-link"><a href="projects.html">Explore all projects <span aria-hidden="true">→</span></a></p>
+
+:::
+
+::::

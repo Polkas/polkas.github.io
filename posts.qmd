@@ -1,4 +1,6 @@
 ---
+title: "Posts"
+description: "Browse articles on statistics, data science, machine learning, R, Python, open source and AI-assisted software."
 listing:
   contents: posts
   sort: "date desc"
@@ -8,4 +10,10 @@ listing:
   filter-ui: true
 page-layout: full
 title-block-banner: true
+format:
+  html:
+    css: posts.css
+    toc: false
 ---
+
+Use search to find a topic, choose a category from the sidebar, or sort by title and date.
