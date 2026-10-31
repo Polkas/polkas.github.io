@@ -48,21 +48,21 @@ Transformers introduced **self-attention mechanisms** that could:
 
 The original Transformer architecture consists of two main components:
 
-**🔍 Encoders (Understanding):**
+**Encoders (Understanding):**
 
 - **Purpose**: Understand and encode input text into rich representations
 - **Best for**: Classification, analysis, understanding tasks
 - **Examples**: BERT, RoBERTa, DeBERTa
 - **Use cases**: Sentiment analysis, question answering (when given context), text classification
 
-**✍️ Decoders (Generation):**
+**Decoders (Generation):**
 
 - **Purpose**: Generate new text based on learned patterns
 - **Best for**: Text generation, completion, creative tasks
 - **Examples**: GPT family, PaLM, LLaMA
 - **Use cases**: Text completion, creative writing, code generation, chatbots
 
-**🔄 Encoder-Decoder (Translation):**
+**Encoder-Decoder (Translation):**
 
 - **Purpose**: Transform input text into different output text
 - **Best for**: Sequence-to-sequence tasks
@@ -106,22 +106,22 @@ Understanding these concepts is one thing, but building with them requires hands
 
 The course has 13 chapters total (0-12), structured in logical sections:
 
-**📚 Part 1: Foundation (Chapters 1-4)**
+**Part 1: Foundation (Chapters 1-4)**
 1. Introduction: Transformers intuition and pipeline() function
 2. Natural Language Processing and Large Language Models  
 3. Fine-tuning a pretrained model
 4. Sharing models and tokenizers
 
-**🔧 Part 2: Tools & Techniques (Chapters 5-8)**  
-5. The 🤗 Datasets library
-6. The 🤗 Tokenizers library  
+**Part 2: Tools & Techniques (Chapters 5-8)**
+5. The Hugging Face Datasets library
+6. The Hugging Face Tokenizers library
 7. Main NLP tasks (classification, token classification, QA, etc.)
 8. How to ask for help and advanced usage
 
-**🚀 Part 3: Deployment & Sharing (Chapter 9)**
+**Part 3: Deployment & Sharing (Chapter 9)**
 9. Building and sharing demos
 
-**🎯 Part 4: Advanced LLM Topics (Chapters 10-12)**
+**Part 4: Advanced LLM Topics (Chapters 10-12)**
 10. Advanced fine-tuning techniques
 11. Building high-quality datasets  
 12. Building reasoning models

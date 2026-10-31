@@ -1,0 +1,139 @@
+---
+title: "Kumo-Tabular vs. Classical Models: Does Feature Engineering Still Matter?"
+description: "A small benchmark compares pretrained Kumo-Tabular with tuned boosting and standardized LDA, with and without domain-inspired features."
+author: "Maciej Nasinski"
+date: "2026-10-31"
+categories: [machine-learning, statistics, ai]
+resources:
+  - _kumo_benchmark.ipynb
+---
+
+> **TL;DR:** In this small, single-split benchmark, Kumo had the best raw-feature score on five of six datasets. With engineered features, tuned classical models led on Iris and Diabetes, while Kumo remained competitive elsewhere. Treat these as dataset-specific results—not a general ranking—and validate them with repeated splits.
+
+Can a pretrained tabular model compete with modestly tuned classical models? And does adding domain knowledge through feature engineering change the result?
+
+To explore those questions, I compared NVIDIA's Kumo-Tabular with Gradient Boosting, Histogram Gradient Boosting, XGBoost, CatBoost and, for classification, Linear Discriminant Analysis (LDA). Each dataset was evaluated twice: first with its original features, then with a small set of domain-inspired features added.
+
+This is a small, single-split experiment—not a universal ranking. It compares predictive performance under one clearly specified evaluation protocol; it does not establish a general winner.
+
+## What is Kumo-Tabular?
+
+Kumo-Tabular is a pretrained Transformer for structured data. It uses labeled rows as context when predicting targets for new rows. This is a form of **in-context learning**: unlike conventional models, Kumo does not update its weights to fit Iris, Wine, Diabetes or the other benchmark datasets.
+
+According to [NVIDIA's model card](https://huggingface.co/nvidia/Kumo-Tabular) and [technical overview](https://huggingface.co/blog/nvidia/kumo-tabular), Kumo was pretrained on synthetic tables generated from structural causal models. During pretraining, it learned to predict labels for held-out rows given labeled context rows. NVIDIA reports that the Small model saw around 35 million synthetic tables.
+
+At prediction time, Kumo returns class probabilities for classification and 999 quantiles for regression. For regression in this benchmark, I used the median quantile, `q500`, as the point prediction.
+
+The distinction is important: Kumo arrives with substantial pretraining, while the other models learn from each dataset's training split. This comparison asks how they perform under the setup below; it does not equalize compute or training history.
+
+## Benchmark setup
+
+| Task | Datasets | Models |
+|---|---|---|
+| Classification | Iris, Wine, Breast Cancer | Kumo, Gradient Boosting, Histogram Gradient Boosting, XGBoost, CatBoost, LDA |
+| Regression | Diabetes, Air Quality (ozone), Auto MPG | Kumo, Gradient Boosting, Histogram Gradient Boosting, XGBoost, CatBoost |
+
+Each dataset uses one fixed 75/25 train/test split (seed 42), stratified for classification. Raw and engineered scenarios use the same split. Each classical model—including XGBoost, CatBoost and LDA—is tuned with Optuna for **5 trials**, using five-fold cross-validation on the training split only. The selected model is refit on the full training split and evaluated once on the test data. LDA uses standardization inside the cross-validation pipeline, preventing the scaler from learning from validation or test rows. Kumo uses its pretrained weights without dataset-specific weight updates or hyperparameter search.
+
+The engineered scenario adds domain-inspired features: examples include petal area for Iris, horsepower-to-weight for Auto MPG, and BMI multiplied by blood pressure for Diabetes. The same scenario-specific columns are supplied to every model, including Kumo. These features are computed independently for each row; no transformation is learned from the test split. For Auto MPG, the engineered scenario also replaces the numeric origin code with one-hot indicators.
+
+All conclusions are limited to this one held-out split. Its test set is small, so a few predictions can move the results noticeably.
+
+## Results
+
+For classification, the primary metric is **log loss**; lower is better. Kumo's raw-feature accuracy is included for context. The scores below come from one test split; the small differences should not be read as stable rankings.
+
+| Dataset | Raw best (log loss) | Kumo raw accuracy | Engineered best (log loss) | Kumo engineered log loss |
+|---|---|---:|---|---:|
+| Iris | Kumo (0.0571) | 100.0% | LDA (0.0838) | 0.0880 |
+| Wine | Histogram Gradient Boosting (0.0030) | 100.0% | Histogram Gradient Boosting (0.0032) | 0.0191 |
+| Breast Cancer | Kumo (0.0620) | 97.9% | Kumo (0.0586) | 0.0586 |
+
+For regression, the primary metric is **RMSE**; lower is better. Values use each dataset's target units. Since Kumo uses its median prediction (`q500`), its MAE is also shown; lower MAE is naturally aligned with a median forecast.
+
+| Dataset | Raw best (RMSE) | Engineered best (RMSE) | Kumo RMSE, raw → engineered | Kumo MAE, raw → engineered |
+|---|---|---|---:|---:|
+| Diabetes | Kumo (51.77) | Gradient Boosting (51.17) | 51.77 → 52.43 | 39.88 → 40.35 |
+| Air Quality | Kumo (24.17) | Kumo (22.88) | 24.17 → 22.88 | 17.54 → 16.30 |
+| Auto MPG | Kumo (2.13) | Kumo (2.19) | 2.13 → 2.19 | 1.45 → 1.48 |
+
+## What stands out
+
+On the raw features, Kumo had the lowest primary metric on **five of six datasets**; Histogram Gradient Boosting led on Wine. That is a result for this split and this five-trial search, not evidence that Kumo generally wins on raw tables.
+
+With engineered features, Kumo had the lowest observed score on three of six datasets (Breast Cancer, Air Quality and Auto MPG). LDA led on Iris, Histogram Gradient Boosting on Wine, and Gradient Boosting on Diabetes.
+
+Feature engineering did not help Kumo uniformly on this split: its primary score improved on Wine, Breast Cancer and Air Quality, but worsened on Iris, Diabetes and Auto MPG. For example, Iris log loss moved from 0.057 to 0.088, while Air Quality RMSE moved from 24.17 to 22.88. These before/after differences are descriptive, not causal estimates of feature engineering: the engineered scenario adds columns and, for Auto MPG, changes how origin is represented.
+
+Accuracy can conceal probability-quality differences. On Wine, all six models reached 100% accuracy on the raw split, yet their log-loss values differed; in the engineered scenario, five of six did so. Log loss reflects the confidence assigned to predictions, not just whether the top class was correct.
+
+## Limitations
+
+This is a **small benchmark, not a definitive leaderboard**. There is one train/test split per dataset, and test sets contain only 28–143 observations. A few predictions can move a score noticeably. The five-trial tuning budget is deliberately modest and is not exhaustive optimization. Classical models receive dataset-specific fitting and tuning; Kumo instead benefits from external pretraining. The compute budgets are not matched.
+
+The comparison should be validated with repeated splits before making stronger claims. Selecting a best model from several tuned alternatives on one held-out split can make small score differences look more meaningful than they are.
+
+There are also dataset-specific constraints. The Air Quality data uses complete cases only: 111 of 153 rows. Its random split tests interpolation among days from the same season, not forecasting into the future. Auto MPG uses numeric columns; the original car-name field is omitted. Both datasets are loaded from a pinned Rdatasets revision. Timings in the notebook are diagnostic only: Kumo model loading and caching, library overhead, and hardware make them unsuitable as a controlled speed comparison.
+
+## So, does feature engineering still matter?
+
+These results compare a pretrained tabular model with tuned classical baselines under a limited, transparent protocol. They can help motivate which approaches to investigate, but do not establish that one model family is generally superior.
+
+Rather than declaring one universal winner, this experiment raises a practical question: **how much modeling effort is worth spending for a given dataset and use case?** If a pretrained model performs well enough, it may save time. If the task benefits from domain knowledge or requires squeezing out more performance, feature engineering and careful model selection may still pay off.
+
+::: {.callout-tip}
+## Reproduce the benchmark
+
+<a href="_kumo_benchmark.ipynb" download="kumo_benchmark.ipynb">Download the notebook</a> ([view on GitHub](https://github.com/Polkas/polkas.github.io/blob/master/posts/kumo_tabular/_kumo_benchmark.ipynb)) for the code, feature-engineering functions, Optuna search spaces, results, and selected hyperparameters.
+
+It requires Python 3.12+ and internet access for two datasets and the Kumo weights. It runs on CPU or CUDA; lower `N_TRIALS` for a quicker run.
+:::
+
+::: {.callout-note collapse="true"}
+## Primary metric for every model and scenario
+
+Log loss for classification and RMSE for regression; lower is better. `FE change` is engineered minus raw on the same split; negative means the engineered scenario scored lower here, not that feature engineering is universally beneficial.
+
+| Task | Dataset | Model | Raw | Engineered | FE change |
+|---|---|---|---:|---:|---:|
+| Classification | Breast Cancer | CatBoost | 0.0829 | 0.0908 | 0.0079 |
+| Classification | Breast Cancer | Gradient Boosting | 0.0865 | 0.0897 | 0.0032 |
+| Classification | Breast Cancer | Histogram Gradient Boosting | 0.1091 | 0.1034 | -0.0057 |
+| Classification | Breast Cancer | Kumo | 0.0620 | 0.0586 | -0.0034 |
+| Classification | Breast Cancer | LDA | 0.0922 | 0.0674 | -0.0249 |
+| Classification | Breast Cancer | XGBoost | 0.0805 | 0.0746 | -0.0059 |
+| Classification | Iris | CatBoost | 0.1737 | 0.1471 | -0.0266 |
+| Classification | Iris | Gradient Boosting | 0.2184 | 0.1431 | -0.0754 |
+| Classification | Iris | Histogram Gradient Boosting | 0.2907 | 0.2853 | -0.0054 |
+| Classification | Iris | Kumo | 0.0571 | 0.0880 | 0.0309 |
+| Classification | Iris | LDA | 0.0933 | 0.0838 | -0.0095 |
+| Classification | Iris | XGBoost | 0.2370 | 0.1409 | -0.0961 |
+| Classification | Wine | CatBoost | 0.0300 | 0.0215 | -0.0084 |
+| Classification | Wine | Gradient Boosting | 0.0152 | 0.0090 | -0.0062 |
+| Classification | Wine | Histogram Gradient Boosting | 0.0030 | 0.0032 | 0.0003 |
+| Classification | Wine | Kumo | 0.0213 | 0.0191 | -0.0022 |
+| Classification | Wine | LDA | 0.0112 | 0.0388 | 0.0276 |
+| Classification | Wine | XGBoost | 0.0460 | 0.0422 | -0.0038 |
+| Regression | Air Quality | CatBoost | 28.05 | 24.70 | -3.34 |
+| Regression | Air Quality | Gradient Boosting | 26.58 | 25.41 | -1.18 |
+| Regression | Air Quality | Histogram Gradient Boosting | 28.04 | 28.55 | 0.52 |
+| Regression | Air Quality | Kumo | 24.17 | 22.88 | -1.29 |
+| Regression | Air Quality | XGBoost | 26.45 | 23.48 | -2.97 |
+| Regression | Auto MPG | CatBoost | 2.40 | 2.48 | 0.08 |
+| Regression | Auto MPG | Gradient Boosting | 2.50 | 2.48 | -0.02 |
+| Regression | Auto MPG | Histogram Gradient Boosting | 2.45 | 2.45 | -0.00 |
+| Regression | Auto MPG | Kumo | 2.13 | 2.19 | 0.05 |
+| Regression | Auto MPG | XGBoost | 2.55 | 2.52 | -0.03 |
+| Regression | Diabetes | CatBoost | 53.40 | 51.93 | -1.47 |
+| Regression | Diabetes | Gradient Boosting | 52.58 | 51.17 | -1.41 |
+| Regression | Diabetes | Histogram Gradient Boosting | 55.06 | 53.17 | -1.89 |
+| Regression | Diabetes | Kumo | 51.77 | 52.43 | 0.66 |
+| Regression | Diabetes | XGBoost | 56.32 | 54.96 | -1.36 |
+
+:::
+
+## Sources
+
+- [NVIDIA Kumo-Tabular model card](https://huggingface.co/nvidia/Kumo-Tabular)
+- [NVIDIA's description of Kumo's architecture and training](https://huggingface.co/blog/nvidia/kumo-tabular)
+- [Kumo-Tabular API documentation](https://nvidia.github.io/structured-data-models/api/generated/sdm.models.KumoTabular.html)
