@@ -4,6 +4,7 @@ description: "A small benchmark compares pretrained Kumo-Tabular with tuned boos
 author: "Maciej Nasinski"
 date: "2026-10-31"
 categories: [machine-learning, statistics, ai]
+image: main.png
 resources:
   - _kumo_benchmark.ipynb
 ---
@@ -20,11 +21,23 @@ This is a small, single-split experiment—not a universal ranking. It compares 
 
 Kumo-Tabular is a pretrained Transformer for structured data. It uses labeled rows as context when predicting targets for new rows. This is a form of **in-context learning**: unlike conventional models, Kumo does not update its weights to fit Iris, Wine, Diabetes or the other benchmark datasets.
 
-According to [NVIDIA's model card](https://huggingface.co/nvidia/Kumo-Tabular) and [technical overview](https://huggingface.co/blog/nvidia/kumo-tabular), Kumo was pretrained on synthetic tables generated from structural causal models. During pretraining, it learned to predict labels for held-out rows given labeled context rows. NVIDIA reports that the Small model saw around 35 million synthetic tables.
+According to [NVIDIA's model card](https://huggingface.co/nvidia/Kumo-Tabular) and [technical overview](https://huggingface.co/blog/nvidia/kumo-tabular), Kumo-Tabular was pretrained entirely on synthetic tables generated from structural causal models. During pretraining, it learned to predict labels for held-out rows given labeled context rows. NVIDIA reports that the Small model used here saw around 35 million synthetic tables.
 
 At prediction time, Kumo returns class probabilities for classification and 999 quantiles for regression. For regression in this benchmark, I used the median quantile, `q500`, as the point prediction.
 
 The distinction is important: Kumo arrives with substantial pretraining, while the other models learn from each dataset's training split. This comparison asks how they perform under the setup below; it does not equalize compute or training history.
+
+## Does synthetic pretraining prevent leakage?
+
+If NVIDIA's description applies to this checkpoint, synthetic pretraining reduces concern that the model directly memorized real benchmark rows during pretraining. It is not, however, an independent audit or a guarantee that an evaluation is leakage-free.
+
+In this notebook, Kumo receives training labels as context, not held-out test labels, and the classical models are tuned on training folds only. Even so, related or duplicate records crossing a split, features containing future information, or repeatedly choosing models based on test scores can make results optimistic. Appropriate time- or group-based splits and a genuinely held-out final evaluation still matter.
+
+## What about relational databases?
+
+The Kumo family also includes [Kumo-Relational](https://huggingface.co/nvidia/Kumo-Relational), a separate pretrained model designed for related tables. For example, a churn prediction can use customers, orders and products linked by keys: the model exchanges information across those relationships through graph-based message passing. This is particularly relevant when predictive signals span tables and can reduce the need to manually flatten a database or build aggregates.
+
+NVIDIA also describes Kumo-Relational as pretrained on synthetic relational data; the **35 million tables** figure above refers specifically to Kumo-Tabular Small. The relational model still requires appropriate tables, relationships and prediction-time cutoffs. Our notebook evaluates only Kumo-Tabular on flat, single-table datasets, so its results do not establish how Kumo-Relational performs on a database.
 
 ## Benchmark setup
 
@@ -137,3 +150,5 @@ Log loss for classification and RMSE for regression; lower is better. `FE change
 - [NVIDIA Kumo-Tabular model card](https://huggingface.co/nvidia/Kumo-Tabular)
 - [NVIDIA's description of Kumo's architecture and training](https://huggingface.co/blog/nvidia/kumo-tabular)
 - [Kumo-Tabular API documentation](https://nvidia.github.io/structured-data-models/api/generated/sdm.models.KumoTabular.html)
+- [NVIDIA's Kumo-Relational overview](https://huggingface.co/blog/nvidia/kumo-relational)
+- [Kumo-Relational API documentation](https://nvidia.github.io/structured-data-models/api/generated/sdm.models.KumoRelational.html)
