@@ -30,10 +30,12 @@ comments: false
 
 I’m Maciej Nasiński. I write about statistics, machine learning, AI, and building reliable software with R and Python.
 
+```{=html}
 <div class="home-actions">
 <a class="btn btn-primary btn-lg" href="posts.html">Browse the posts</a>
 <a class="btn btn-outline-primary btn-lg" href="projects.html">Explore projects</a>
 </div>
+```
 
 :::
 
