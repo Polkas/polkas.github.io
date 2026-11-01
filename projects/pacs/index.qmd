@@ -119,4 +119,4 @@ The [**pacs**](https://CRAN.R-project.org/package=pacs) package underpins **rdev
 
 ### Try It Out
 
-Explore **rdevdash** live at [**polkas.shinyapps.io/rdevdash**](https://polkas.shinyapps.io/rdevdash/) to see how it can optimize your R package development workflow. Whether you’re a solo developer or managing multiple packages, **rdevdash** offers the tools you need to stay on top of version control, CRAN checks, and usage trends—so you can focus more on creating and maintaining high-quality R packages, and less on manual tracking or guesswork.
+Explore [**rdevdash live**](https://01a1932c-d871-0a30-8ab8-3098d76f9047.share.connect.posit.cloud/) to see how it can optimize your R package development workflow. Whether you’re a solo developer or managing multiple packages, **rdevdash** offers the tools you need to stay on top of version control, CRAN checks, and usage trends—so you can focus more on creating and maintaining high-quality R packages, and less on manual tracking or guesswork.
