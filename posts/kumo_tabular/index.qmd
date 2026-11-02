@@ -1,6 +1,6 @@
 ---
 title: "Kumo-Tabular vs XGBoost, CatBoost and LDA: Does Feature Engineering Still Matter?"
-description: "A small benchmark compares pretrained Kumo-Tabular with tuned boosting and standardized LDA, with and without domain-inspired features."
+description: "Kumo-Tabular vs tuned boosting and LDA: a small benchmark, plus why data preparation, interpretability and serving cost still matter."
 author: "Maciej Nasinski"
 date: "2026-10-31"
 categories: [machine-learning, statistics, ai]
@@ -9,13 +9,15 @@ resources:
   - _kumo_benchmark.ipynb
 ---
 
-> **TL;DR:** In this small, single-split benchmark, Kumo had the best raw-feature score on five of six datasets. With engineered features, tuned classical models led on Iris and Diabetes, while Kumo remained competitive elsewhere. Treat these as dataset-specific results—not a general ranking—and validate them with repeated splits.
+> **TL;DR:** In this small, single-split benchmark, Kumo had the best raw-feature score on five of six datasets. With engineered features, tuned classical models led on Iris and Diabetes, while Kumo remained competitive elsewhere. Treat these as dataset-specific results—not a general ranking—and validate them with repeated splits. Better data, an understandable model or cheaper predictions may matter more than a small improvement in the score.
 
 Can a pretrained tabular model compete with modestly tuned classical models? And does adding domain knowledge through feature engineering change the result?
 
 To explore those questions, I compared NVIDIA's Kumo-Tabular with Gradient Boosting, Histogram Gradient Boosting, XGBoost, CatBoost and, for classification, Linear Discriminant Analysis (LDA). Each dataset was evaluated twice: first with its original features, then with a small set of domain-inspired features added.
 
 This is a small, single-split experiment—not a universal ranking. It compares predictive performance under one clearly specified evaluation protocol; it does not establish a general winner.
+
+There is also a bigger question behind the comparison: is choosing a more powerful model actually the next useful step? In practice, I might ask for better data, fit a regression I can explain, or choose a model that is cheap enough to serve millions of predictions. The benchmark cannot settle those decisions, but they belong in the discussion.
 
 ## What is Kumo-Tabular?
 
@@ -38,6 +40,20 @@ In this notebook, Kumo receives training labels as context, not held-out test la
 The Kumo family also includes [Kumo-Relational](https://huggingface.co/nvidia/Kumo-Relational), a separate pretrained model designed for related tables. For example, a churn prediction can use customers, orders and products linked by keys: the model exchanges information across those relationships through graph-based message passing. This is particularly relevant when predictive signals span tables and can reduce the need to manually flatten a database or build aggregates.
 
 NVIDIA also describes Kumo-Relational as pretrained on synthetic relational data; the **35 million tables** figure above refers specifically to Kumo-Tabular Small. The relational model still requires appropriate tables, relationships and prediction-time cutoffs. Our notebook evaluates only Kumo-Tabular on flat, single-table datasets, so its results do not establish how Kumo-Relational performs on a database.
+
+## Before choosing a model, look at the data
+
+These datasets arrive as ready-to-use tables. Most real projects do not. Before comparing algorithms, I would check what each row represents, how the target was recorded, whether units are consistent, and which records are missing or duplicated. A model can learn an error in the data just as readily as a useful pattern.
+
+At the beginning of a project, a data scientist may still be able to change what gets collected. That is worth discussing with the people who own the process:
+
+- **Ask for more useful observations.** If failures or particular customer groups are underrepresented, collect more of those cases or improve their labels. More rows from the same narrow sample will not necessarily fix the problem.
+- **Look for missing information, not just missing values.** Weather, product attributes or historical activity from another source might explain variation that the current table cannot. Check coverage, permissions, join keys and units before adding it. A one-to-many join can accidentally duplicate observations.
+- **Keep the prediction time in view.** An extra column is only useful for deployment if it will be available when the prediction is made. Historical joins need the information available at that time, not a later revision.
+
+Adding a second source is different from deriving petal area from two existing columns: it can bring genuinely new information. Neither approach guarantees an improvement, so both need evaluation on an appropriate held-out split. Any learned imputation, scaling or encoding must be fitted on training data only.
+
+This benchmark keeps the observations fixed and changes their representation. It does **not** test whether collecting more data, improving labels or enriching the tables would help more than switching models. Even "raw" here means the prepared input columns, not untouched source data.
 
 ## Benchmark setup
 
@@ -80,6 +96,26 @@ Feature engineering did not help Kumo uniformly on this split: its primary score
 
 Accuracy can conceal probability-quality differences. On Wine, all six models reached 100% accuracy on the raw split, yet their log-loss values differed; in the engineered scenario, five of six did so. Log loss reflects the confidence assigned to predictions, not just whether the top class was correct.
 
+## When explaining the result matters more
+
+The best predictive score is not always the objective. Sometimes I need to explain how an outcome is associated with a few measured variables, report uncertainty, or give someone a model they can inspect without another explanation tool.
+
+For that task, a carefully specified **linear regression can be a better choice** than Kumo or boosting, even if its prediction error is higher. Its coefficients describe conditional associations in the chosen model, and its assumptions can be examined with diagnostics. For a binary outcome, logistic regression offers a similar starting point. Linear models can also be competitive predictors when the signal is simple or the sample is small.
+
+That does not make a coefficient a causal effect. Confounding, correlated predictors, measurement error and model misspecification can all undermine an interpretation. Explaining why a fitted model produced a prediction is also different from explaining why something happened in the world. Feature-attribution tools for complex models do not remove that distinction.
+
+I did not include linear regression in this benchmark; LDA is a classifier, not a substitute for that comparison. These tables therefore say nothing about whether a well-specified regression would be adequate for an explanatory task.
+
+## A good notebook result still has to fit the service
+
+When I worked at Allegro with massive amounts of metadata, we needed simpler models that were fast to compute. At that scale, the cost of each prediction mattered. A small gain in an offline metric was not the whole decision.
+
+The same trade-off matters in high-volume services such as recommendation or ranking at Netflix or Amazon—not as a claim about their particular model choices, but as a deployment constraint. How many items need scoring, how often, and within what latency budget?
+
+Kumo avoids dataset-specific weight training, but that does not make inference free. Running a Transformer over labeled context is more computationally demanding than evaluating a small linear model. Its practical cost relative to a particular boosting model depends on context size, hardware, batching and caching. Pretraining shifts work away from fitting each new dataset; it does not eliminate prediction-time work.
+
+Before deploying it, I would measure throughput, memory use, cost per prediction and tail latency under realistic load, with model loading separated from warm inference. Batch scoring might make a heavier model entirely practical; a strict per-request latency budget might favor a simpler one. **This notebook does not measure those production trade-offs**, so its accuracy results are not evidence that Kumo is either suitable or unsuitable for a high-demand service.
+
 ## Limitations
 
 This is a **small benchmark, not a definitive leaderboard**. There is one train/test split per dataset, and test sets contain only 28–143 observations. A few predictions can move a score noticeably. The five-trial tuning budget is deliberately modest and is not exhaustive optimization. Classical models receive dataset-specific fitting and tuning; Kumo instead benefits from external pretraining. The compute budgets are not matched.
@@ -92,7 +128,9 @@ There are also dataset-specific constraints. The Air Quality data uses complete 
 
 These results compare a pretrained tabular model with tuned classical baselines under a limited, transparent protocol. They can help motivate which approaches to investigate, but do not establish that one model family is generally superior.
 
-Rather than declaring one universal winner, this experiment raises a practical question: **how much modeling effort is worth spending for a given dataset and use case?** If a pretrained model performs well enough, it may save time. If the task benefits from domain knowledge or requires squeezing out more performance, feature engineering and careful model selection may still pay off.
+Kumo looks like a useful candidate when I have a prepared table and want a strong predictive starting point without a long tuning exercise. It does not remove the need to question the data, ask for better observations, or decide what the model is for.
+
+Rather than declaring one universal winner, I would ask: **what is the next useful improvement for this project?** It could be a new data source, a more informative feature, a regression whose assumptions I can defend, or a faster model that fits the service budget. Sometimes it will be Kumo. The benchmark score is one input to that decision, not the decision itself.
 
 ::: {.callout-tip}
 ## Reproduce the benchmark
