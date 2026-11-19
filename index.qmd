@@ -40,7 +40,7 @@ I’m Maciej Nasiński. I write about statistics, machine learning, AI, and buil
 :::
 
 ::: {.home-portrait-wrap}
-<img src="myphoto.jpg" class="home-portrait" alt="Portrait of Maciej Nasiński">
+<img src="profile.jpg" class="home-portrait" alt="Portrait of Nicolaus Copernicus">
 :::
 
 :::
