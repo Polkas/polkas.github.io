@@ -1,6 +1,6 @@
 ---
 title: "Vibe Coding: Adopting the Exponential Future of AI-Assisted Development"
-description: "A practical approach to vibe coding with AI assistants: modular design, test-driven validation, recommended tools and models, and what to do when it goes wrong."
+description: "A 2025 account of AI-assisted prototyping: modular design, testing, dated tool impressions, and lessons about validating generated code."
 format: html
 author: "Maciej Nasinski"
 date: "2025-09-10"
@@ -11,9 +11,11 @@ image: main.png
 
 ## TL;DR
 
-Vibe coding, highlighted by Andrej Karpathy, means "fully giving in to the vibes" and letting AI generate code while you guide it with natural language. My practical approach involves breaking solutions into modules, demanding unit tests for everything, suggesting specific patterns, intervening when needed, and maintaining a living design document with diagrams. Select the appropriate AI model (Claude excels in programming). The key is maintaining architectural control while adopting AI's capabilities. I recently built a solution prototype in 8 working hours that would have traditionally taken over 100 working hours. We're no longer writing code; we're orchestrating solutions at a higher level. Vibe coding, as Karpathy envisioned it, isn't about becoming passive consumers of AI-generated code. It's about ascending to a higher level of abstraction where we can focus on what truly matters: solving problems, creating value, and building systems that work.
+> **Update (November 2026):** This post records my experience and tool landscape in September 2025. For a follow-up on delivering maintainable products with AI, see [Agents Are Easy. Products Are Still Hard.](../agents/). The tool names and model impressions below are historical, not current recommendations.
 
-**Please be ready that I will time to time update this blog post, as the topic is very dynamic**
+Vibe coding, highlighted by Andrej Karpathy, describes using natural-language direction to guide AI-generated code. My approach is to break work into modules, test the output, provide architectural context, intervene when needed, and keep design documentation current. In one project, I built a prototype in eight working hours. My estimate that the same prototype would have taken more than 100 hours without AI was not a controlled comparison, and it did not include production hardening or long-term maintenance. The central lesson is not a guaranteed speedup: AI can make a prototype easier to produce, while engineering judgment is still needed to deliver the right product.
+
+The tools and practices in this field change quickly, so treat specific product examples below as a snapshot from when I wrote the post.
 
 <div style="display: flex; justify-content: center;">
 <a href="https://polkas.github.io/posts/vibe/"><img src="main.png" alt="Main Vibe Coding image" height="400px" width="auto"></a>
@@ -107,7 +109,7 @@ I insist on unit tests and performance checks for every bigger piece of generate
 
 Before moving forward, I ensure these tests pass. This practice has saved me countless hours. As systems grow in complexity, it's remarkably easy for new code to break existing functionality. The testing layer acts as a safety net, preventing the accumulation of technical debt that could derail the entire vibe.
 
-With the design document and comprehensive unit testing in place, the AI can effectively debug itself when issues arise, creating a self-correcting development cycle.
+With a design document and tests in place, an AI assistant can help investigate failures and suggest fixes. Passing tests is useful evidence, not proof of correctness; review the change and add tests for the behavior you need.
 
 ### 3. Living Design Documentation with Visual Diagrams
 
@@ -141,13 +143,15 @@ The key is quick decision-making: usually within less than an hour, I can determ
 
 This might seem wasteful, but in vibe coding, the cost of iteration is so low that perfectionism through restart becomes a viable strategy. It's better to spend two hours getting it right than four hours fixing something that was wrong from the beginning.
 
-## The Vibe Coding Toolbox: My Tested Recommendations
+## The Vibe Coding Toolbox: My September 2025 Snapshot
 
-| Tool | Best For | My Experience | Key Strength |
-|------|----------|---------------|--------------|
-| **GitHub Copilot (Agent)** | Full project orchestration | Primary choice - excellent context | Project-wide understanding |
-| **Claude** | Complex architectural decisions | Superior for programming logic | Deep reasoning ability |
-| **Cursor** | VS Code alternative with AI | Great for quick iterations | Seamless IDE integration |
+These are personal impressions from September 2025, not a current ranking. Products and model capabilities change quickly; check the vendors' current documentation and evaluate tools on your own tasks.
+
+| Tool | How I Used It Then | My Impression at the Time |
+|------|-------------------------|---------------------------|
+| **GitHub Copilot (Agent)** | Project-wide coding tasks | My primary assistant in VS Code | Repository context |
+| **Claude** | Design discussions and coding tasks | I found it useful for complex reasoning | Long-form analysis |
+| **Cursor** | AI-assisted editing in a separate editor | Useful for quick iterations | Integrated editor workflow |
 
 and more ...
 
@@ -159,17 +163,17 @@ and more ...
 
 ## The Model Matters: Real-World Experience
 
-Not all AI models are created equal for vibe coding. Through extensive testing with my team, we've developed strong preferences:
+Models vary by task, version, and setup. The following reflects our informal impressions at the time, not a controlled comparison or a current model recommendation:
 
-- **Claude**: Me and my friends have a feeling Claude is better for programming, excellent for complex architectural decisions and understanding of requirements
-- **GPT**: Strong for generating boilerplate and handling well-established patterns
-- **Specialized models**: Sometimes, smaller, fine-tuned models excel at specific domains
+- **Claude**: We often preferred it for complex programming discussions and requirements.
+- **GPT models**: We found them useful for boilerplate and familiar patterns.
+- **Specialized models**: Smaller, fine-tuned models may suit particular domains.
 
-The key is matching the model to the task at hand, not assuming one size fits all.
+The useful practice is to compare candidate tools on representative tasks rather than assume one model is best for every job.
 
-## Real Metrics: A 10x Improvement Story
+## One Prototype: An Anecdotal Comparison
 
-Let me share concrete numbers: I recently developed an R package prototype in 8 working hours, which would have taken me at least 100+ working hours using a traditional approach. This 10x improvement isn't theoretical; it's the actual result of applying the strategies I've outlined above.
+I developed an R package prototype in eight working hours. I estimated that building the same prototype without AI would have taken more than 100 hours, but I did not measure that counterfactual or compare equivalent deliverables. This was one experience, not a controlled study or evidence of a general 10x productivity gain. The estimate also excludes the additional work required to make a product maintainable and ready for users.
 
 ## Team Collaboration in the Vibe Coding Era
 
@@ -245,7 +249,7 @@ In my opinion, the most valuable developers will excel at:
 
 As we adopt vibe coding, we're not just adopting new tools; we're participating in the evolution of software development itself. The exponential improvements in AI capabilities suggest that this is just the beginning.
 
-The developers who thrive in this new paradigm won't be those who resist the change or those who unquestioningly accept all AI output. They'll be the ones who find the sweet spot: leveraging AI's exponential capabilities while maintaining the judgment, creativity, architectural vision, and hands-on skills that make great software possible.
+The developers who benefit from these tools will still need judgment, creativity, architectural vision, and hands-on skills to assess the output and make good trade-offs.
 
 ## Conclusion
 
@@ -255,7 +259,7 @@ We're no longer writing code; we're orchestrating solutions at a higher level of
 
 My approach, with its emphasis on modularity, testing, visual documentation, and active guidance, may seem to add friction to the pure "vibe." But I've found that they actually enable me to "ride the exponential wave more confidently". They're the surfboard that lets me navigate the powerful currents of AI-assisted development.
 
-The 10x productivity gains are real, but they require discipline, systematic thinking, and continuous learning. Those who master this balance will thrive; those who treat AI as magic will struggle with increasingly complex technical debt.
+My prototype experience was encouraging, but it does not establish a general productivity gain. Use AI where it helps, validate its output, and account for review, integration, and maintenance when estimating delivery.
 
 *"The best code is no code at all. The next best? Code that writes itself while you focus on what it should accomplish."*
 
@@ -269,10 +273,10 @@ As we continue exploring this frontier, remember: the future of programming isn'
 
 1. Karpathy, A., Personal blog and Twitter discussions on vibe coding methodology. Available at: https://karpathy.ai
 2. Vaswani, A., et al. (2017). "Attention Is All You Need." Advances in Neural Information Processing Systems, 30.
-3. GitHub. (2024). "GitHub Copilot Documentation: Agent Mode and Advanced Features." GitHub Docs. Available at: https://docs.github.com/copilot
-4. Anthropic. (2024). "Claude 4.0 Documentation for Developers." Available at: https://docs.anthropic.com
-5. OpenAI. (2024). "GPT-4.1 Technical Documentation and Best Practices." Available at: https://platform.openai.com/docs
-6. Cursor. (2024). "Cursor IDE: AI-First Code Editor Documentation." Available at: https://cursor.sh/docs
+3. GitHub Copilot documentation. Available at: https://docs.github.com/copilot
+4. Anthropic documentation. Available at: https://docs.anthropic.com
+5. OpenAI documentation. Available at: https://platform.openai.com/docs
+6. Cursor documentation. Available at: https://docs.cursor.com/
 7. Udemy Blog. (2025). "What is vibe coding." Available at: https://blog.udemy.com/what-is-vibe-coding/
 8. Various contributors. (2024). "Vibe Coding." Wikipedia. Available at: https://en.wikipedia.org/wiki/Vibe_coding
 9. ASHISH, Vaswani. Attention is all you need. Advances in neural information processing systems, 2017, 30: I. https://research.google/pubs/attention-is-all-you-need/
