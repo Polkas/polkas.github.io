@@ -16,7 +16,7 @@ filters:
 
 **TL;DR:** The 1,002 sampled coupons follow two arithmetic patterns. No subset sums to any of the tested targets, 100, 200, ..., 1,000. This result concerns the sample and does not establish that the entire lottery was unwinnable.
 
-**Updated 2025-01-05**
+**Updated 2026-11-23**
 
 ## Introduction
 
@@ -143,12 +143,6 @@ Sorted table of frequencies:
 sort(table(coupons))
 ```
 
-Histrogram might be helpful to find certain patterns:
-
-```{webr-r}
-hist(coupons, breaks = 100)
-```
-
 **The observed values fit two arithmetic patterns:**
 
 - multiples of 13;
@@ -163,6 +157,37 @@ rep2_13 <- 165 + (13 * 0:45)
 
 all(coupons %in% c(rep13, rep2_13))
 ```
+
+A frequency plot at the **exact coupon values**, rather than a binned histogram, makes the two families visible. Blue bars mark Group A (multiples of 13); orange bars mark Group B (165 plus a non-negative multiple of 13). Dashed lines mark the tested prize targets, including those above the largest observed coupon value.
+
+```{webr-r}
+#| fig-cap: "Sampled coupon frequencies by arithmetic family; dashed lines mark targets from 100 to 1,000 PLN."
+
+coupon_counts <- table(coupons)
+coupon_values <- as.integer(names(coupon_counts))
+frequencies <- as.integer(coupon_counts)
+family_colors <- c(A = "#0072B2", B = "#D55E00")
+coupon_family <- ifelse(coupon_values %in% rep13, "A", "B")
+
+plot(
+  coupon_values, frequencies, type = "n",
+  xlim = c(0, 1020), ylim = c(0, max(frequencies) * 1.15),
+  xlab = "Coupon value (PLN)", ylab = "Number of sampled coupons",
+  xaxt = "n", yaxs = "i"
+)
+axis(1, at = seq(0, 1000, 100))
+abline(v = seq(100, 1000, 100), lty = 2, col = "grey65")
+segments(
+  coupon_values, 0, coupon_values, frequencies,
+  col = family_colors[coupon_family], lwd = 3
+)
+legend(
+  "topright", legend = c("A: 13k", "B: 165 + 13k"),
+  col = family_colors, lwd = 3, bty = "n"
+)
+```
+
+The values also permit **near-misses**: $26 + 78 = 104$, just above 100, and $195 + 104 = 299$, just below 300. All four coupon values occur in the sample. Such combinations can feel tantalizingly close even when an exact target is impossible. The plot shows individual-value frequencies, not frequencies of subset sums; these examples illustrate the near-miss psychology, but do not by themselves establish deliberate psychological engineering.
 
 ### Single Knapsack Problem
 
@@ -228,9 +253,79 @@ a contradiction. Therefore no such selection exists. $\square$
 
 The restriction on $n$ matters: the proof does not rule out larger multiples of 100. For example, the sample contains more than one 650 coupon, and $650 + 650 = 1{,}300$. The argument applies to any number of coupons from the two families, but the sample does not show that every coupon issued in the lottery belonged to those families.
 
+### From Knapsack to the Frobenius Coin Problem
+
+The knapsack code searches a finite inventory (here expanded by replication). The proof instead allows arbitrarily many coupons from the two families. Every such total has the form $13K + 165C$, and conversely every such total can be made from the full families because $13 \in A$ and $165 \in B$. This is a textbook instance of the **[Frobenius coin problem](https://en.wikipedia.org/wiki/Coin_problem)**: which integers cannot be formed from non-negative integer combinations of given denominations?
+
+For two coprime denominations, Sylvester's formula gives the largest impossible integer:
+
+$$
+g(13,165) = 13 \times 165 - 13 - 165 = \mathbf{1967}.
+$$
+
+Thus 1,967 is impossible, while **every integer from 1,968 onward** can be expressed as $13K + 165C$. This is an exact threshold for the unlimited two-family model, not for the finite sample: in particular, the sample contains no 13 PLN coupon. Nor does it mean every smaller number is impossible; 1,300 is one counterexample.
+
+The modular proof is also a simple instance of the residue-table method associated with [Alfred Brauer and James E. Shockley, *On a problem of Frobenius* (1962)](https://doi.org/10.1515/crll.1962.211.215). For each remainder $r$ modulo 13, let $w_r$ be the smallest representable total with that remainder. Since adding 13 preserves the remainder, a non-negative integer $s$ with remainder $r$ is representable exactly when $s \geq w_r$. The largest gap is therefore $\max_r w_r - 13$. Here, $165C$ for $C = 0,\ldots,12$ visits every remainder once, giving $\max_r w_r = 165 \times 12 = 1980$ and again $g = 1980 - 13 = 1967$.
+
+For the round-hundred targets, $100n \equiv 165n \pmod{13}$, so the smallest permissible number of Group B coupons is $C_{\min} = n \bmod 13$. This compact table is the proof in numbers:
+
+| $n$ | Target $100n$ | $100n \bmod 13$ | $C_{\min}$ | Minimum total $165C_{\min}$ | Overshoot $165C_{\min} - 100n$ |
+|---:|---:|---:|---:|---:|---:|
+| 1 | 100 | 9 | 1 | 165 | +65 |
+| 2 | 200 | 5 | 2 | 330 | +130 |
+| 3 | 300 | 1 | 3 | 495 | +195 |
+| 4 | 400 | 10 | 4 | 660 | +260 |
+| 5 | 500 | 6 | 5 | 825 | +325 |
+| 6 | 600 | 2 | 6 | 990 | +390 |
+| 7 | 700 | 11 | 7 | 1155 | +455 |
+| 8 | 800 | 7 | 8 | 1320 | +520 |
+| 9 | 900 | 3 | 9 | 1485 | +585 |
+| 10 | 1000 | 12 | 10 | 1650 | +650 |
+| 11 | 1100 | 8 | 11 | 1815 | +715 |
+| 12 | 1200 | 4 | 12 | 1980 | +780 |
+| 13 | 1300 | 0 | 0 | 0 | -1300 (no overshoot) |
+
+For rows 1 through 12, even the smallest total with the required remainder is too large; adding any Group A value only increases it. At $n = 13$, no Group B coupon is required, and $13K = 1300$ has the solution $K = 100$. This last row marks the boundary of the argument, not another prize target.
+
+### Breaking the Trap: Hypothetical "Key" or "Joker" Coupons
+
+How could a player win if the common coupons followed these patterns? Under the exact-sum rules analyzed here, a winning selection for 100 through 1,000 would need **at least one coupon outside $A \cup B$**. Such a coupon could act as a "key" or "joker" by breaking the residue restriction.
+
+For example, a hypothetical 35 PLN coupon has $35 \equiv 9 \pmod{13}$, but is neither a multiple of 13 nor at least 165, so it belongs to neither family. It would allow:
+
+$$
+65 + 35 = 100, \qquad 165 + 35 = 200.
+$$
+
+Both 65 and 165 occur in the sample; 35 does not. Notice that being outside the families is not the same as having a new remainder: 35 has the same remainder as Group B, but breaks its minimum-value constraint.
+
+An organizer could, in principle, print 99.9% of coupons within the two families and tightly control a remaining 0.1% of key coupons. **That split and mechanism are illustrative, not verified facts about Kasa Romana.** These examples show how winning could coexist with an unwinnable sample; they do not prove that a rare winning batch existed or that BezKanalu simply missed it. An outside-family coupon is necessary under this model, but is not automatically sufficient to win.
+
+### What Do Zero Keys in 1,002 Coupons Tell Us?
+
+Define a "key candidate" as any coupon outside $A \cup B$. The sample contains zero. If the packets were **independent, representative draws from a production run with a constant key-candidate probability $p$**, the chance of observing none in $N = 1002$ draws would be $(1-p)^{1002}$.
+
+Setting that probability to 0.05 gives the exact one-sided 95% binomial upper confidence limit:
+
+$$
+p_{\mathrm{upper}} = 1 - 0.05^{1/1002}
+\approx 0.002985 = 0.2985\%.
+$$
+
+The **[rule of three](https://en.wikipedia.org/wiki/Rule_of_three_(statistics))** gives the convenient approximation:
+
+$$
+p_{\mathrm{upper}} \approx \frac{3}{N}
+= \frac{3}{1002} \approx \mathbf{0.3\%}.
+$$
+
+Under those assumptions, the upper limit is about **3 key candidates per 1,000 packets**. This is a confidence bound, not an estimate of $p$, a guarantee, or a probability of winning: not every outside-family coupon necessarily completes a valid combination. For illustration, if $p = 0.1\%$, the chance of seeing no key candidates in 1,002 draws would still be $(0.999)^{1002} \approx 36.7\%$.
+
+The collection description does not establish random sampling across the whole production run. If packets came from a few stores or production batches, or keys were distributed unevenly, the binomial assumptions could fail. The numerical bound is therefore conditional; it cannot establish lottery-wide odds from this collection alone.
+
 ## Conclusion
 
-The knapsack analysis and the modular arithmetic proof both rule out the tested targets of 100 through 1,000 for the sampled coupons. The proof is stronger in one respect: it does not depend on the number of coupons selected, provided their values follow the two stated patterns. Neither result establishes that the same patterns held for every coupon in the lottery.
+The knapsack analysis and the modular arithmetic proof both rule out the tested targets of 100 through 1,000 for the sampled coupons. The residue table explains why, and the Frobenius number of 1,967 places that obstruction in a broader unlimited-coin model. Outside-family coupons could break the trap, but their existence and distribution are not established here. Zero such coupons in 1,002 observations gives an approximately 0.3% upper confidence bound only under the stated sampling assumptions, not a measured chance of winning.
 
 ## Related posts
 
