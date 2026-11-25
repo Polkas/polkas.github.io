@@ -1,0 +1,514 @@
+---
+title: "A Gentle Introduction to Stan with rstan (and How It Compares with JAGS)"
+description: "A beginner-friendly first Stan model in R: the three Stan blocks, fitting with rstan, reading Rhat and n_eff, the same model in JAGS, and why Stan does not run in webR."
+author: "Maciej Nasinski"
+date: "2026-11-25"
+categories: [statistics, rprogramming]
+image: main.png
+image-alt: "The official Stan logo and wordmark on a white background."
+filters:
+  - webr
+---
+
+## TL;DR
+
+[Stan](https://mc-stan.org/) is a probabilistic programming language: you describe a Bayesian model, and Stan draws samples from its posterior distribution. From R, the classic interface is [**rstan**](https://mc-stan.org/rstan/). This post fits the simplest useful model, the probability of heads for a coin, and then writes the same model in [**JAGS**](https://mcmc-jags.sourceforge.io/) so you can compare the two tools.
+
+Both tools give the same answer on this example, and both match the exact posterior. They differ in how you write models, how they sample, how much setup they need, and which models they handle well.
+
+**Can Stan run in the browser with webR?** Not in practice. rstan turns each model into C++ and compiles it on your computer, and a webR session has no C++ compiler. The Stan and JAGS code in this post was run locally. The interactive cells use base R to calculate the exact answer that both samplers should recover.
+
+![The official [Stan logo](https://github.com/stan-dev/logos). The Stan name and logo are trademarks of NumFOCUS under the direction of the Stan Leadership Body.](main.png){fig-alt="The official Stan logo and wordmark on a white background." fig-align="center" width="85%"}
+
+## The Example: Is This Coin Fair?
+
+We flip a coin 20 times and see 6 heads. Write $y_i = 1$ for heads and $y_i = 0$ for tails. The model is:
+
+$$
+\begin{aligned}
+\theta &\sim \operatorname{Beta}(1, 1), \\
+y_i \mid \theta &\sim \operatorname{Bernoulli}(\theta), \quad i = 1, \dots, 20.
+\end{aligned}
+$$
+
+$\theta$ is the unknown probability of heads. $\operatorname{Beta}(1, 1)$ is a uniform prior: before seeing data, every value between 0 and 1 is equally plausible.
+
+### Conjugacy: The Shortcut That Makes This Example Trivial
+
+This model is deliberately simple. The Beta prior is [conjugate](../conjugate/index.qmd) to the Bernoulli likelihood: updating it with the data leaves us in the same distribution family. With a $\operatorname{Beta}(a, b)$ prior, $h$ heads and $t$ tails, the posterior is simply $\operatorname{Beta}(a+h, b+t)$. Here:
+
+$$
+\begin{aligned}
+\theta \mid y &\sim \operatorname{Beta}(1 + 6,\; 1 + 14) \\
+&= \operatorname{Beta}(7, 15).
+\end{aligned}
+$$
+
+In practice you would not need MCMC for this model. You can calculate the mean and credible interval directly, or generate independent posterior draws with `rbeta(4000, 7, 15)`. No model compilation, warmup or convergence checks are needed for those direct draws. Here, the exact answer acts as a **test**: if Stan and JAGS are set up correctly, their draws should match $\operatorname{Beta}(7, 15)$.
+
+This cell runs in your browser. It computes the exact posterior summaries that we will compare with Stan and JAGS later:
+
+```{webr-r}
+y <- c(0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0)
+heads <- sum(y)
+tails <- length(y) - heads
+
+a_post <- 1 + heads
+b_post <- 1 + tails
+
+round(
+    c(
+        heads = heads,
+        flips = length(y),
+        posterior_mean = a_post / (a_post + b_post),
+        posterior_sd = sqrt(
+            a_post * b_post / ((a_post + b_post)^2 * (a_post + b_post + 1))
+        ),
+        lower_2.5 = qbeta(0.025, a_post, b_post),
+        median = qbeta(0.5, a_post, b_post),
+        upper_97.5 = qbeta(0.975, a_post, b_post)
+    ),
+    3
+)
+```
+
+The posterior mean is about 0.318, and the central 95% credible interval runs from about 0.146 to 0.522. The data suggest a coin that lands heads less often than half the time, but 20 flips leave a lot of uncertainty.
+
+## What Stan Does
+
+Stan was created by Andrew Gelman, Bob Carpenter and colleagues, and is named after [Stanislaw Ulam](https://en.wikipedia.org/wiki/Stanislaw_Ulam), one of the inventors of the Monte Carlo method. Its default sampler is the **No-U-Turn Sampler (NUTS)**, an adaptive form of Hamiltonian Monte Carlo (HMC).
+
+You don't need the mathematics of HMC to start. The intuition is enough: instead of making small random steps, HMC uses the **gradient** of the log posterior to make long, informed moves through parameter space. This often gives less autocorrelated draws than random-walk samplers or basic Gibbs updates, especially when there are many correlated parameters. Stan computes those gradients automatically. This is **sampling, not optimization**: the goal is to explore the posterior, not just find its highest point.
+
+The price is that every Stan model is translated to C++ and compiled before it runs.
+
+::: {.callout-note}
+## A problem I hit while writing this post
+
+On macOS with R 4.5, a model compiled, then failed to load with `symbol not found ... tbb::task_scheduler_init`. In my setup the installed rstan/StanHeaders binaries did not match the newer RcppParallel. Reinstalling both from source fixed it:
+
+```r
+install.packages(c("StanHeaders", "rstan"), type = "source")
+```
+
+Your system may differ; check the getting-started guide first.
+:::
+
+## A Stan Program Has Blocks
+
+A Stan program is split into named blocks. 
+For a first model you need only three:
+
+```stan
+data {
+  int<lower=0> N;                    // number of flips
+  array[N] int<lower=0, upper=1> y;  // 1 = heads, 0 = tails
+}
+parameters {
+  real<lower=0, upper=1> theta;      // probability of heads
+}
+model {
+  theta ~ beta(1, 1);                // prior
+  y ~ bernoulli(theta);              // likelihood
+}
+```
+
+::: {.table-responsive}
+
+| Block | What goes there | In this example |
+|---|---|---|
+| `data` | Everything you pass in from R | The number of flips `N` and the outcomes `y` |
+| `parameters` | Unknowns that Stan samples | `theta` |
+| `model` | Priors and likelihood | `beta(1, 1)` and `bernoulli(theta)` |
+
+:::
+
+Three habits to notice:
+
+1. **Every variable has a type.** `int`, `real`, `array[N] int`, and later `vector` and `matrix`. Stan checks types when it compiles the model.
+2. **Constraints are part of the declaration.** `<lower=0, upper=1>` tells Stan that `theta` is a probability. Stan uses this to sample on an unconstrained scale behind the scenes, so it never proposes an invalid value.
+3. **Statements end with a semicolon, and comments start with `//`.**
+
+The `array[N] int` syntax is the current form. Older tutorials write `int y[N];`, which recent versions of Stan no longer accept.
+
+Stan also has optional blocks such as `transformed data`, `transformed parameters` and `generated quantities`. We will add them to the coin example after fitting this simpler version.
+
+## Fitting the Model with rstan
+
+For convenience, keep the Stan program inline as an R string, just as we will do for JAGS. Compile it with `stan_model(model_code = ...)`, then pass the compiled model and a named data list to `sampling()`. The data names must match the `data` block:
+
+```r
+library(rstan)
+options(mc.cores = parallel::detectCores())  # run chains in parallel
+rstan_options(auto_write = TRUE)             # cache the compiled model
+
+stan_code <- "
+data {
+  int<lower=0> N;
+  array[N] int<lower=0, upper=1> y;
+}
+parameters {
+  real<lower=0, upper=1> theta;
+}
+model {
+  theta ~ beta(1, 1);
+  y ~ bernoulli(theta);
+}
+"
+
+y <- c(0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0)
+
+coin_model <- stan_model(model_code = stan_code, model_name = "coin")
+
+fit <- sampling(
+  coin_model,
+  data = list(N = length(y), y = y),
+  chains = 4,
+  iter = 2000,   # per chain, including warmup
+  seed = 123
+)
+
+print(fit, pars = "theta", probs = c(0.025, 0.5, 0.975), digits = 3)
+```
+
+`stan_model()` compiles the model; `sampling()` then runs four Markov chains. By default, the first half of each chain (1,000 iterations here) is **warmup**. During warmup Stan tunes the sampler, and these draws are discarded. That leaves $4 \times 1000 = 4000$ draws. The convenience function `stan(model_code = stan_code, ...)` combines these two steps.
+
+With rstan 2.32.7 (Stan 2.39.0) on my machine, this printed:
+
+```text
+Inference for Stan model: coin.
+4 chains, each with iter=2000; warmup=1000; thin=1;
+post-warmup draws per chain=1000, total post-warmup draws=4000.
+
+       mean se_mean    sd 2.5%  50% 97.5% n_eff  Rhat
+theta 0.317   0.002 0.096 0.15 0.31 0.514  1576 1.002
+```
+
+The posterior mean 0.317 is very close to the exact 0.318. The 95% interval, 0.15 to 0.514, is also close to the exact 0.146 to 0.522; the tails are the hardest part to estimate from a finite sample of draws.
+
+In that local run, compilation plus sampling took about 17 seconds, and almost all of that was compiling C++. Sampling itself took a fraction of a second. These are illustrative timings, not a benchmark.
+
+To fit the same model again, call `sampling(coin_model, data = ..., ...)`: the compiled object can be reused with new data, without recompiling. Warmup and sampling still run for each new fit. `auto_write = TRUE` also enables rstan's disk cache, but for inline code that cache is normally written to R's temporary directory. For reuse across R sessions, explicitly save the compiled object with `saveRDS(coin_model, "coin_model.rds")` and load it with `readRDS()`, using a compatible R/toolchain setup.
+
+## Reading the Output
+
+For a first model, look at three things:
+
+::: {.table-responsive}
+
+| Column | Meaning | Rule of thumb |
+|---|---|---|
+| `Rhat` | Compares variation between chains with variation within chains. | Close to 1. Investigate values above about 1.01. |
+| `n_eff` | Effective sample size: how many independent draws the correlated MCMC draws are worth. | Hundreds or more for stable means and intervals. |
+| `se_mean` | Monte Carlo standard error of the posterior mean. | Small compared with `sd`. |
+
+:::
+
+Here `Rhat` is 1.002 and `n_eff` is 1,576 from 4,000 draws, so the chains agree and the summary is reliable.
+
+Stan also warns about **divergent transitions**. They indicate that the sampler struggled with part of the posterior, often because of strong curvature in hierarchical models. Don't ignore them. This simple model produced none.
+
+To plot results, extract the draws:
+
+```r
+theta_draws <- extract(fit)$theta  # numeric vector of 4000 draws
+hist(theta_draws, breaks = 40)
+traceplot(fit, pars = "theta")     # chains should overlap like fuzzy caterpillars
+```
+
+## Optional Stan Blocks: The Coin Example
+
+We can extend the same model to show three optional blocks. Here we count tails and model their probability, $1-\theta$, rather than model each flip separately:
+
+```r
+stan_extra_code <- "
+data {
+  int<lower=0> N;
+  array[N] int<lower=0, upper=1> y;
+}
+transformed data {
+  int heads = sum(y);
+  int tails = N - heads;
+}
+parameters {
+  real<lower=0, upper=1> theta;
+}
+transformed parameters {
+  real<lower=0, upper=1> p_tail = 1 - theta;
+}
+model {
+  theta ~ beta(1, 1);
+  tails ~ binomial(N, p_tail);
+}
+generated quantities {
+  int heads_rep = binomial_rng(N, theta);
+}
+"
+
+coin_extra_model <- stan_model(model_code = stan_extra_code, model_name = "coin_extra")
+
+y <- c(0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0)
+
+fit_extra <- sampling(
+  coin_extra_model,
+  data = list(N = length(y), y = y),
+  chains = 4,
+  iter = 2000,
+  seed = 123
+)
+
+extra_draws <- rstan::extract(fit_extra)
+c(
+  mean_theta = mean(extra_draws$theta),
+  mean_p_tail = mean(extra_draws$p_tail),
+  mean_heads_rep = mean(extra_draws$heads_rep),
+  prob_theta_above_half = mean(extra_draws$theta > 0.5)
+)
+```
+
+This code uses `y` and rstan from the earlier example. The extra blocks have different jobs:
+
+::: {.table-responsive}
+
+| Block | What it does | Here |
+|---|---|---|
+| `transformed data` | Computes values from the input data once per chain, before sampling | Counts `heads` and `tails` |
+| `transformed parameters` | Computes and saves values derived from parameters; these can be used in the model | Calculates `p_tail` for the likelihood |
+| `generated quantities` | Calculates output once per sample after the sampler's leapfrog steps, without changing the posterior | Simulates `heads_rep`, the heads in another `N` flips |
+
+:::
+
+The original `y` is still available; `transformed data` simply computes summaries. Because the flips are independent and share the same probability, the observed tail count contains the information about $\theta$ needed for this model. The binomial likelihood for the count differs from the Bernoulli likelihood for the particular sequence by a factor that does not depend on $\theta$, so both give the same $\operatorname{Beta}(7,15)$ posterior.
+
+The extra `p_tail` is useful here to demonstrate a transformed parameter used by the likelihood. In this small model, writing `tails ~ binomial(N, 1 - theta)` directly would be simpler. If a derived value is only needed as output, `generated quantities` is usually a better place for it: transformed parameters are also evaluated during the sampler's gradient calculations.
+
+`heads_rep` is a **posterior predictive draw**, not another observation used to fit the model. Across draws, it shows what could happen in another 20 flips, accounting for uncertainty about $\theta$. Its mean should be close to $20 \times 7/22 \approx 6.36$. The estimated probability that $\theta > 0.5$ should be close to the exact `1 - pbeta(0.5, 7, 15)`, about 3.92%.
+
+For more on the blocks and when they run, see the [Stan Reference Manual](https://mc-stan.org/docs/reference-manual/blocks.html).
+
+## The Same Model in JAGS
+
+[JAGS](https://mcmc-jags.sourceforge.io/), *Just Another Gibbs Sampler*, was written by Martyn Plummer. It uses the BUGS modelling language, which dates back to the WinBUGS era. Unlike Stan, JAGS is a separate program that you install first, before the R package [**rjags**](https://cran.r-project.org/package=rjags):
+
+- Download JAGS from [SourceForge](https://sourceforge.net/projects/mcmc-jags/files/), or run `brew install jags` on macOS.
+- Then run `install.packages("rjags")` in R.
+
+Here is the same coin model:
+
+```r
+library(rjags)
+
+jags_code <- "
+model {
+  theta ~ dbeta(1, 1)
+  for (i in 1:N) {
+    y[i] ~ dbern(theta)
+  }
+}
+"
+
+y <- c(0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0)
+
+model <- jags.model(
+  textConnection(jags_code),
+  data = list(N = length(y), y = y),
+  n.chains = 4
+)
+update(model, 1000)                            # burn-in
+draws <- coda.samples(model, "theta", n.iter = 1000)
+
+summary(draws)
+gelman.diag(draws)    # Rhat
+effectiveSize(draws)  # effective sample size
+```
+
+With JAGS 5.0.2 and rjags on my machine, the key results were:
+
+```text
+          Mean     SD
+theta 0.317391 0.096105
+
+  2.5%    25%    50%    75%  97.5%
+0.1480 0.2474 0.3110 0.3813 0.5167
+
+Potential scale reduction factor (Rhat): 1
+Effective sample size: 4428
+```
+
+JAGS returned its result almost instantly for this tiny model, but **JAGS does compile models too**. `jags.model()` parses the BUGS code, builds a model graph, initializes it and selects samplers; it also performs adaptation by default when the samplers need it. Unlike Stan, it does not generate and compile new C++ code for each model.
+
+Calling `jags.model()` again creates and compiles a new graph, even for unchanged code. Keeping the existing `model` object and calling `update()` or `coda.samples()` continues the existing chains without recompiling. A later fresh compilation is not guaranteed to be faster; that is different from deliberately reusing an already compiled model.
+
+The effective sample size, 4,428, is slightly larger than the 4,000 draws. Here $\theta$ is the only parameter and its prior is conjugate, so JAGS can draw it directly from the exact $\operatorname{Beta}(7, 15)$ posterior at each iteration. The draws are therefore essentially independent, and an estimate slightly above 4,000 is estimation noise. Don't read it as proof that JAGS is generally better than Stan: realistic models rarely give a Gibbs sampler this shortcut.
+
+Small differences between the Stan and JAGS numbers are Monte Carlo noise. Each run uses different random draws, and you would see similar variation by rerunning either tool with a different seed.
+
+### Does JAGS Have Similar Blocks?
+
+JAGS does not have Stan's three named blocks, but it can do similar things. Its optional `data` block can transform data before the model runs; deterministic nodes in the `model` block can depend on parameters; and an unobserved stochastic node can provide posterior predictive draws. For example, using the same `y`:
+
+```r
+jags_extra_code <- "
+data {
+  heads <- sum(y[])
+  tails <- N - heads
+}
+model {
+  theta ~ dbeta(1, 1)
+  p_tail <- 1 - theta
+  tails ~ dbin(p_tail, N)
+  heads_rep ~ dbin(theta, N)
+}
+"
+
+jags_extra_model <- jags.model(
+  textConnection(jags_extra_code),
+  data = list(N = length(y), y = y),
+  n.chains = 4
+)
+update(jags_extra_model, 1000)
+jags_extra_draws <- coda.samples(
+  jags_extra_model,
+  c("theta", "p_tail", "heads_rep"),
+  n.iter = 1000
+)
+summary(jags_extra_draws)
+```
+
+Here `p_tail` is a deterministic node, and `heads_rep` is unobserved: JAGS samples it along with the model's other unknowns. This differs from Stan's separate post-sampling `generated quantities` block. Data transformations can also be done in R before passing data to either tool. See the [JAGS User Manual](https://sourceforge.net/projects/mcmc-jags/files/Manuals/4.x/jags_user_manual.pdf/download), especially its sections on data transformations and unobserved nodes.
+
+## Side by Side
+
+All three methods agree:
+
+```{webr-r}
+a_post <- 7
+b_post <- 15
+
+results <- data.frame(
+    method = c("Exact Beta(7, 15)", "Stan (rstan)", "JAGS (rjags)"),
+    mean = c(a_post / (a_post + b_post), 0.317, 0.317),
+    lower_2.5 = c(qbeta(0.025, a_post, b_post), 0.150, 0.148),
+    upper_97.5 = c(qbeta(0.975, a_post, b_post), 0.514, 0.517)
+)
+results[, -1] <- round(results[, -1], 3)
+results
+```
+
+The Stan and JAGS values in this table are copied from the local runs above. Only the exact row is calculated in your browser.
+
+To build intuition about Monte Carlo noise without installing anything, the next cell draws independent samples straight from the exact posterior with `rbeta()`. Change the seed or `n_draws`, then rerun it. The estimates move around the exact values in much the same way the Stan and JAGS estimates do:
+
+```{webr-r}
+#| out-width: "100%"
+set.seed(2026)
+n_draws <- 4000
+theta_draws <- rbeta(n_draws, 7, 15)
+
+round(
+    c(
+        mean = mean(theta_draws),
+        lower_2.5 = unname(quantile(theta_draws, 0.025)),
+        upper_97.5 = unname(quantile(theta_draws, 0.975))
+    ),
+    3
+)
+
+hist(
+    theta_draws,
+    breaks = 40,
+    freq = FALSE,
+    col = "#d9e7ef",
+    border = "white",
+    main = "Posterior of theta: draws and exact density",
+    xlab = expression(theta)
+)
+curve(dbeta(x, 7, 15), add = TRUE, lwd = 3, col = "#b2182b")
+curve(dbeta(x, 1, 1), add = TRUE, lwd = 2, lty = 2, col = "grey40")
+legend(
+    "topright",
+    legend = c("Exact posterior Beta(7, 15)", "Prior Beta(1, 1)"),
+    col = c("#b2182b", "grey40"),
+    lwd = c(3, 2),
+    lty = c(1, 2),
+    bty = "n"
+)
+```
+
+Stan and JAGS usually produce *dependent* draws from a Markov chain, rather than independent draws like `rbeta()`. That is why they report an effective sample size alongside the raw number of draws.
+
+## Stan vs JAGS
+
+::: {.table-responsive}
+
+| | **Stan** (rstan) | **JAGS** (rjags) |
+|---|---|---|
+| Main sampler | NUTS, an adaptive Hamiltonian Monte Carlo method | Gibbs sampling, using conjugate updates, slice sampling and other samplers depending on the model |
+| Setup | R package plus a C++ toolchain | Separate JAGS program plus the R package |
+| Before sampling | Compiles new models to C++; reuse the compiled object to skip this step | Compiles a model graph and selects samplers; typically quick for small models |
+| Language style | Typed and imperative, with blocks; statements run in order | Declarative BUGS syntax; the order of statements does not matter |
+| Normal distribution | `normal(mu, sigma)` uses the **standard deviation** | `dnorm(mu, tau)` uses the **precision**, $\tau = 1/\sigma^2$ |
+| Discrete parameters | Not sampled directly; you must sum them out of the model | Supported directly, for example latent classes or change points |
+| Sampling efficiency | Often efficient for correlated continuous parameters; gradients cost time per transition | Conjugate updates can be very efficient; basic updates can mix slowly with strong correlations |
+| Diagnostics | Rhat, effective sample size, divergences, tree depth and energy diagnostics | Rhat and effective sample size via the **coda** package |
+| Ecosystem | [rstanarm](https://mc-stan.org/rstanarm/), [brms](https://paul-buerkner.github.io/brms/), [cmdstanr](https://mc-stan.org/cmdstanr/), [loo](https://mc-stan.org/loo/), [bayesplot](https://mc-stan.org/bayesplot/), [posterior](https://mc-stan.org/posterior/) | rjags, [R2jags](https://cran.r-project.org/package=R2jags), [runjags](https://cran.r-project.org/package=runjags), and many older BUGS textbooks |
+| Development | Large, active community and frequent releases | Mature and stable, with a smaller community |
+
+:::
+
+The precision row catches many people moving from JAGS to Stan. `dnorm(0, 0.001)` in JAGS is a normal distribution with standard deviation $1/\sqrt{0.001} \approx 31.6$, not $0.001$. In Stan, the same prior is `normal(0, 31.6)`.
+
+### Is Stan Faster Because It Uses Gradients?
+
+**Sometimes, but not automatically.** NUTS uses gradients to explore continuous posteriors efficiently, while JAGS uses Gibbs updates with conjugate draws or other sampling methods as needed. Neither is an optimization algorithm in this comparison.
+
+For this coin model, JAGS has a shortcut: it samples directly from the exact Beta posterior. Stan still runs NUTS, so gradients do not give it an advantage here. For more complex, correlated posteriors, Stan can produce more useful draws per second despite doing more work per transition.
+
+A fair speed comparison measures **effective sample size per second** for the quantities you care about, after checking diagnostics. Separate compilation, adaptation/warmup and sampling time, and say whether compiled models were reused. Fast compilation is not the same as efficient posterior sampling.
+
+### Which one should a beginner pick?
+
+- **Choose Stan** for most new projects, especially regression and hierarchical models. You get better sampling for difficult posteriors, better diagnostics and a richer ecosystem. To fit regression models without writing Stan code, start with **brms** or **rstanarm**. Both use formula syntax similar to `lm()` and `glmer()`.
+- **Consider JAGS** when directly sampling discrete unknowns is useful, when following a BUGS/JAGS textbook, or when trying small models without C++ compilation. Stan can handle many discrete models by summing out the unknowns, although this can be costly for some models; see the [Stan User's Guide](https://mc-stan.org/docs/stan-users-guide/latent-discrete.html).
+
+Stan's newer R interface, [**cmdstanr**](https://mc-stan.org/cmdstanr/), is worth knowing about. It uses CmdStan directly and usually gets new Stan releases sooner than the CRAN version of rstan. On my machine, for example, rstan ran Stan 2.32.2. The Stan code in this post is the same whichever interface you use.
+
+## Why Not webR?
+
+[webR](../webr/index.qmd) runs R compiled to WebAssembly inside the browser. Base R and many CRAN packages work, which is why the cells above are interactive. Stan and JAGS are harder:
+
+- **New Stan models need C++ compilation.** The webR package repository does list builds related to rstan and StanHeaders for some R versions. Even so, a browser session has no C++ compiler to turn a new Stan program into machine code, so you shouldn't expect `stan()` to work in webR.
+- **JAGS is an external program.** rjags is an interface to the separately installed JAGS library, which isn't available in the browser.
+
+To try Stan without installing anything, use [**Stan Playground**](https://stan-playground.flatironinstitute.org) from the Flatiron Institute. Stan code is compiled on a server into WebAssembly, then the model runs in your browser. That is a different design from webR: compilation happens outside the browser.
+
+For this post, the practical approach is to run Stan and JAGS locally and use webR to explore the exact answer.
+
+## Summary
+
+- A Stan program declares `data`, `parameters` and a `model`. rstan compiles it to C++ and samples with NUTS.
+- Check `Rhat` (close to 1), effective sample size (large enough) and divergences (none) before trusting the results.
+- For this coin example, Stan, JAGS and the exact Beta posterior agree to within Monte Carlo error.
+- Conjugacy makes this example solvable without MCMC; it also lets JAGS use direct Beta draws. Stan's gradient-based sampler is not automatically faster.
+- Both tools compile models, but differently. Reuse compiled model objects to avoid repeating that setup.
+- JAGS is quick to start and handles discrete parameters, but Stan is usually the better default for new and more complex models.
+- Neither tool runs in webR; use a local installation or a compilation service such as Stan Playground.
+
+## Sources and Further Reading
+
+- [Stan documentation](https://mc-stan.org/docs/), including the *Stan User's Guide* and *Reference Manual*.
+- [RStan Getting Started](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started).
+- [rstan's `stan_model()` documentation](https://mc-stan.org/rstan/reference/stan_model.html), including compiled-model caching.
+- Carpenter et al. (2017), [*Stan: A Probabilistic Programming Language*](https://doi.org/10.18637/jss.v076.i01), *Journal of Statistical Software*.
+- Hoffman and Gelman (2014), [*The No-U-Turn Sampler*](https://jmlr.org/papers/v15/hoffman14a.html), *Journal of Machine Learning Research*.
+- [JAGS homepage](https://mcmc-jags.sourceforge.io/) and the [rjags package](https://cran.r-project.org/package=rjags).
+- [rjags reference manual](https://cran.r-project.org/web/packages/rjags/refman/rjags.html), including model compilation, adaptation and sampler selection.
+- Plummer (2003), [*JAGS: A program for analysis of Bayesian graphical models using Gibbs sampling*](https://www.r-project.org/conferences/DSC-2003/Proceedings/Plummer.pdf).
+- [Stan Playground](https://github.com/flatironinstitute/stan-playground) for running Stan models in the browser.
+
+## Related posts
+
+- [Conjugate Priors: Harnessing Closed-Form Solutions in Bayesian Inference](../conjugate/index.qmd)
+- [Bernstein–von Mises: Bridging Bayesian and Frequentist Worlds](../BvStheorem/index.qmd)
+- [The Rule of Three: What Zero Events Really Tell Us](../rule-of-three/index.qmd)
+- [WebAssembly for R - webR](../webr/index.qmd)
