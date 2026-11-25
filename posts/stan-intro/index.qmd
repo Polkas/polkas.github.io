@@ -20,6 +20,30 @@ Both tools give the same answer on this example, and both match the exact poster
 
 ![The official [Stan logo](https://github.com/stan-dev/logos). The Stan name and logo are trademarks of NumFOCUS under the direction of the Stan Leadership Body.](main.png){fig-alt="The official Stan logo and wordmark on a white background." fig-align="center" width="85%"}
 
+## A Quick Bayes' Rule Reminder
+
+For events $A$ and $B$ with positive probabilities, the joint probability is unchanged when we swap their order. The product rule for conditional probabilities then gives Bayes' rule:
+
+$$
+\begin{aligned}
+P(A, B) &= P(B, A), \\
+P(A, B) &= P(A \mid B) P(B), \\
+P(B, A) &= P(B \mid A) P(A), \\
+P(A \mid B) &= \frac{P(B \mid A) P(A)}{P(B)}.
+\end{aligned}
+$$
+
+For a continuous parameter $\theta$ and observed data $y$, the same rule becomes:
+
+$$
+\begin{aligned}
+p(\theta \mid y) &= \frac{p(y \mid \theta) p(\theta)}{p(y)} \\
+&\propto p(y \mid \theta) p(\theta).
+\end{aligned}
+$$
+
+The prior density $p(\theta)$ describes uncertainty before seeing the data, the likelihood $p(y \mid \theta)$ describes the data for each possible $\theta$, and the posterior density $p(\theta \mid y)$ is the updated uncertainty. For fixed data and a fixed model, $p(y) = \int p(y \mid \theta) p(\theta)\,d\theta$ is the **normalizing constant** (also called the marginal likelihood or evidence): it does not depend on $\theta$ and makes the posterior integrate to one. Stan can sample using the product on the right without calculating this denominator.
+
 ## The Example: Is This Coin Fair?
 
 We flip a coin 20 times and see 6 heads. Write $y_i = 1$ for heads and $y_i = 0$ for tails. The model is:
