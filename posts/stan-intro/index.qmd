@@ -465,7 +465,7 @@ c(
     lower_2.5 = unname(quantile(theta_draws, 0.025)),
     upper_97.5 = unname(quantile(theta_draws, 0.975))
 ) |>
-    round(., 3)
+    round(3)
 
 hist(
     theta_draws,
