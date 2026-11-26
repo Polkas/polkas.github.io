@@ -155,7 +155,9 @@ Three habits to notice:
 
 The `array[N] int` syntax is the current form. Older tutorials write `int y[N];`, which recent versions of Stan no longer accept.
 
-Stan also has optional blocks such as `transformed data`, `transformed parameters` and `generated quantities`. We will add them to the coin example after fitting this simpler version.
+Stan also has an optional [`functions`](https://mc-stan.org/docs/stan-users-guide/user-functions.html) block for defining reusable functions. If used, it must come before all other blocks; its functions can be called from other blocks where appropriate.
+
+Other optional blocks include `transformed data`, `transformed parameters` and `generated quantities`. We will use all four in the coin example after fitting this simpler version.
 
 ## Fitting the Model with rstan
 
@@ -242,10 +244,15 @@ traceplot(fit, pars = "theta")     # chains should overlap like fuzzy caterpilla
 
 ## Optional Stan Blocks: The Coin Example
 
-We can extend the same model to show three optional blocks. Here we count tails and model their probability, $1-\theta$, rather than model each flip separately:
+We can extend the same model to show four optional blocks. Here we count tails and model their probability, $1-\theta$, rather than model each flip separately:
 
 ```r
 stan_extra_code <- "
+functions {
+  real tail_probability(real theta) {
+    return 1 - theta;
+  }
+}
 data {
   int<lower=0> N;
   array[N] int<lower=0, upper=1> y;
@@ -258,7 +265,7 @@ parameters {
   real<lower=0, upper=1> theta;
 }
 transformed parameters {
-  real<lower=0, upper=1> p_tail = 1 - theta;
+  real<lower=0, upper=1> p_tail = tail_probability(theta);
 }
 model {
   theta ~ beta(1, 1);
@@ -296,15 +303,16 @@ This code uses `y` and rstan from the earlier example. The extra blocks have dif
 
 | Block | What it does | Here |
 |---|---|---|
+| `functions` | Defines reusable functions before the other blocks | Defines `tail_probability(theta)` as $1-\theta$ |
 | `transformed data` | Computes values from the input data once per chain, before sampling | Counts `heads` and `tails` |
-| `transformed parameters` | Computes and saves values derived from parameters; these can be used in the model | Calculates `p_tail` for the likelihood |
+| `transformed parameters` | Computes and saves values derived from parameters; these can be used in the model | Calls `tail_probability(theta)` to calculate `p_tail` |
 | `generated quantities` | Calculates output once per sample after the sampler's leapfrog steps, without changing the posterior | Simulates `heads_rep`, the heads in another `N` flips |
 
 :::
 
 The original `y` is still available; `transformed data` simply computes summaries. Because the flips are independent and share the same probability, the observed tail count contains the information about $\theta$ needed for this model. The binomial likelihood for the count differs from the Bernoulli likelihood for the particular sequence by a factor that does not depend on $\theta$, so both give the same $\operatorname{Beta}(7,15)$ posterior.
 
-The extra `p_tail` is useful here to demonstrate a transformed parameter used by the likelihood. In this small model, writing `tails ~ binomial(N, 1 - theta)` directly would be simpler. If a derived value is only needed as output, `generated quantities` is usually a better place for it: transformed parameters are also evaluated during the sampler's gradient calculations.
+`tail_probability` is defined in `functions` and called in `transformed parameters`; the resulting `p_tail` is used by the likelihood. For this simple calculation, writing `tails ~ binomial(N, 1 - theta)` directly would be simpler. If a derived value is only needed as output, `generated quantities` is usually a better place for it: transformed parameters are also evaluated during the sampler's gradient calculations.
 
 `heads_rep` is a **posterior predictive draw**, not another observation used to fit the model. Across draws, it shows what could happen in another 20 flips, accounting for uncertainty about $\theta$. Its mean should be close to $20 \times 7/22 \approx 6.36$. The estimated probability that $\theta > 0.5$ should be close to the exact `1 - pbeta(0.5, 7, 15)`, about 3.92%.
 
