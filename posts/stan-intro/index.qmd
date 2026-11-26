@@ -467,7 +467,7 @@ Stan and JAGS usually produce *dependent* draws from a Markov chain, rather than
 
 | | **Stan** (rstan) | **JAGS** (rjags) |
 |---|---|---|
-| Main sampler | NUTS, an adaptive Hamiltonian Monte Carlo method | Gibbs sampling, using conjugate updates, slice sampling and other samplers depending on the model |
+| Main sampler | NUTS, an adaptive Hamiltonian Monte Carlo method | Gibbs and other samplers, chosen according to the model |
 | Setup | R package plus a C++ toolchain | Separate JAGS program plus the R package |
 | Before sampling | Compiles new models to C++; reuse the compiled object to skip this step | Compiles a model graph and selects samplers; typically quick for small models |
 | Language style | Typed and imperative, with blocks; statements run in order | Declarative BUGS syntax; the order of statements does not matter |
@@ -482,9 +482,32 @@ Stan and JAGS usually produce *dependent* draws from a Markov chain, rather than
 
 The precision row catches many people moving from JAGS to Stan. `dnorm(0, 0.001)` in JAGS is a normal distribution with standard deviation $1/\sqrt{0.001} \approx 31.6$, not $0.001$. In Stan, the same prior is `normal(0, 31.6)`.
 
+### Sampling, Not Maximizing
+
+Both tools combine the likelihood and prior to describe the posterior without calculating $p(y)$, as in the Bayes' rule reminder. Instead of maximizing the likelihood to get one value, they draw parameter values from a posterior distribution that expresses uncertainty.
+
+- **Stan:** NUTS uses gradients of the joint log posterior to move the continuous parameters together. The gradient guides sampling, not optimization. It is by leveraging momentum and the geometry of the posterior that NUTS can efficiently explore complex, high-dimensional distributions.
+- **JAGS:** updates parameters or blocks conditional on the data and the remaining parameters. It automatically selects suitable samplers, including Gibbs, slice and Metropolis-type updates. Closed-form conditionals and conjugacy are not required.
+
+To get a single optimum instead, reuse the compiled coin model with rstan's `optimizing()`:
+
+```r
+opt <- optimizing(
+  coin_model,
+  data = list(N = length(y), y = y),
+  seed = 123,
+  refresh = 0
+)
+round(opt$par["theta"], 3)
+# theta
+#   0.3
+```
+
+This is the posterior mode (MAP). With the uniform prior in this example, it is also the maximum likelihood estimate, $6/20 = 0.3$. Unlike posterior draws, it is only a point estimate.
+
 ### Is Stan Faster Because It Uses Gradients?
 
-**Sometimes, but not automatically.** NUTS uses gradients to explore continuous posteriors efficiently, while JAGS uses Gibbs updates with conjugate draws or other sampling methods as needed. Neither is an optimization algorithm in this comparison.
+**Sometimes, but not automatically.** Sampling efficiency depends on the model and its posterior geometry, not simply on whether a sampler uses gradients.
 
 For this coin model, JAGS has a shortcut: it samples directly from the exact Beta posterior. Stan still runs NUTS, so gradients do not give it an advantage here. For more complex, correlated posteriors, Stan can produce more useful draws per second despite doing more work per transition.
 
