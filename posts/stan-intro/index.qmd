@@ -33,6 +33,22 @@ P(A \mid B) &= \frac{P(B \mid A) P(A)}{P(B)}.
 \end{aligned}
 $$
 
+**A simple example: rain and wet ground.** Let $A$ mean "it rained" and $B$ mean "the ground is wet." Imagine 100 days:
+
+- It rained on 30 days, so $P(A) = 0.30$.
+- The ground was wet on 27 of those rainy days, so $P(B \mid A) = 27/30 = 0.90$.
+- It was also wet on 18 days without rain, perhaps because of sprinklers. That makes 45 wet days in total, so $P(B) = 0.45$.
+
+$$
+\begin{aligned}
+P(A, B) &= 0.30 \times 0.90 \\
+&= 0.27, \\
+P(A \mid B) &= \frac{0.27}{0.45} = 0.60.
+\end{aligned}
+$$
+
+Rain **and** wet ground occur on 27% of days, whichever order we name the events. But **given** wet ground, the probability of rain is 60%, not 90%. The denominator $P(B)$ includes **all** wet days, not just the rainy ones.
+
 For a continuous parameter $\theta$ and observed data $y$, the same rule becomes:
 
 $$
