@@ -16,8 +16,6 @@ filters:
 
 Both tools give the same answer on this example, and both match the exact posterior. They differ in how you write models, how they sample, how much setup they need, and which models they handle well.
 
-**Can Stan run in the browser with webR?** Not in practice. rstan turns each model into C++ and compiles it on your computer, and a webR session has no C++ compiler. The Stan and JAGS code in this post was run locally. The interactive cells use base R to calculate the exact answer that both samplers should recover.
-
 ![The official [Stan logo](https://github.com/stan-dev/logos). The Stan name and logo are trademarks of NumFOCUS under the direction of the Stan Leadership Body.](main.png){fig-alt="The official Stan logo and wordmark on a white background." fig-align="center" width="85%"}
 
 ## A Quick Bayes' Rule Reminder
@@ -33,21 +31,30 @@ P(A \mid B) &= \frac{P(B \mid A) P(A)}{P(B)}.
 \end{aligned}
 $$
 
-**A simple example: rain and wet ground.** Let $A$ mean "it rained" and $B$ mean "the ground is wet." Imagine 100 days:
+::: {.callout-note collapse="true"}
+### A simple example: rain and wet ground
+
+Let $A$ mean "it rained" and $B$ mean "the ground is wet." Imagine 100 days:
 
 - It rained on 30 days, so $P(A) = 0.30$.
 - The ground was wet on 27 of those rainy days, so $P(B \mid A) = 27/30 = 0.90$.
 - It was also wet on 18 days without rain, perhaps because of sprinklers. That makes 45 wet days in total, so $P(B) = 0.45$.
+- Rain **and** wet ground occur on 27% of days, whichever order we name the events. But **given** wet ground, the probability of rain $P(A \mid B)$ is 60%, not 90%. The $P(B)$ includes **all** wet days, not just the rainy ones.
 
 $$
 \begin{aligned}
+P(A \mid B) &= \frac{0.27}{0.45} = 0.60, \\
+P(B \mid A) &= 0.90, \\
+P(B) &= 0.45, \\
+P(A) &= 0.30, \\
 P(A, B) &= 0.30 \times 0.90 \\
 &= 0.27, \\
-P(A \mid B) &= \frac{0.27}{0.45} = 0.60.
+P(B, A) &= 0.90 \times 0.30 \\
+&= 0.27
 \end{aligned}
 $$
 
-Rain **and** wet ground occur on 27% of days, whichever order we name the events. But **given** wet ground, the probability of rain is 60%, not 90%. The denominator $P(B)$ includes **all** wet days, not just the rainy ones.
+:::
 
 For a continuous parameter $\theta$ and observed data $y$, the same rule becomes:
 
@@ -73,6 +80,7 @@ $$
 
 $\theta$ is the unknown probability of heads. $\operatorname{Beta}(1, 1)$ is a uniform prior: before seeing data, every value between 0 and 1 is equally plausible.
 
+::: {.callout-note collapse="true"}
 ### Conjugacy: The Shortcut That Makes This Example Trivial
 
 This model is deliberately simple. The Beta prior is [conjugate](../conjugate/index.qmd) to the Bernoulli likelihood: updating it with the data leaves us in the same distribution family. With a $\operatorname{Beta}(a, b)$ prior, $h$ heads and $t$ tails, the posterior is simply $\operatorname{Beta}(a+h, b+t)$. Here:
@@ -114,15 +122,23 @@ round(
 
 The posterior mean is about 0.318, and the central 95% credible interval runs from about 0.146 to 0.522. The data suggest a coin that lands heads less often than half the time, but 20 flips leave a lot of uncertainty.
 
+:::
+
 ## What Stan Does
 
 Stan was created by Andrew Gelman, Bob Carpenter and colleagues, and is named after [Stanislaw Ulam](https://en.wikipedia.org/wiki/Stanislaw_Ulam), one of the inventors of the Monte Carlo method. Its default sampler is the **No-U-Turn Sampler (NUTS)**, an adaptive form of Hamiltonian Monte Carlo (HMC).
+
+::: {.callout-note collapse="true"}
+### Stanislaw Ulam
+
+Stanislaw Ulam (1909–1984) was a Polish-American mathematician who made significant contributions to a variety of fields, including set theory, number theory, and nuclear physics. He is perhaps best known for his role in the development of the Monte Carlo method, a computational technique that uses random sampling to estimate complex mathematical quantities. The Stan programming language is named in his honor, reflecting its foundation on Monte Carlo sampling methods.
+:::
 
 You don't need the mathematics of HMC to start. The intuition is enough: instead of making small random steps, HMC uses the **gradient** of the log posterior to make long, informed moves through parameter space. This often gives less autocorrelated draws than random-walk samplers or basic Gibbs updates, especially when there are many correlated parameters. Stan computes those gradients automatically. This is **sampling, not optimization**: the goal is to explore the posterior, not just find its highest point.
 
 The price is that every Stan model is translated to C++ and compiled before it runs.
 
-::: {.callout-note}
+::: {.callout-note collapse="true"}
 ## A problem I hit while writing this post
 
 On macOS with R 4.5, a model compiled, then failed to load with `symbol not found ... tbb::task_scheduler_init`. In my setup the installed rstan/StanHeaders binaries did not match the newer RcppParallel. Reinstalling both from source fixed it:
@@ -215,7 +231,7 @@ print(fit, pars = "theta", probs = c(0.025, 0.5, 0.975), digits = 3)
 
 `stan_model()` compiles the model; `sampling()` then runs four Markov chains. By default, the first half of each chain (1,000 iterations here) is **warmup**. During warmup Stan tunes the sampler, and these draws are discarded. That leaves $4 \times 1000 = 4000$ draws. The convenience function `stan(model_code = stan_code, ...)` combines these two steps.
 
-With rstan 2.32.7 (Stan 2.39.0) on my machine, this printed:
+This printed:
 
 ```text
 Inference for Stan model: coin.
@@ -228,9 +244,13 @@ theta 0.317   0.002 0.096 0.15 0.31 0.514  1576 1.002
 
 The posterior mean 0.317 is very close to the exact 0.318. The 95% interval, 0.15 to 0.514, is also close to the exact 0.146 to 0.522; the tails are the hardest part to estimate from a finite sample of draws.
 
+::: {.callout-note collapse="true"}
+## Optional: Compilation time and reusing the model
+
 In that local run, compilation plus sampling took about 17 seconds, and almost all of that was compiling C++. Sampling itself took a fraction of a second. These are illustrative timings, not a benchmark.
 
-To fit the same model again, call `sampling(coin_model, data = ..., ...)`: the compiled object can be reused with new data, without recompiling. Warmup and sampling still run for each new fit. `auto_write = TRUE` also enables rstan's disk cache, but for inline code that cache is normally written to R's temporary directory. For reuse across R sessions, explicitly save the compiled object with `saveRDS(coin_model, "coin_model.rds")` and load it with `readRDS()`, using a compatible R/toolchain setup.
+To fit the same model again, call `sampling(coin_model, data = ..., ...)`: the compiled object can be reused with new data, without recompiling. Warmup and sampling still run for each new fit. `auto_write = TRUE` also enables rstan's disk cache, but for inline code that cache is normally written to R's temporary directory.
+:::
 
 ## Reading the Output
 
@@ -258,7 +278,7 @@ hist(theta_draws, breaks = 40)
 traceplot(fit, pars = "theta")     # chains should overlap like fuzzy caterpillars
 ```
 
-## Optional Stan Blocks: The Coin Example
+## Additional Stan Blocks: The Coin Example
 
 We can extend the same model to show four optional blocks. Here we count tails and model their probability, $1-\theta$, rather than model each flip separately:
 
@@ -395,6 +415,9 @@ Small differences between the Stan and JAGS numbers are Monte Carlo noise. Each 
 
 JAGS does not have Stan's three named blocks, but it can do similar things. Its optional `data` block can transform data before the model runs; deterministic nodes in the `model` block can depend on parameters; and an unobserved stochastic node can provide posterior predictive draws. For example, using the same `y`:
 
+::: {.callout-note collapse="true"}
+## JAGS blocks example
+
 ```r
 jags_extra_code <- "
 data {
@@ -424,26 +447,9 @@ summary(jags_extra_draws)
 ```
 
 Here `p_tail` is a deterministic node, and `heads_rep` is unobserved: JAGS samples it along with the model's other unknowns. This differs from Stan's separate post-sampling `generated quantities` block. Data transformations can also be done in R before passing data to either tool. See the [JAGS User Manual](https://sourceforge.net/projects/mcmc-jags/files/Manuals/4.x/jags_user_manual.pdf/download), especially its sections on data transformations and unobserved nodes.
+:::
 
-## Side by Side
-
-All three methods agree:
-
-```{webr-r}
-a_post <- 7
-b_post <- 15
-
-results <- data.frame(
-    method = c("Exact Beta(7, 15)", "Stan (rstan)", "JAGS (rjags)"),
-    mean = c(a_post / (a_post + b_post), 0.317, 0.317),
-    lower_2.5 = c(qbeta(0.025, a_post, b_post), 0.150, 0.148),
-    upper_97.5 = c(qbeta(0.975, a_post, b_post), 0.514, 0.517)
-)
-results[, -1] <- round(results[, -1], 3)
-results
-```
-
-The Stan and JAGS values in this table are copied from the local runs above. Only the exact row is calculated in your browser.
+## Simulating Monte Carlo Noise
 
 To build intuition about Monte Carlo noise without installing anything, the next cell draws independent samples straight from the exact posterior with `rbeta()`. Change the seed or `n_draws`, then rerun it. The estimates move around the exact values in much the same way the Stan and JAGS estimates do:
 
@@ -451,16 +457,15 @@ To build intuition about Monte Carlo noise without installing anything, the next
 #| out-width: "100%"
 set.seed(2026)
 n_draws <- 4000
+# Draw independent samples from the exact Beta(7, 15) posterior
 theta_draws <- rbeta(n_draws, 7, 15)
 
-round(
-    c(
-        mean = mean(theta_draws),
-        lower_2.5 = unname(quantile(theta_draws, 0.025)),
-        upper_97.5 = unname(quantile(theta_draws, 0.975))
-    ),
-    3
-)
+c(
+    mean = mean(theta_draws),
+    lower_2.5 = unname(quantile(theta_draws, 0.025)),
+    upper_97.5 = unname(quantile(theta_draws, 0.975))
+) |>
+    round(., 3)
 
 hist(
     theta_draws,
@@ -471,6 +476,7 @@ hist(
     main = "Posterior of theta: draws and exact density",
     xlab = expression(theta)
 )
+
 curve(dbeta(x, 7, 15), add = TRUE, lwd = 3, col = "#b2182b")
 curve(dbeta(x, 1, 1), add = TRUE, lwd = 2, lty = 2, col = "grey40")
 legend(
@@ -529,6 +535,7 @@ round(opt$par["theta"], 3)
 
 This is the posterior mode (MAP). With the uniform prior in this example, it is also the maximum likelihood estimate, $6/20 = 0.3$. Unlike posterior draws, it is only a point estimate.
 
+::: {.callout-note collapse="true"}
 ### Is Stan Faster Because It Uses Gradients?
 
 **Sometimes, but not automatically.** Sampling efficiency depends on the model and its posterior geometry, not simply on whether a sampler uses gradients.
@@ -536,14 +543,16 @@ This is the posterior mode (MAP). With the uniform prior in this example, it is 
 For this coin model, JAGS has a shortcut: it samples directly from the exact Beta posterior. Stan still runs NUTS, so gradients do not give it an advantage here. For more complex, correlated posteriors, Stan can produce more useful draws per second despite doing more work per transition.
 
 A fair speed comparison measures **effective sample size per second** for the quantities you care about, after checking diagnostics. Separate compilation, adaptation/warmup and sampling time, and say whether compiled models were reused. Fast compilation is not the same as efficient posterior sampling.
+:::
 
 ### Which one should a beginner pick?
 
 - **Choose Stan** for most new projects, especially regression and hierarchical models. You get better sampling for difficult posteriors, better diagnostics and a richer ecosystem. To fit regression models without writing Stan code, start with **brms** or **rstanarm**. Both use formula syntax similar to `lm()` and `glmer()`.
 - **Consider JAGS** when directly sampling discrete unknowns is useful, when following a BUGS/JAGS textbook, or when trying small models without C++ compilation. Stan can handle many discrete models by summing out the unknowns, although this can be costly for some models; see the [Stan User's Guide](https://mc-stan.org/docs/stan-users-guide/latent-discrete.html).
 
-Stan's newer R interface, [**cmdstanr**](https://mc-stan.org/cmdstanr/), is worth knowing about. It uses CmdStan directly and usually gets new Stan releases sooner than the CRAN version of rstan. On my machine, for example, rstan ran Stan 2.32.2. The Stan code in this post is the same whichever interface you use.
+Stan's newer R interface, [**cmdstanr**](https://mc-stan.org/cmdstanr/), is worth knowing about. It uses CmdStan directly and usually gets new Stan releases sooner than the CRAN version of rstan. On my machine, rstan reports Stan 2.39.0. The Stan code in this post is the same whichever interface you use.
 
+::: {.callout-note collapse="true"}
 ## Why Not webR?
 
 [webR](../webr/index.qmd) runs R compiled to WebAssembly inside the browser. Base R and many CRAN packages work, which is why the cells above are interactive. Stan and JAGS are harder:
@@ -554,6 +563,7 @@ Stan's newer R interface, [**cmdstanr**](https://mc-stan.org/cmdstanr/), is wort
 To try Stan without installing anything, use [**Stan Playground**](https://stan-playground.flatironinstitute.org) from the Flatiron Institute. Stan code is compiled on a server into WebAssembly, then the model runs in your browser. That is a different design from webR: compilation happens outside the browser.
 
 For this post, the practical approach is to run Stan and JAGS locally and use webR to explore the exact answer.
+:::
 
 ## Summary
 
