@@ -9,6 +9,8 @@ image-alt: "Illustration of three clusters of points on a scatter plot."
 
 I taught multivariate analysis at the University of Warsaw and co-created the **multidim** teaching project with Pawel Strawinski.
 
+I was responsible for building the course materials in Python package form and created materials for several lessons. The project responded to econometrics students' interest in learning with Python and collaborating through modern, open-source workflows. Students were encouraged to contribute improvements and corrections through pull requests.
+
 The materials start with statistical foundations and progress to supervised and unsupervised methods, including principal component analysis, factor analysis and clustering. The course uses Python and pySTATA, with an emphasis on reproducible research.
 
 ## Explore the materials
