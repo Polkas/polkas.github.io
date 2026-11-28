@@ -1,0 +1,18 @@
+---
+title: "Teaching Multivariate Analysis"
+description: "Open course materials for multivariate analysis, with lecture slides and Python notebooks."
+author: "Maciej Nasinski"
+order: 60
+image: main.png
+image-alt: "Illustration of three clusters of points on a scatter plot."
+---
+
+I taught multivariate analysis at the University of Warsaw and co-created the **multidim** teaching project with Pawel Strawinski.
+
+The materials start with statistical foundations and progress to supervised and unsupervised methods, including principal component analysis, factor analysis and clustering. The course uses Python and pySTATA, with an emphasis on reproducible research.
+
+## Explore the materials
+
+- [GitHub repository](https://github.com/Polkas/multidim)
+- [Lecture slides](https://multidim.readthedocs.io/en/latest/lecture.html)
+- [Jupyter notebooks](https://github.com/Polkas/multidim/tree/main/src/multidim/notebooks)
